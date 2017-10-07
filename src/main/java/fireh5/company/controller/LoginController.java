@@ -11,11 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import fire.company.entity.CompanyResult;
 import fire.company.entity.Manager;
 import fire.modules.entity.FormatType;
 import fire.proxy.service.ProxyBase;
 import fire.sdk.utils.JsonResult;
 import fire.sdk.utils.JsonUtils;
+import fireh5.web.utils.Constants;
 
 
 @Controller
@@ -42,8 +44,8 @@ public Object login(String username,String password,String code,HttpSession sess
 	
 	JsonResult result=new ProxyBase().GetResponse("company", "login", map);
 	if(result.getState()==0){
-		Manager user=JsonUtils.JSONToObj(JsonUtils.objectToJson(result.getData()), Manager.class)	;
-		session.setAttribute("user", user);
+		CompanyResult user=JsonUtils.JSONToObj(JsonUtils.objectToJson(result.getData()), CompanyResult.class)	;
+		session.setAttribute(Constants.CompanyPre+Constants.LoginCacheKey, user);
 		return new JsonResult();
 	}
 	return result.toString();

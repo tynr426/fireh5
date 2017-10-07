@@ -1,11 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page import="fireh5.web.utils.*"%> 
+    <%@ page import="fire.company.entity.CompanyResult" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <jsp:include page="Meta.html" ></jsp:include>
+<%
+CompanyResult company=Company.getCompany();
+%> 
 </head>
 
 <body>
@@ -30,27 +35,27 @@
                         <!--用户头像-->
                             <div class="pic load">
                                 <a href="javascript:void(0);">
-                                    <img lazy_src="<$var sources.ImageDomain /><$var ShopLogo.Logo/>" alt="" error="/Static/Images/webstore-pic.png" />
+                                    <img lazy_src="<$var sources.ImageDomain /><%=company.getLogo() %>" alt="" error="/Static/Images/webstore-pic.png" />
                                 </a>
                             </div>
                           
                         <!--//用户头像-->
                         <!--用户信息-->
                         <div class="info box1">
-                            <h1><$var site.Name /></h1>
+                            <h1><%=company.getName() %></h1>
                             <div class="line box box-horizontal">
                                 <p class="name">公司代码：</p>
-                                <div class="string box1"><$var site.Code /></div>
+                                <div class="string box1"><%=company.getCode() %></div>
                             </div>
                          
                             <div class="line box box-horizontal">
                                 <p class="name">公司地址：</p>
-                                <div class="add-string box1"><$var site.address /></div>
+                                <div class="add-string box1"><%=company.getAddress() %></div>
                             </div>
                             <div class="line box box-horizontal">
                                 <p class="name">操作账户：</p>
                                 <div class="string box1">
-                                    <$var ManagerName />
+                                    <%=company.getUserName() %>
                                     <a href="/WebStore/Social/Account.aspx">微信帐号</a>
                                 </div>
                             </div>
