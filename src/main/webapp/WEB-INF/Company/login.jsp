@@ -21,17 +21,17 @@ contentType="text/html; charset=utf-8" %>
                         <ul>
                             <li class="could">
                                 <div class="inputbox">
-                                    <input type="text" name="Code" id="Code" value="" placeholder="请输入公司代码" validate="isnull" tabindex="1" />
+                                    <input type="text" name="Code" id="Code" value="adf" placeholder="请输入公司代码" validate="isnull" tabindex="1" />
                                 </div>
                             </li>
                             <li class="user">
                                 <div class="inputbox">
-                                    <input type="text" tabindex="2" name="UserName" id="UserName" value="" placeholder="请输入账号" validate="isnull" />
+                                    <input type="text" tabindex="2" name="UserName" id="UserName" value="tyn" placeholder="请输入账号" validate="isnull" />
                                 </div>
                             </li>
                             <li class="password">
                                 <div class="inputbox">
-                                    <input type="password" name="Password" id="Password" value="" placeholder="请输入密码" validate="isnull" tabindex="3" />
+                                    <input type="password" name="Password" id="Password" value="111111" placeholder="请输入密码" validate="isnull" tabindex="3" />
                                 </div>
 
                                 <i class="icon show-target" onclick="tools.passwordChange(this);"></i>
@@ -41,7 +41,7 @@ contentType="text/html; charset=utf-8" %>
                     <!--//输入框-->
 
                     <div class="button">
-                        <a href="javascript:void(0);" onclick="store.login();" class="btn" tabindex="4">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+                        <a href="javascript:void(0);" onclick="loginCM.login();" class="btn" tabindex="4">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
                     </div>
 
                     <!--服务器地址-->

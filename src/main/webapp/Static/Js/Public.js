@@ -1,22 +1,10 @@
-﻿/* 
-    <reference path="/Static/Js/ECF.js" />
-    <reference path="/Static/Js/ECF.forms.js" />
-    1. 功能：后台管理公用js处理，主要放置系统中用到的公用处理方法
-    2. 作者：谢鹏
-    3. 创建日期：2011-11-29
-    4. 最后修改者：谢鹏
-    5. 最后修改日期：2015-2-27
-    6. 版本号:2015.02.27.1
 
-    * 在frm.add,frm.update 后添加finish 参数，用于使用正常的添加和修改完成后回调的方法来替换公用方法中提供的公用回调方法，回调方法中的this对像就是当前弹出层对象
-    * 在物理删除方法上添加参数据 data 可以自行添加参数向后台传递
-*/
 
 //错误图片显示地址,此处必须要用到全局变量,防止error变量在不同函数中失效
-var error = "/Static/Images/error.gif";
+var error = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABztJREFUeNrsm2dTKksQhsGE8Sgq5pxzKNMn/7+5zBERTJgjKub7FH3LogzEBRG6P5xaPesw80z32927g/n9/d2kFpqlKQKFpbAUlsJSWApLESgshaWwFJbCUliKQGEpLIWlsBSWwlIECkth/bZlRPn3j4+Pp6en5+fnDw8Pr6+vGRkZubm5NputtLSU6ySDZY74Vdjb25vdbj88PHx6ejKbzf7/xZgWi6WxsbGurk5hmQA0Pz9/eXmZlpaWnp6en5+fk5MDspeXF6/X6/F4hGZlZWVPT88nlKkFCyKTk5P39/dQKCoqwoOKi4s/iBCMJycnTqfz7u6O67KysoGBgeTgFQmspaUloi8zM7O8vLyrq+tbEM/PzwsLC1dXV/Bqa2sDaCpmQ7T8+PiY6LNard3d3T+5DCgHBwfz8vK4c3d3l7BNRVj4FGKUlZXV3t4e+E60rKmpCZpkTLfbnXKwiKnb21sucCtKhKD3I1hoP5FOKkg5WF6fsXhghaSIZvO/f/+4IBsAOuU8i1QokhRq1esrTdH7JDjbFB6sNJ8JtdD5in4lQfUQHix0PTs7m2Xf3NyE+CdUW/xLySqUUwsW1YAUEERW0Puvr68FK7VrynkWRiHKsmmbHQ5H0Ju3t7cJQwSuoqIiFess2j3cBLU+ODhwuVwB7lxdXb24uKAog5T4Y8rBwq06OzslG+I46+vrX6tzdGpxcZHyFaYFBQW0Oyn91IEik9ZPHs4gZDabjeJTnjpQteJQUivgUMPDwxaLJaVhYR6PB7eiVSbQTL5nWB+uJ+UVBDs6OkKvyJIZlhhN9cnJCd5EAyhPSvEjRI08UFxcbEouMxtSWIOJuMPFKKZwJUpQUzKaWb9hEcNsqLDUFJbCUlgKS2EpLLXEhuX1eqempmiV/hCs3zno4na7Nzc37+/vn56erFbrX2m2493u0D9ubGwcHByYfK+I6ChLSkoGBwcV1me7urpaX1+/vb01m825ubn02w8PD/Bqampqbm426lOOjo4Ys7a29g+Hocvl2tnZeXl5kcenvb29FosF2eI3/J5gjP6RzsXFhdPpPD8/55ptMPwJbTw86/HxcWVlhTXIc8Gampr29na5vr6+np6eNvneG42NjUX8TJVEsbe3B6z/XSAjgz0oLy/v7u428HlRzGGxjK2tLTnMhUh1dHSwBv8bcCu73c40EK+hoaGwBuev2AN8Fuivr69y4pDx+ZFgRx+LiooGBgbYiUSHJecod3d3ZVWlpaXs87fzXlpaIj9Cs66uLujhHH9tYnC4yBKys7MrKiqQqpycHMDNz8+Lo/EjIV9YWJi4sHAlQk/OUWJIeENDw083y1FCVIZrMiMuFtib8FZ/THgTmAANL//bmMDh4SEhKW+kon93GRNYTJHQk1dkaHlXV5ecpQlgNzc3MzMzeAQr/0m8mOrx8TGYuFnekkCnsrISb/LH5G8On8nfknDZswSCxWrX1tYIELyJ66qqKrY0xFMOUKAEwwsImZGRkU+YGBMJB5NMmOAqKyvDW4PqETvHsKJo5BbmkxCwKKNWV1flJAhrIHOz7WGNgHgBhSlBQRK/YIKjCDYocbrq6mq8KXTZBjESRlKWNNLf3x/ZGX3DYO347M1nVEyEXihHA7865sTEBOJFvscFQEPdJEdLmCcDQr++vj6CpTLm4uIiQzEyMdvX15efn/8LsNix5eVlKaOYCnve0tIS8ZkZ1jM7O2vyHemSwQUTEc3I0XSR7AS8zs7OxPF7enoCZxLjYREjKIJoeV5eHok/3Bl8NbSJrkiiTDIdWmPUl1uYLUHNXqKkra2tYXVFUX0dZXNzc39/X66RW0LPqPIPF2AbAETcRSPJP20GyZo5s/awKrsIYVHjoOXSEhMapGRjv6bDSqi8PB4PwUgp+6noj94QDaRDAsJms1G1htIVRQLroyVmSRRQoZRRERg7QeXF9FjG6OgotYKx47MTCwsLFM98BF0RKTJoZxoeLLaCslg0Ep8ihdPrxe78o4iXyXfKcnh42PAPYr9F8qUiIUXyQcbAYlDU8aMlJtTjcPiRYKGq5BOjrCcDNE/oiXwELsyiSLtRweIeWmL2Wc5pk+/QkfgcUeOjRby4QFlitD1UcywwaFcUHJa0xFTnIoGNPjPF0WgJpqenCRncmTYoglo3FHO73YS8dEU/dWlBYH20xPJ4Ey035FlHBJ05G8YcyCS02TFSSephJMzr9T4/P9NvfY36H2F9aompdyD1iwf/RVmYLWUkWSV2D3Xn5uZwDvLJ1xPW38Mi6CAl396lzqTSDSB78THKlKmpKans2LbYzQe3Ata3Z9G/gYXaORyOKFviGIkXlRctMZX9+Ph4/A9BfxNWbB1oiTjidmhoKEFISe9JnoJUW1ubUX2VAY00TR9SmpjfISFMfusNth7AjS4M1RSWwlJYCkthKSw1haWwFJbCUlgKS01hKSyFpbAUlsJSU1gG2H8CDADlEZop2klcgAAAAABJRU5ErkJggg==";
 
 // 获取js路径
-var jsPath = window['_js_path'] || (function (script, i, me) {
+var jsPath = window['_js_path'] || (function(script, i, me) {
 
     for (i in script) {
         // 如果通过第三方脚本加载器加载本文件，请保证文件名含有"public"字符
@@ -31,7 +19,7 @@ var jsPath = window['_js_path'] || (function (script, i, me) {
 
 var iWindow = null;
 
-if (typeof (imageDomain) == "undefined") imageDomain = '';
+if (typeof(imageDomain) == "undefined") imageDomain = '';
 
 //公用的弹出以及其他相关处理
 var pub = {
@@ -41,48 +29,43 @@ var pub = {
     zIndex: 214748364,
 
     // 弹出层的宽度
-    dlgWidth: '100%',
+    dlgWidth: 800,
 
     dlgHeight: "auto",
 
     times: 2.5,
 
-    win: (function () { return window; })(),
+    win: (function() {
+        return window;
+    })(),
 
     //获取当前浏览器的最顶级窗口
-    top: (function () {
+    top: (function() {
         var _top = window;
-        return _top;
-
         if (window.top) {
             _top = window.top;
-        }
-        else {
+        } else {
             _top = window.parent;
         }
         return _top;
     })(),
 
-    iwin: function () {
+    iwin: function() {
         //获取最高层的window对象
         var _top = window;
 
         if (window.top) {
             _top = window.top;
-        }
-        else {
+        } else {
             _top = window.parent;
         }
-        console.log(typeof (_top.$e));
-        //判断window是否加载ECF框架
-        if (_top.$e) {
-            var $ifr = _top.$e('#contentIframe');
-            //alert($ifr.length);
+        //判断window是否加载$框架
+        if (_top.$) {
+            var $ifr = _top.$('#contentIframe');
             if ($ifr.length > 0) {
                 if ($ifr[0].contentWindow) {
                     return $ifr[0].contentWindow;
-                }
-                else {
+                } else {
                     return $ifr[0].window;
                 }
             }
@@ -93,33 +76,26 @@ var pub = {
     },
 
     //获取主框架中的主体操作部分
-    ifr: (function () {
+    ifr: (function() {
         //获取最高层的window对象
         var _top = window;
 
         if (window.top) {
             _top = window.top;
-        }
-        else {
+        } else {
             _top = window.parent;
         }
+        //判断window是否加载$框架
+        if (_top.$) {
+            var $ifr = _top.$('#contentIframe');
 
-        try {
-            //判断window是否加载ECF框架
-            if (_top.$e) {
-                var $ifr = _top.$e('#contentIframe');
-
-                if ($ifr.length > 0) {
-                    if ($ifr[0].contentWindow) {
-                        return $ifr[0].contentWindow;
-                    }
-                    else {
-                        return $ifr[0].window;
-                    }
+            if ($ifr.length > 0) {
+                if ($ifr[0].contentWindow) {
+                    return $ifr[0].contentWindow;
+                } else {
+                    return $ifr[0].window;
                 }
             }
-        } catch (e) {
-
         }
 
         //独立页面时返回当前页面的window对象
@@ -128,13 +104,15 @@ var pub = {
     })(),
 
     //获取弹出层时需要的按钮数组
-    button: function (btns) {
+    button: function(btns) {
         btns = btns || [];
         var ret = new Array();
         for (var i = 0; i < btns.length; i++) {
             ret.push({
                 name: btns[i].name || "保存",
-                callback: btns[i].callback || function () { this.close(); },
+                callback: btns[i].callback || function() {
+                    this.close();
+                },
                 arguments: btns[i].arguments || [],
                 focus: btns[i].focus || true
             });
@@ -142,7 +120,9 @@ var pub = {
         if (btns.length > 0) {
             ret.push({
                 name: "取消",
-                callback: function () { this.close(); },
+                callback: function() {
+                    this.close();
+                },
                 arguments: [],
                 focus: false
             });
@@ -161,16 +141,14 @@ var pub = {
    @7:	加载完成后执行方法的参数
    @8:	关闭时需要执行的方法
    */
-    open: function (url, w, h, title, btns, loaded, loadArgs, closed) {
+    open: function(url, w, h, title, btns, loaded, loadArgs, closed) {
 
         var _top = pub.top,
-			opts = {};
-
-        // alert(window.location.pathname + ' == ' + _top.location.pathname);
+            opts = {};
 
         var fname = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')).toLowerCase();
 
-        RootUrlDirectory = (typeof (RootUrlDirectory) == "undefined" ? "/Webadmin" : RootUrlDirectory);
+        RootUrlDirectory = (typeof(RootUrlDirectory) == "undefined" ? "/Webadmin" : RootUrlDirectory);
 
         //用于判断是否应该加上../的处理,判断是否使用的框架
         if (window.location.pathname == _top.location.pathname && fname != '/main.aspx' && RootUrlDirectory.length == 0) {
@@ -178,10 +156,9 @@ var pub = {
         }
 
         //判断传入的第一个对象是否为object类型
-        if (typeof (url) == "object") {
+        if (typeof(url) == "object") {
             opts = url;
-        }
-        else {
+        } else {
             opts = {
                 url: url,
                 width: w,
@@ -193,56 +170,43 @@ var pub = {
                 button: pub.button(btns),
                 loaded: loaded || null,
                 loadArguments: loadArgs || [],
-                close: closed || function () { },
+                close: closed || function() {},
                 win: window
             };
         }
 
         //打开一个页面
-        _top.dialog = _top.ECF.dialog.open(opts);
+        _top.dialog = _top.$.dialog.open(opts);
 
         return _top.dialog;
     },
 
     /*
-    alert提示信息
     @param1 提示信息内容
     */
-    alert: function (content, error, times, func) {
-        error = error || false;
-        times = times || pub.times;
-        pub.top.tip.show(content, error);
+    alert: function(content) {
+        var _top = pub.top;
+        _top.$.dialog.alert("<div style=\"padding: 20px 50px;\">" + content + "</div>");
 
-        var tipTimer = setInterval(function () {
-            times--;
-            //清除循环计时器
-            if (times < 1) {
-                pub.top.tip.hide();
-                if (typeof (func) != 'undefined') {
-                    func.apply();
-                }
-                try {	//IE8及以下不支持对象的clear方法
-                    if (tipTimer) tipTimer.clearInterval();
-                } catch (e) { clearInterval(tipTimer); }
-            }
-        }, 1000);
     },
 
     /*
     错误提示信息
     @param1 提示信息内容
     */
-    error: function (content, times) {
+    error: function(content, times, func) {
 
         times = times || pub.times;
         pub.top.tip.show(content, true);
-        var tipTimer = setInterval(function () {
+
+        var tipTimer = setInterval(function() {
             times--;
             //清除循环计时器
             if (times < 1) {
+                if (func) func();
                 pub.top.tip.hide();
-                try {	//IE8及以下不支持对象的clear方法
-                    if (tipTimer) { tipTimer.clearInterval(); }
+                try { //IE8及以下不支持对象的clear方法
+                    if (tipTimer) tipTimer.clearInterval();
                 } catch (e) {
                     clearInterval(tipTimer);
                 }
@@ -255,37 +219,38 @@ var pub = {
     @param1	提示内容
     @param2 提示信息显示时间
     */
-    tips: function (content, times, func) {
+    tips: function(content, times, func) {
 
         times = times || pub.times;
-        pub.top.tip.show(content, true);
+        pub.top.tip.show(content);
 
-        var tipTimer = setInterval(function () {
+        var tipTimer = setInterval(function() {
             times--;
             //清除循环计时器
             if (times < 1) {
                 if (func) func();
                 pub.top.tip.hide();
-                try {	//IE8及以下不支持对象的clear方法
+                try { //IE8及以下不支持对象的clear方法
                     if (tipTimer) tipTimer.clearInterval();
                     tipTimer = null;
-                } catch (e) { clearInterval(tipTimer); }
+                } catch (e) {
+                    clearInterval(tipTimer);
+                }
             }
         }, 1000);
 
     },
-  
+
     /*
-    */
-    dialog: function (title, content, width, height, buttons, func, args) {
+     */
+    dialog: function(title, content, width, height, buttons, func, args) {
 
         var opts = null,
             _top = pub.top;
 
-        if (arguments.length == 1 && $e.isObject(arguments[0])) {
+        if (arguments.length == 1 && $.isObject(arguments[0])) {
             opts = arguments[0];
-        }
-        else {
+        } else {
             opts = {
                 title: title || "标题",
                 width: width || pub.dlgWidth,
@@ -294,39 +259,28 @@ var pub = {
                 zindex: pub.zIndex,
                 button: pub.button(buttons),
                 completed: func,
-                completes: args || [],
-                animate: false,
-                finish: {
-                    method: function () {
-                        var api = this,
-                         acfg = api.config,
-                         wrap = api.dom.wrap,
-                         h = wrap[0].offsetHeight;
-                        wrap.css('height', '0px')
-                            .animate({ height: h + 'px' }, 300, function () {
-                            });
-                    }
-                }
+                completes: args || []
             };
         }
 
 
-        if (_top.ECF.dialog) {
+        if (_top.$.dialog) {
             //创建弹出层
-            pub._dialog = _top.ECF.dialog(opts);
-            //console.log("ds");
+            pub._dialog = _top.$.dialog(opts);
             pub._dialog.dom.content.forms();
 
-        }
-        else {
+        } else {
             alert("需要使用弹出层的页面没有加载相应的js");
         }
 
-        if (typeof (opts.completed) == "function") {
+        if (typeof(opts.completed) == "function") {
             opts.completed.apply(pub._dialog, opts.completes);
         }
 
-
+        //初始化UI
+        if (typeof($().customCheck) == 'function') {
+            $(pub._dialog.dom.content[0]).customCheck();
+        }
 
         return pub._dialog;
     },
@@ -340,14 +294,13 @@ var pub = {
     @5  需要处理的formid
     @6  只是在当前页面显示弹出层
     */
-    html: function (title, content, width, height, buttons, func, curr) {
+    html: function(title, content, width, height, buttons, func, curr) {
 
         var opt = {};
 
-        if (arguments.length == 1 && $e.isObject(arguments[0])) {
+        if (arguments.length == 1 && $.isObject(arguments[0])) {
             opt = arguments[0];
-        }
-        else {
+        } else {
             opt = {
                 title: title || "标题",
                 content: content,
@@ -356,38 +309,32 @@ var pub = {
                 buttons: buttons,
                 callback: func,
                 current: false
-
             };
         }
 
         // 处理大量字符串传递
-        if (typeof (opt.content) == "string") {
-            var box = document.createElement("span");
+        if (typeof(opt.content) == "string") {
+            var box = document.createElement("div");
             box.innerHTML = opt.content;
             opt.content = box;
         }
 
         if (arguments.length < 7) {
-            //console.log(content);
-            pub._dialog = pub.dialog(opt.title, opt.content, opt.width, opt.height, opt.buttons, opt.callback);
-
-            //console.log(1);
-        }
-        else {
-            if (arguments.length == 1 && $e.isObject(content)) {
+            pub._dialog = pub.dialog(opt.title, opt.content, opt.width, opt.height, opt.buttons, opt.callback, opt.completes);
+        } else {
+            if (arguments.length == 1 && $.isObject(content)) {
                 pub._dialog = pub.htmlValue(content);
-            }
-            else {
+            } else {
                 pub._dialog = pub.htmlValue(content, width, height, title, null, buttons, isForm, curr);
             }
-        }
-        //console.log("2” +" + typeof (func));
-        pub._dialog.dom.content.forms();
 
-        // 加载显示完成后回调
-        if (typeof (func) == "function") {
-            func.apply(pub._dialog, []);
+            // 加载显示完成后回调
+            if (typeof(func) == "function") {
+                func.apply(pub._dialog, []);
+            }
         }
+
+        pub._dialog.dom.content.forms();
 
         return pub._dialog;
     },
@@ -395,16 +342,15 @@ var pub = {
 
 
     //执行表单初始化操作
-    forms: function (html, data) {
+    forms: function(html, data) {
 
         var _forms, editor = true;
 
         //需要先把对象添加到页面后才能使用编辑器,否则会报错
-        if (typeof (html) == "string") {
-            _forms = $e("#" + html).forms(data);
-        }
-        else {
-            _forms = $e(html).forms(data);
+        if (typeof(html) == "string") {
+            _forms = $("#" + html).forms(data);
+        } else {
+            _forms = $(html).forms(data);
         }
 
         return _forms;
@@ -419,24 +365,22 @@ var pub = {
     @5  要赋的值
     6 { callback:func,arguments: args }
     */
-    htmlValue: function (html, w, h, t, val, btns, isForm, curr) {
-        //alert(html);
+    htmlValue: function(html, w, h, t, val, btns, isForm, curr) {
         var dfs, _fs, div,
             isf = isForm || true, //用于判断是否加载Forms
             isEditor = true,
             data = val || null,
             opts = {},
-             _top = pub.top;
+            _top = pub.top;
 
         try {
-            //alert(arguments.length );
             //只传入一个object对象的处理
-            if (arguments.length == 1 && ECF.isObject(html)) {
+            if (arguments.length == 1 && $.isObject(html)) {
                 opts = html;
                 //此方法中的button的执行方法中的this对象是返回的弹出层对象
                 //this.dom.content[0]可以取到弹出层里的内容
                 //例如 使用这样的方法可以跨iframe取到显示在主界面里对象的值
-                // var fs = new ECF.forms({ "selector": this.dom.content[0] });
+                // var fs = new $.forms({ "selector": this.dom.content[0] });
                 // alert(fs.getValues());
                 // return;  在已经写的方法中不再去做这些元素的修改和处理,可以在上面的buttons中添加callback方法为pub.top.方法
                 //这样就可以达到让此方法在主窗体上进行执行
@@ -449,14 +393,11 @@ var pub = {
                 //to do 还待验证
                 isf = opts.isForm || true;
                 isEditor = opts.isEditor;
-                //alert(
-
                 //把传入的值赋给val
                 data = html.value;
                 //从对象中删除value
                 html.value = null;
-            }
-            else {
+            } else {
 
                 //生成弹出层的对执行对象
                 opts = {
@@ -473,19 +414,17 @@ var pub = {
                 div = html;
             }
 
-            //alert(opts.width);
             //判断弹出层对象是否存在
-            if (_top.ECF.dialog) {
+            if (_top.$.dialog) {
 
                 //创建弹出层
-                dialog = pub._dialog = _top.ECF.dialog(opts);
+                dialog = pub._dialog = _top.$.dialog(opts);
 
                 if (isf) {
                     //执行创建表单
                     forms = pub._forms = pub.forms(div, data);
                 }
-            }
-            else {
+            } else {
                 alert("需要使用弹出层的页面没有加载相应的js");
             }
 
@@ -499,7 +438,7 @@ var pub = {
     /*
         关闭弹出层
     */
-    close: function () {
+    close: function() {
         if (pub.top.dialog) {
             pub.top.dialog.close();
             return;
@@ -514,10 +453,10 @@ var pub = {
     /*
         公共在批量删除数据后重新绑定列表的方法
     */
-    rebind: function () {
+    rebind: function() {
 
         try {
-            var ifrs = $e("iframe");
+            var ifrs = $("iframe");
 
             if (ifrs.length > 0) {
                 //获取框架里的Grid
@@ -525,36 +464,30 @@ var pub = {
 
                 if (iwin && iwin.EGrid1) {
                     iwin.EGrid1.reBind();
-                }
-                else if (EGrid1) {
+                } else if (EGrid1) {
                     EGrid1.reBind();
-                }
-                else {
+                } else {
                     ifrs[0].src = ifrs[0].src;
                     ifrs[0].location.reload();
                 }
-            }
-            else {
+            } else {
                 if (EGrid1) {
                     EGrid1.reBind();
-                }
-                else {
+                } else {
                     window.location.reload();
                 }
             }
-        }
-        catch (e) { }
+        } catch (e) {}
     },
 
     //公用的刷新页面方法,后期会扩展为刷新Grid的方法
-    refresh: function () {
+    refresh: function() {
         try {
 
-            if (typeof (window.loadData) == "function") {
+            if (typeof(window.loadData) == "function") {
                 window.loadData.apply();
-            }
-            else {
-                var ifrs = $e("iframe");
+            } else {
+                var ifrs = $("iframe");
 
                 if (ifrs.length > 0) {
                     //获取框架里的Grid
@@ -562,24 +495,20 @@ var pub = {
 
                     if (iwin && iwin.EGrid1) {
                         iwin.EGrid1.refresh();
-                    }
-                    else {
+                    } else {
                         ifrs[0].src = ifrs[0].src;
                         ifrs[0].location.reload();
                     }
-                }
-                else {
+                } else {
                     if (EGrid1) {
                         EGrid1.refresh();
-                    }
-                    else {
+                    } else {
                         window.location.reload();
                     }
                 }
             }
 
-        }
-        catch (e) { }
+        } catch (e) {}
     },
 
     /*
@@ -587,7 +516,7 @@ var pub = {
         @1: 数据
         @2: 保留位数
     */
-    formatNum: function (total, n) {
+    formatNum: function(total, n) {
         total = String(total.toFixed(n));
         var re = /(\d+)(\d{100})/;
         return total.replace(re, "$2");
@@ -599,27 +528,31 @@ var pub = {
         @2: 确定执行的方法
         @3: 取消执行的方法
     */
-    confirm: function (text, yes, no, title) {
-        if (typeof (yes) == "function" && typeof (no) == "function") {
+    confirm: function(text, yes, no, title, func, width) {
+        if (typeof(yes) == "function" && typeof(no) == "function") {
             var _top = pub.top;
-            if (typeof (title) != "string") {
+            if (typeof(title) != "string") {
                 title = "提示信息";
             }
-            _top.ECF.dialog.confirm(title, "<div class=\"dilog-titles\">" + text + "</div>", yes, no);
+            pub._dialog = _top.$.dialog.confirm(title, "<div>" + text + "</div>", yes, no, width);
+
+            // 加载显示完成后回调
+            if (typeof(func) == "function") {
+                func.apply(pub._dialog, []);
+            }
+
             return false;
-        }
-        else {
+        } else {
             if (confirm(text)) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         }
     },
 
     // 默认图片
-    defImgSrc: "/Static/Upload/DefaultPreviw.png",
+    defImgSrc: error,
 
 
     /* 
@@ -627,7 +560,7 @@ var pub = {
         @1 需要替换的目标地址
         @2 要替换的大小,如80X80
     */
-    scaleReplace: function (s, a) {
+    scaleReplace: function(s, a) {
         if (s == undefined || s.length == 0)
             return "";
         var ps = s.split('.');
@@ -642,15 +575,15 @@ var pub = {
         @1: 当前对象
         @2: 需要执行的方法
     */
-    tabChange: function (o, func) {
-        var $o = $e(o);
+    tabChange: function(o, func) {
+        var $o = $(o);
 
         // 还原所有的显示
-        $o.parent().find("li").each(function () {
-            var l = $e(this),
+        $o.parent().find("li").each(function() {
+            var l = $(this),
                 pid = l.attr("pannelId");
             if (pid != null && pid != "") {
-                $e("#" + pid).hide();
+                $("#" + pid).hide();
             }
             l.removeClass("select");
         });
@@ -660,31 +593,29 @@ var pub = {
         //设置对应的区域块显示
         var pd = $o.attr("pannelId");
         if (pd != null && pd != "") {
-            $e("#" + pd).show();
+            $("#" + pd).show();
         }
 
-        //console.log(func);
-
         // 如果有回调方法执行
-        if (typeof (func) == "function") {
+        if (typeof(func) == "function") {
             func.apply(o, []);
         }
 
         // 判断动态刷新框架高度
         if (window.top) {
             if (window.top.main) {
-                if (typeof (window.top.main.autoSize) == "function")
+                if (typeof(window.top.main.autoSize) == "function")
                     window.top.main.autoSize();
             }
         }
     },
 
     // 判断动态刷新框架高度
-    autoSize: function () {
+    autoSize: function() {
         // 判断动态刷新框架高度
         if (window.top) {
             if (window.top.main) {
-                if (typeof (window.top.main.autoSize) == "function")
+                if (typeof(window.top.main.autoSize) == "function")
                     window.top.main.autoSize();
             }
         };
@@ -694,14 +625,17 @@ var pub = {
     _listTr: null,
 
     // 用于在tr列表中插入显示行的详情
-    listHtml: function (o, html, colspan, parentId, cssName) {
+    listHtml: function(o, html, colspan, parentId, cssName) {
 
         if (pub._listTr) {
             pub._listTr.remove();
         }
 
         var cssName = 'expchild exp-on';
-        var tr = document.createElement("tr"), td = document.createElement("td"), $tr = $e(tr), $td = $e(td);
+        var tr = document.createElement("tr"),
+            td = document.createElement("td"),
+            $tr = $(tr),
+            $td = $(td);
         tr.className = cssName;
         $tr.attr("extendlist", parentId);
         $td.attr("colspan", colspan);
@@ -713,19 +647,22 @@ var pub = {
         pub._listTr = $tr;
 
         if (o.tagName == "TR")
-            $e(o).after($tr[0]);
+            $(o).after($tr[0]);
         else {
-            var $o = $e(o);
+            var $o = $(o);
             $o = $o.parent("tr");
             $o.after($tr[0]);
         }
 
-        if (tableLimitList) tableLimitList();
+        //列表切换
+        if (typeof(cutTable) == 'function') {
+            cutTable();
+        }
 
         //计算高度
         if (window.parent) {
             if (window.parent.main) {
-                if (typeof (window.parent.main.autoSize) === 'function')
+                if (typeof(window.parent.main.autoSize) === 'function')
                     window.parent.main.autoSize();
             }
         }
@@ -736,13 +673,12 @@ var pub = {
 var frm = {
 
     // 状态开关切换
-    onoff: function (btn, valId) {
+    onoff: function(btn, valId) {
         var obj = null;
         if (btn.nodeName == "SPAN") {
-            obj = $e(btn).parent();
-        }
-        else {
-            obj = $e(btn);
+            obj = $(btn).parent();
+        } else {
+            obj = $(btn);
         }
 
         var val = 1;
@@ -751,15 +687,16 @@ var frm = {
             obj.removeClass('target-on');
             obj.addClass('target-off');
             val = 0;
-        }
-        else if (obj.hasClass('target-off')) {
+        } else if (obj.hasClass('target-off')) {
             obj.removeClass('target-off');
             obj.addClass('target-on');
             val = 1;
         }
 
         if (valId) {
-            $e("#" + valId).value(val);
+            $("#" + valId).value(val);
+        } else if ($("input[type=hidden]", btn).length > 0) {
+            $("input[type=hidden]", btn).value(val);
         }
 
     },
@@ -770,7 +707,7 @@ var frm = {
         @2: 需要切换数据的Id
         @3: 需要切换的状态
     */
-    switchStatus: function (btn, id, status, func) {
+    switchStatus: function(btn, id, status, func, url) {
         var info = "开启";
         //pub.top.tip.show();
         // 处理状态切换
@@ -786,47 +723,44 @@ var frm = {
             frm.onoff(btn);
         }
 
-        var ld = window.loadData;
+        var ld = window.load;
 
         // 更新状态数据
-        $e.ajax({
-            dataType: "xml",
-            data: "<action>updstatus</action><Id>" + id + "</Id><Status>" + status + "</Status>",
-            loading: function () {
+        $.ajax({
+            url: path+url,
+            dataType: "json",
+            data: {id:id,status:status},
+            loading: function() {
                 if (btn && btn.disabled) {
                     btn.disabled = true;
                 }
             },
-            success: function () {
-
+            success: function(result) {
+            	
                 if (btn && btn.disabled) {
                     btn.disabled = false;
                 }
-                if (arguments[1].text == 1) {
+                if (result.state == 0) {
 
-                    pub.top.pub.alert("操作成功.");
+                    alert("操作成功.");
 
-                    if (typeof (ld) == "function") {
+                    if (typeof(ld) == "function") {
                         ld.apply();
-                    }
-                    //console.log(typeof (pub.refresh));
-                    if (typeof (pub.refresh) == "function") {
-                        pub.refresh.apply();
                     }
 
                 } else {
-                    pub.top.pub.error("操作失败.");
+                   alert("操作失败.");
                 }
 
 
-                if (typeof (func) == "function") {
+                if (typeof(func) == "function") {
                     func.apply(btn, []);
                 }
 
 
             },
-            error: function () {
-                pub.top.pub.error("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
+            error: function() {
+                alert("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
                 if (btn && btn.disabled) {
                     btn.disabled = false;
                 }
@@ -846,41 +780,44 @@ var frm = {
         @7: 宽度
         @8: 度度
     */
-    add: function (title, formId, action, url, func, args, width, height, cback) {
-
+    add: function(title, formId, action, url, func, args, width, height, cback) {
         var opt = null;
 
-        if (arguments.length == 1 && $e.isObject(arguments[0])) {
-            // console.log(arguments[0]);
+        if (arguments.length == 1 && $.isPlainObject(arguments[0])) {
             opt = arguments[0];
-        }
-        else {
+        } else {
+
+            var $win = $(top.window),
+                w = $win.width() - 300,
+                h = $win.height() - 200;
+
             opt = {
                 title: title,
                 formId: formId,
                 action: action || "insert",
                 arguments: args,
-                width: width || pub.dlgWidth,
+                width: width || w,
                 url: url || window.location.pathname,
-                height: height || "auto",
+                height: height || h,
                 // 添加成功后的回调方法
                 callback: func,
                 finish: cback
-
             };
         }
+        opt.finishArgs=opt.finishArgs||[];
+        // 此处理可以在传入object对象时不需要指定action对象
+        opt.action = opt.action || "insert";
 
         if (opt.formId == null || opt.formId == "") {
-            pub.top.pub.error("表单参数错误");
+            alert("表单参数错误");
             return;
         }
 
-
         opt.url = opt.url || window.location.pathname;
-        opt.html = $e("#" + opt.formId).html();
+        opt.html = $("#" + opt.formId).html();
 
         if (opt.html == null || opt.html == "") {
-            pub.top.pub.error("模板参数据错误");
+            alert("模板参数据错误");
             return;
         }
 
@@ -889,57 +826,28 @@ var frm = {
         div.className = "forms";
         div.innerHTML = opt.html;
 
-        // 处理页面加载时的数据处理,即刷新操作
-        if (typeof (loadData) == "function") {
-            opt.load = loadData;
-        }
-
-
         // 添加按钮
-        opt.buttons = [{
-            "name": "添加", "focus": true, "callback": opt.callback || function () {
-                var content = this.dom.content;
-                var bopt = {
-                    url: opt.url,
-                    action: opt.action,
-                    dataType: "xml",
-                    data: opt.data || '',
-                    callback: opt.finish || function () {
-
-                        if (arguments[0][1].text > 0) {
-
-                            if (typeof (opt.load) == "function") {
-                                opt.load.apply();
-                            }
-
-                            if (typeof (pub.refresh) == "function") {
-                                pub.refresh.apply();
-                            }
-
-                            pub.top.pub.alert("添加数据成功;");
-
-                            var dlg = arguments[arguments.length - 1];
-                            if (dlg) {
-                                dlg.close();
-                            }
-                        }
-                        else if (arguments[0][1].text == -1) {
-                            pub.top.pub.error("不允许出现项目名称数据");
-                        }
-                        else {
-                            pub.top.pub.error("添加数据失败");
-                        }
-
-                    },
-                    arguments: [this],
-                    button: arguments[arguments.length - 1]
-                };
-                // 提交修改的数据
-                content.ajaxPost(bopt);
-            }
-        }];
-        pub.dialog(opt.title, div, opt.width, opt.height, opt.buttons, opt.completed, []);
-
+        opt.buttons = {
+				"确定":function(){
+					if(typeof(opt.callback)=="function"){
+						opt.callback(this);
+					}
+				},
+				"取消":function(){
+					$(this).dialog('close');
+				}
+		};
+        opt.Cancle =function(){
+			$(this).dialog('close');
+		};
+        if($("#dialogForm").length==0){
+        	$("body").append("	<div id='dialogForm' style='display: none'></div>");
+        }
+        $("#dialogForm").html($('#'+opt.formId).html());
+        $("#dialogForm").dialog(opt).dialog('open');
+        if(typeof(opt.finish)=='function'){
+        	opt.finish.apply(this,opt.finishArgs);
+        }
     },
 
     /*
@@ -955,20 +863,129 @@ var frm = {
         @9: 度度
         @10： 按钮显示文字
         @11： 添加数据完成后回调
+        @12： 保存按钮提交前的回调
     */
-    update: function (title, formid, id, action, url, func, args, width, height, buttonValue, cback) {
-
+    update: function(title, formid, id, action, url, func, args, width, height, buttonValue, cback, beforefunc) {
         var opt = null;
 
-        if (arguments.length == 1 && $e.isObject(arguments[0])) {
+        if (arguments.length == 1 && $.isPlainObject(arguments[0])) {
             opt = arguments[0];
-        }
-        else {
+        } else {
+
+            var $win = $(top.window),
+                w = $win.width() - 300,
+                h = $win.height() - 200;
+
             opt = {
                 title: title,
                 formId: formid,
                 id: id,
                 action: action || "update",
+                callback: func,
+                arguments: args,
+                width: width || w,
+                height: height || h,
+                buttonValue: buttonValue,
+                before: beforefunc, //保存按钮提交前的回调
+                finish: cback
+            };
+        }
+
+        if (opt.id < 1) {
+            alert("参数错误");
+            return;
+        }
+
+        opt.url = opt.url || (url || window.location.pathname);
+        opt.html = $("#" + opt.formId).html();
+
+        // 此处理可以在传入object对象时不需要指定action对象
+        opt.action = opt.action || "update";
+
+        if (opt.html == null || opt.html == "") {
+            alert("模板参数据错误");
+            return;
+        }
+
+        $.ajax({
+            url: path+opt.url,
+            dataType: "json",
+            data: {id:opt.id},
+            success: function(result) {
+            	
+            	  if($("#dialogForm").length==0){
+                  	$("body").append("	<div id='dialogForm' style='display: none'></div>");
+                  }
+            	$("#dialogForm").html(opt.html);
+            	
+            	if(result.state==0){
+            		var doc = (result.data);
+            	
+            		$.each(doc,function(key,item){
+            			$("#dialogForm").find("#"+key.firstUpperCase()).val(item);
+            			
+            		});
+            		 if(typeof(opt.finish)=='function'){
+                       	opt.finish(doc);
+                       }
+            	}
+               
+            	
+              
+
+                if (typeof(opt.buttons) == "undefined") {
+                    // 添加按钮
+                    opt.buttons = {
+            				"确定":function(){
+            					if(typeof(opt.callback)=="function"){
+            						opt.callback(this);
+            					}
+            				},
+            				"取消":function(){
+            					$(this).dialog('close');
+            				}
+            		};
+                    opt.Cancle =function(){
+            			$(this).dialog('close');
+            		};
+            		 $("#dialogForm").dialog(opt).dialog('open');
+                    
+                   
+                }
+
+               
+            },
+            error: function() {
+                alert("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
+            }
+        });
+    },
+
+    /*
+        查看详细信息
+        @1: 弹出层标题
+        @2: 表单id
+        @3: 更新数据的id
+        @4: 自定义更新提交时的动作
+        @5: 请求的页面路径
+        @6: 请求执行完后的回调方法
+        @7: 请求执行后加调方法参数
+        @8: 宽度
+        @9: 度度
+        @10： 按钮显示文字
+        @11： 添加数据完成后回调
+    */
+    view: function(title, formid, id, action, url, func, args, width, height, buttonValue, cback) {
+        var opt = null;
+
+        if (arguments.length == 1 && $.isObject(arguments[0])) {
+            opt = arguments[0];
+        } else {
+            opt = {
+                title: title,
+                formId: formid,
+                id: id,
+                action: action || "detail",
                 callback: func,
                 arguments: args,
                 width: width || pub.dlgWidth,
@@ -978,103 +995,57 @@ var frm = {
         }
 
         if (opt.id < 1) {
-            pub.top.pub.error("参数错误");
+            alert("参数错误");
             return;
         }
 
         opt.url = opt.url || (url || window.location.pathname);
-        opt.html = $e("#" + opt.formId).html();
+        opt.html = $("#" + opt.formId).html();
 
         // 此处理可以在传入object对象时不需要指定action对象
-        opt.action = opt.action || "update";
+        opt.action = opt.action || "detail";
 
 
         if (opt.html == null || opt.html == "") {
-            pub.top.pub.error("模板参数据错误");
+            alert("模板参数据错误");
             return;
         }
 
-        if (typeof (loadData) == "function") {
+        if (typeof(loadData) == "function") {
             opt.load = loadData;
         }
 
 
 
-        $e.ajax({
+        $.ajax({
             url: opt.url,
             dataType: "xml",
-            data: "<action>detail</action><Id>" + opt.id + "</Id>",
-            loading: function () {
+            data: "<action>" + opt.action+"</action><Id>" + opt.id + "</Id>",
+            loading: function() {
                 //tip.show("数据加载中...");
             },
-            success: function () {
+            success: function() {
 
                 var doc = (arguments[1].xml ? arguments[1].xml : arguments[1].text);
-
                 var div = document.createElement("div");
                 div.className = "forms";
                 div.innerHTML = opt.html;
 
-                if (ECF.isArray(opt.completes)) {
+                if ($.isArray(opt.completes)) {
                     opt.completes.push(doc);
-                }
-                else {
+                } else {
                     opt.completes = [doc];
                 }
 
-                $e(div).setValues(doc);
+                $(div).setValues(doc);
 
-                // typeof(null) = object
-                if (typeof (opt.buttons) == "undefined") {
-
-                    // 处理数据保存按钮
-                    opt.buttons = [{
-                        "name": buttonValue || "保存", "focus": true, "callback": opt.callback || function () {
-                            var content = this.dom.content;
-                            var bopt = {
-                                url: opt.url,
-                                action: opt.action,
-                                dataType: "xml",
-                                callback: opt.finish || function () {
-
-                                    if (arguments[0][1].text > 0) {
-
-                                        if (typeof (opt.load) == "function") {
-                                            opt.load.apply();
-                                        }
-
-                                        //if (typeof (pub.refresh) == "function") {
-                                        //    pub.refresh.apply();
-                                        //}
-
-                                        pub.top.pub.alert("修改数据成功");
-                                        var dlg = arguments[arguments.length - 1];
-                                        if (dlg) {
-                                            dlg.close();
-                                        }
-                                    }
-                                    else if (arguments[0][1].text == -1) {
-                                        pub.top.pub.error("不允许出现项目名称数据");
-                                    }
-                                    else {
-                                        pub.top.pub.error("修改数据失败");
-                                    }
-                                },
-                                arguments: [this],
-                                button: arguments[arguments.length - 1]
-                            };
-                            // 提交修改的数据
-                            content.ajaxPost(bopt);
-                        }
-                    }];
-                }
 
                 pub.dialog(opt.title, div, opt.width, opt.height, opt.buttons, opt.completed, opt.completes);
 
 
             },
-            error: function () {
-                pub.top.pub.error("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
+            error: function() {
+                alert("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
             }
         });
     },
@@ -1084,116 +1055,93 @@ var frm = {
       @1： 需要删除数据的Id
       @2： 删除后需要回调的方法
     */
-    del: function (id, func) {
-        pub.confirm("您确定要删除数据吗?", function () {
-
-            var opt = {};
-
-            if (typeof (loadData) == "function") {
-                opt.load = loadData;
-            }
-
-
+    del: function(id, func,url,args) {
+        if(confirm("您确定要将数据移到回收站吗?"))
+        {
             // 更新状态数据
-            $e.ajax({
-                dataType: "xml",
-                data: "<action>delete</action><Id>" + id + "</Id>",
-                loading: function () {
-
-                },
-                success: function () {
-                    if (arguments[1].text > 0) {
-
-                        pub.top.pub.alert("删除数据成功");
-
-                        if (typeof (opt.load) == "function") {
-                            opt.load.apply();
-                        }
-
-                        if (typeof (pub.refresh) == "function") {
-                            pub.refresh.apply();
-                        }
-
-                        if (typeof (func) == "function") {
-                            func.apply(this, []);
-                        }
-                    }
-                    else {
-                        pub.top.pub.error("删除数据失败");
-                    }
-
-                },
-                error: function () {
-                    pub.top.pub.error("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
-                }
-            });
-        }, function () { });
+            $.ajax({
+				url:path+url,
+				type:"post",
+				data:{id:id},
+				dataType:"json",
+				success:function(result){
+					if(result.state==0){
+						alert("删除成功");
+						if(typeof(func)=='function'){
+							func.apply(this,args);
+						}
+					}			
+				},
+				error:function(){
+					alert("删除失败");
+				}
+			});
+        };
     },
 
     /*后台高级查询、回收站、批量查找、物理删除、还原*/
 
     //批量删除
-    batchDel: function (func) {
+    batchDel: function(func) {
 
         var ids = frm.getCheckedIds();
 
         if (ids.length == 0) return;
 
 
-        pub.confirm("您确定要删除数据吗?", function () {
+        pub.confirm("您确定要将数据移到回收站吗?", function() {
 
             var opt = {};
 
-            if (typeof (loadData) == "function") {
+            if (typeof(loadData) == "function") {
                 opt.load = loadData;
             }
 
 
             // 更新状态数据
-            $e.ajax({
+            $.ajax({
                 dataType: "xml",
                 data: "<action>batchdel</action><strId>" + ids + "</strId>",
-                loading: function () {
+                loading: function() {
 
                 },
-                success: function () {
+                success: function() {
                     if (arguments[1].text > 0) {
 
-                        pub.top.pub.alert("删除数据成功");
+                        alert("删除数据成功");
 
-                        if (typeof (opt.load) == "function") {
+                        if (typeof(opt.load) == "function") {
                             opt.load.apply();
                         }
 
-                        if (typeof (pub.refresh) == "function") {
+                        if (typeof(pub.refresh) == "function") {
                             pub.refresh.apply();
                         }
 
-                        if (typeof (func) == "function") {
+                        if (typeof(func) == "function") {
                             func.apply(this, []);
                         }
-                    }
-                    else {
-                        pub.top.pub.error("删除数据失败");
+                    } else {
+                        alert("删除数据失败");
                     }
 
                 },
-                error: function () {
-                    pub.top.pub.error("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
+                error: function() {
+                    alert("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
                 }
             });
-        }, function () { });
+        }, function() {});
     },
 
     //获取已选择的Id
-    getCheckedIds: function () {
+    getCheckedIds: function() {
 
         var strId = "";
 
-        var checks = ECF("input[name='Id']");
+        var checks = $("input[name='Id']");
 
-        ECF.each(checks, function () {
-            var div = ECF(this).parent();
+        $.each(checks, function() {
+            var div = $(this).parent();
 
             if (div.hasClass("checked")) {
                 strId += this.value + ",";
@@ -1205,7 +1153,7 @@ var frm = {
         }
 
         if (strId.length == 0) {
-            pub.top.pub.error("请选择需要操作的数据");
+            alert("请选择需要操作的数据");
             return "";
         }
 
@@ -1218,41 +1166,42 @@ var frm = {
       @2： 删除后需要回调的方法
       @3:  特定数据
     */
-    physicalDel: function (id, func, data) {
-        pub.confirm("您确定要删除数据吗?", function () {
+    physicalDel: function(id, func, data) {
+        pub.confirm("您确定要彻底删除数据吗?", function() {
 
             var opt = {};
 
-            if (typeof (loadData) == "function") {
+            if (typeof(loadData) == "function") {
                 opt.load = loadData;
             }
 
-            var xml = "<action>physicdel</action><Id>" + id + "</Id>" + (typeof (data) == "string" ? data : "");
+            var xml = "<action>physicdel</action><Id>" + id + "</Id>" + (typeof(data) == "string" ? data : "");
 
             // 更新状态数据
-            $e.ajax({
+            $.ajax({
                 dataType: "xml",
                 data: xml,
-                loading: function () {
+                loading: function() {
 
                 },
-                success: function () {
+                success: function() {
                     if (arguments[1].text > 0) {
 
-                        pub.top.pub.alert("删除数据成功");
+                        alert("删除数据成功");
 
                         frm.refresh(func, opt);
-                    }
-                    else {
-                        pub.top.pub.error("删除数据失败");
+                    } else if (arguments[1].text == -1) {
+                        alert("删除数据失败,有关联数据存在！");
+                    } else {
+                        alert("删除数据失败");
                     }
 
                 },
-                error: function () {
-                    pub.top.pub.error("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
+                error: function() {
+                    alert("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
                 }
             });
-        }, function () { });
+        }, function() {});
     },
 
     /*
@@ -1260,45 +1209,44 @@ var frm = {
       @1： 需要删除数据的Id
       @2： 删除后需要回调的方法
     */
-    batchPhysicalDel: function (func) {
+    batchPhysicalDel: function(func) {
 
         var ids = frm.getCheckedIds();
 
         if (ids.length == 0) return;
 
-        pub.confirm("您确定要删除数据吗?", function () {
+        pub.confirm("您确定要彻底删除数据吗?", function() {
 
             var opt = {};
 
-            if (typeof (loadData) == "function") {
+            if (typeof(loadData) == "function") {
                 opt.load = loadData;
             }
 
 
             // 更新状态数据
-            $e.ajax({
+            $.ajax({
                 dataType: "xml",
                 data: "<action>batchphysicdel</action><strId>" + ids + "</strId>",
-                loading: function () {
+                loading: function() {
 
                 },
-                success: function () {
+                success: function() {
                     if (arguments[1].text > 0) {
 
-                        pub.top.pub.alert("删除数据成功");
+                        alert("删除数据成功");
 
                         frm.refresh(func, opt);
-                    }
-                    else {
-                        pub.top.pub.error("删除数据失败");
+                    } else {
+                        alert("删除数据失败");
                     }
 
                 },
-                error: function () {
-                    pub.top.pub.error("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
+                error: function() {
+                    alert("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
                 }
             });
-        }, function () { });
+        }, function() {});
     },
 
     /*
@@ -1306,36 +1254,35 @@ var frm = {
      @1： 需要恢复删除数据的Id
      @2： 恢复后需要回调的方法
    */
-    revert: function (id, func) {
+    revert: function(id, func) {
 
         var opt = {};
 
-        if (typeof (loadData) == "function") {
+        if (typeof(loadData) == "function") {
             opt.load = loadData;
         }
 
 
         // 更新状态数据
-        $e.ajax({
+        $.ajax({
             dataType: "xml",
             data: "<action>revert</action><Id>" + id + "</Id>",
-            loading: function () {
+            loading: function() {
 
             },
-            success: function () {
+            success: function() {
                 if (arguments[1].text > 0) {
 
-                    pub.top.pub.alert("恢复数据成功");
+                    alert("恢复数据成功");
 
                     frm.refresh(func, opt);
-                }
-                else {
-                    pub.top.pub.error("恢复数据失败");
+                } else {
+                    alert("恢复数据失败");
                 }
 
             },
-            error: function () {
-                pub.top.pub.error("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
+            error: function() {
+                alert("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
             }
         });
     },
@@ -1344,7 +1291,7 @@ var frm = {
     批量恢复删除数据
     @1： 批量恢复后需要回调的方法
   */
-    batchRevert: function (func) {
+    batchRevert: function(func) {
 
         var ids = frm.getCheckedIds();
 
@@ -1352,32 +1299,31 @@ var frm = {
 
         var opt = {};
 
-        if (typeof (loadData) == "function") {
+        if (typeof(loadData) == "function") {
             opt.load = loadData;
         }
 
         // 更新状态数据
-        $e.ajax({
+        $.ajax({
             dataType: "xml",
             data: "<action>batchrevert</action><strId>" + ids + "</strId>",
-            loading: function () {
+            loading: function() {
 
             },
-            success: function () {
+            success: function() {
                 if (arguments[1].text > 0) {
 
-                    pub.top.pub.alert("恢复数据成功");
+                    alert("恢复数据成功");
 
                     frm.refresh(func, opt);
 
-                }
-                else {
-                    pub.top.pub.error("恢复数据失败");
+                } else {
+                    alert("恢复数据失败");
                 }
 
             },
-            error: function () {
-                pub.top.pub.error("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
+            error: function() {
+                alert("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
             }
         });
     },
@@ -1386,26 +1332,26 @@ var frm = {
     刷新列表
     @1： 批量恢复后需要回调的方法
     */
-    refresh: function (func, opt) {
-        if (typeof (func) == "function") {
+    refresh: function(func, opt) {
+        if (typeof(func) == "function") {
             func.apply(this, []);
         } else {
-            if (typeof (pub.refresh) == "function") {
+            if (typeof(pub.refresh) == "function") {
                 pub.refresh.apply();
             }
-            if (typeof (opt.load) == "function") {
+            if (typeof(opt.load) == "function") {
                 opt.load.apply();
             }
         }
     },
 
     //高级查询全部数据
-    loadAllData: function () {
+    loadAllData: function() {
         //清空筛选框
-        //$e('#filterForm').formReset();
+        //$('#filterForm').formReset();
         //重新筛选
-        $e('#filterForm').filter(function () {
-            $e("#filterHidden").value("");
+        $('#filterForm').filter(function() {
+            $("#filterHidden").value("");
         });
     },
 
@@ -1418,67 +1364,61 @@ var frm = {
       @3: 提交地址
       @4: 回调方法
     */
-    post: function (action, data, url, func) {
+    post: function(action, data, url, func) {
 
         var opt = {};
 
-        if (typeof (loadData) == "function") {
+        if (typeof(loadData) == "function") {
             opt.load = loadData;
         }
 
         // 更新状态数据
-        $e.ajax({
+        $.ajax({
             url: url,
             dataType: "xml",
             data: "<action>" + action + "</action>" + data,
-            loading: function () {
+            loading: function() {
 
             },
-            success: function () {
+            success: function() {
 
                 // 有回调函数直接走回调
-                if (typeof (func) == "function") {
+                if (typeof(func) == "function") {
                     func.apply(this, arguments);
-                }
-                else { // 无回调直接使用系统提供
+                } else { // 无回调直接使用系统提供
                     if (arguments[1].text > 0) {
 
-                        pub.top.pub.alert("数据处理成功");
+                        alert("数据处理成功");
 
-                        if (typeof (opt.load) == "function") {
+                        if (typeof(opt.load) == "function") {
                             opt.load.apply();
                         }
 
-                        if (typeof (pub.refresh) == "function") {
+                        if (typeof(pub.refresh) == "function") {
                             pub.refresh.apply();
                         }
-                    }
-                    else if (arguments[1].json) {
+                    } else if (arguments[1].json) {
                         var json = arguments[1].json;
                         if (json.code != "error") {
-                            pub.top.pub.tips(json.msg);
+                            alert(json.msg);
+                        } else {
+                            alert(json.msg);
                         }
-                        else {
-                            pub.top.pub.error(json.msg);
-                        }
-                    }
-                    else {
-                        pub.top.pub.error("数据处理失败");
+                    } else {
+                        alert("数据处理失败");
                     }
                 }
 
             },
-            error: function () {
-                pub.top.pub.error("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
+            error: function() {
+                alert("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
             }
         });
     }
-
-
 };
 
 // 基于业务的数据加载扩展
-ECF.extend($e.fn, {
+$.extend($.fn, {
     /*
         加载列表数据
         @1: 需要进行绑定的模板id
@@ -1488,7 +1428,7 @@ ECF.extend($e.fn, {
         @5: 执行方法回调参数
         @6: 请求地址
     */
-    loadList: function (templateId, data, action, func, args, url) {
+    loadList: function(templateId, data, action, func, args, url) {
 
         if (this.length < 1) {
             alert("数据错误");
@@ -1499,15 +1439,14 @@ ECF.extend($e.fn, {
             templateId: templateId
         };
 
-        if (arguments.length == 1 && $e.isObject(arguments[0])) {
-            if (typeof (arguments[0]) == "string") {
+        if (arguments.length == 1 && $.isObject(arguments[0])) {
+            if (typeof(arguments[0]) == "string") {
                 opt.templateId = arguments[0];
                 opt.action = action || "loaddata";
             } else {
                 opt = arguments[0];
             }
-        }
-        else {
+        } else {
             opt.url = url;
             opt.action = action || "loaddata";
             opt.callback = func;
@@ -1522,28 +1461,24 @@ ECF.extend($e.fn, {
 
         var my = this,
             sendData = "<action>" + opt.action + "</action>" + opt.data;
-
-        //console.log(sendData);
-
-        $e.ajax({
+        $.ajax({
             url: opt.url,
             dataType: "xml",
             data: sendData,
-            loading: function () {
+            loading: function() {
                 my.html("数据获取中...");
             },
-            success: function () {
+            success: function() {
 
                 var doc = arguments[1].xml ? arguments[1].xml : arguments[1].text,
                     json = null;
-                if (typeof (doc) == "string") {
-                    json = ECF.parseJSON(arguments[1].text);
-                }
-                else {
-                    json = ECF.xml.toJson(doc);
+                if (typeof(doc) == "string") {
+                    json = $.parseJSON(arguments[1].text);
+                } else {
+                    json = $.xml.toJson(doc);
                 }
 
-                opt.html = $e("#" + opt.templateId).html();
+                opt.html = $("#" + opt.templateId).html();
 
                 if (opt.html == null || opt.html == "") {
                     alert("模板数据为空");
@@ -1552,22 +1487,41 @@ ECF.extend($e.fn, {
 
                 if (json) {
                     my.html(jte(opt.html, json));
-                }
-                else {
+                    if (my[0].nodeName == "TBODY") {
+                        $(">tr", my[0]).each(function () {
+                            $(this).bind("mouseover", function () {
+                                $(">th,>td", this).css("background-color", "#EEF3F7");
+                            });
+                            $(this).bind("mouseout", function () {
+                                $(">th,>td", this).css("background-color", "");
+                            });
+                        });
+                    }
+                } else {
                     my.html("没有数据");
                 }
-                if (typeof (func) == "function") {
+                if (typeof(func) == "function") {
                     func.apply(this, arguments);
                 }
 
                 if (window.parent) {
                     if (window.parent.main) {
-                        if (typeof (window.parent.main.autoSize) === 'function')
+                        if (typeof(window.parent.main.autoSize) === 'function')
                             window.parent.main.autoSize();
                     }
                 }
+
+                //自定义单选复选UI
+                if (typeof $().customCheck === 'function') {
+                    $(document).customCheck();
+                }
+
+                //延迟加载
+                if (typeof $.lazy === 'function') {
+                    $(document).nonePic();
+                }
             },
-            error: function () {
+            error: function() {
                 my.html("数据获取失败...");
             }
         });
@@ -1581,18 +1535,17 @@ ECF.extend($e.fn, {
         @4: 状态字符特殊处理
         @5: 每页显示条数
     */
-    loadPage: function (templateId, pagebarId, conditions, status, pagesize) {
-
-        var ofilter = $e("#filterHidden"), filter = "";
+    loadPage: function (templateId, pagebarId, conditions, status, pagesize, callback) {
+        var ofilter = $("#filterHidden"),
+            filter = "";
 
         if (ofilter.length > 0) {
             filter = ofilter.val();
         }
 
-        if (typeof (status) == "undefined" || status == null) {
+        if (typeof(status) == "undefined" || status == null) {
             filter += "<Status>all</Status>";
-        }
-        else if (status != "" && filter.toLowerCase().indexOf("<status>") < 0) {
+        } else if (status != "" && filter.toLowerCase().indexOf("<status>") < 0) {
             filter += "<Status>" + status + "</Status>";
         }
 
@@ -1603,425 +1556,18 @@ ECF.extend($e.fn, {
 
             window.pages[this.selector + conditions + filter].query(conditions + filter);
 
-        }
-        else {
+        } else {
 
             if (!window.pages) window.pages = [];
 
-            var func = (typeof (definedCheckbox) != "undefined" && typeof (definedCheckbox.reset) == "function" ? definedCheckbox.reset : function () { });
-            window.pages[this.selector + conditions + filter] = this.page(templateId, pagebarId, conditions + filter, pagesize, func);
+            //var func = (typeof (definedCheckbox) != "undefined" && typeof (definedCheckbox.reset) == "function" ? definedCheckbox.reset : function () { });
+            //var func = (typeof (custom) != "undefined" && typeof (custom) == "function" ? custom : function () { });
+            //window.pages[this.selector + conditions + filter] = this.page(templateId, pagebarId, conditions + filter, pagesize, func);
+            window.pages[this.selector + conditions + filter] = this.page(templateId, pagebarId, conditions + filter, pagesize, callback);
         }
-    },
-    /*
-         加载分页列表返回数据为IResultRespone格式专项处理 wchao by 2017-06-01
-         @1: 需要进行绑定的模板id
-         @2: 分页条显示id
-         @3: 需要执行的条件
-         @4: 状态字符特殊处理
-         @5: 每页显示条数
-         @6: 通过Ajax获取数据后执行函数处理,将传入page对象
-         @7: 分页数据请求页面
-         @8：需要加载的滚动条对象
-         @9: 是否启用滚动条
-     */
-    resultPage: function (templateId, pageBarId, conditions, pageSize, callback, callPage, scrollTarget, isScroll) {
-        isScroll = (isScroll === true);
-        var dox = $e(this);
-        this.page({
-            templateId: templateId,
-            pageBarId: pageBarId,
-            data: conditions,
-            pageSize: pageSize,
-            callback: callback,
-            callPage: callPage,
-            scrollTarget: scrollTarget,
-            isScroll: isScroll,
-            showData: function (result, ele, append, func) {
-                if (result.Success) {
-                    var d = result.Content;
-                    var data = d.data;
-                    if (d == null || data == null || data.length < 1) {
-                        dox.html("<div class='errornull'>{0}</div>".format('暂无数据'));
-                    } else {
-                        var c = this._config;
-                        c.isScroll = isScroll;
-                        c.records = d.count; // 获取总记录数
-                        c.pages = Math.ceil(c.records / c.pageSize); // 计算总页数
-                        this.pages = c.pages;
-                        this.reset(c);
-                        var html = jte($e("#" + templateId).html(), data);
-                        if (c.pageIndex <= 1 || c.isScroll == false) {//非滚动或初始index过盖
-                            dox.html(html);
-                        } else
-                            dox.append(html);
-
-
-                        if (func) {
-                            func(this, result);
-                        }
-
-                        if (typeof(callback) == "function") {
-                            callback(this, result);
-                        }
-
-                    }
-                } else {
-                    dox.html("<div class='errornull'>{0}</div>".format(result.Message == '失败' ? "暂无数据" : result.Message));
-                }
-            }
-        });
-    },
-    /*
-        分页列表高级查询
-    */
-    filter: function (func) {
-
-        // 表单验证判断
-        if (!this.formValidate()) {
-            pub.error("表单数据不正确");
-            return;
-        }
-
-        var data = this.getValues("xml", false);
-
-        var pfh = $e("#filterHidden");
-        if (pfh.length < 1) {
-            this.after("<input type=\"hidden\" id=\"filterHidden\" value=\"" + data + "\" />");
-        }
-        else {
-            pfh.val(data);
-        }
-
-        if (typeof (func) == "function") {
-            func.apply();
-        }
-
-        if (typeof (window.loadData) == "function") {
-
-            if ($e.page) {
-                $e.page.defaults.pageIndex = 1;
-            }
-
-            window.loadData.apply();
-        }
-
     }
 });
-
-//地区js操作对象
-var area = {
-
-    //加载省市区信息
-    loadArea: function (pctrl, ctrlId, isValue, value, url) {
-        //获取子元素
-        var parentId = '0',
-            ctl = $e("#" + ctrlId);
-        if (ctl.length == 0) {
-            ctl = top.$e("#" + ctrlId);
-        }
-        if (ctl.length < 1) return; //当没有找到控件对象时直接跳出处理
-
-        //加载顶级处理
-        if (pctrl != null) {
-            //从parentId属性中获取父级Id
-            var trims = pctrl.options[pctrl.selectedIndex].getAttribute("parentId");
-            if (trims != null) {
-                parentId = trims.trim();
-            }
-        }
-
-        if (parentId == "-1") return; //当父级对象为空时不处理
-
-        //ajax请求地区数据
-        $e.ajax({
-            url: 'Core.axd',
-            data: '<action>area.list</action><parentid>' + parentId + '</parentid>',
-            dataType: 'xml',
-            async: false,
-            success: function () {
-                var req = arguments[1],
-					areaList = $e.parseJSON(req.text);
-                //判断是否为正确的Json格式
-                if (areaList.length > 0) {
-                    if (top.$e("#" + ctrlId).length == 0) {
-                        $e("#" + ctrlId)[0].options.length = 0;
-                    }
-                    else {
-                        top.$e("#" + ctrlId)[0].options.length = 0;
-                    }
-                    ctl.append("<option parentId='-1' value='-1' >请选择</option>");
-                    $e.each(areaList, function (i) {
-                        if (areaList[i].Name == value) {
-                            ctl.append('<option value="' + (isValue ? areaList[i].CodeId : areaList[i].Name) + '" parentId="' + areaList[i].CodeId + '" selected >' + areaList[i].Name + '</option>');
-                            //ctl.trigger('change');
-                        }
-                        else {
-                            ctl.append('<option value="' + (isValue ? areaList[i].CodeId : areaList[i].Name) + '" parentId="' + areaList[i].CodeId + '" >' + areaList[i].Name + '</option>');
-                        }
-                    });
-                }
-            },
-            error: function () {
-                pub.top.pub.error("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1], 1.5);
-            }
-        });
-    },
-
-    //显示省市区信息
-    showArea: function () {
-        area.loadArea(null, 'Province', false);
-    },
-
-    //设置地区值
-    setArea: function (ctrlId, val, txt, div) {
-        var ctl;
-        if (div) {
-            ctl = $e("#" + ctrlId, div);
-        }
-        else {
-            ctl = top.$e("#" + ctrlId);
-        }
-
-        if (ctl.length == 0)
-            ctl = $e("#" + ctrlId);
-
-        if (ctl[0].options.length > 0) {
-            for (var i = 0; i < ctl[0].length; i++) {
-                if (ctl[0][i].value == val) {
-                    //后台传过来的数据
-                    ctl[0][i].selected = true;
-                }
-            }
-        }
-    }
-};
-
-//上传文件和文件(图片)的选择管理
-var files = {
-    /*
-    文件选择
-    @1: 最多可选择文件数
-    @2: 需要上传和选择文件的模块
-    @3: 元素
-    @4: 数据
-    @5: 标题
-    @6: 宽度
-    @7: 高度
-    @8: 回调方法
-    @9: 要上传或选择的文件类型,多个文件类型以|相隔
-    */
-    select: function () {
-        var c;
-        if (arguments.length == 1 || $e.isObject(arguments[0])) {
-            c = arguments[0];
-        }
-        else {
-            c = {};
-            c.fileCount = arguments[0];
-            c.module = arguments[1];
-            c.element = arguments[2];
-            c.data = arguments[3];
-            c.title = arguments[4];
-            c.width = arguments[5];
-            c.height = arguments[6];
-            c.callback = arguments[7];
-            c.fileTypes = arguments[8];
-        }
-        //alert(arguments[0].module);
-        // alert(c.module + ' + ' + c.callback)
-        c.fileTypes = c.fileTypes || '';
-        c.arguments = c.arguments || [];
-        c.callback = c.callback || null;
-        c.title = c.title || '图片选择';
-        c.width = c.width || 800;
-        c.height = c.height || 600;
-        c.module = c.module || 'public';
-        c.fileCount = c.fileCount || 1;
-
-        search = 'module=' + c.module + '&count=' + c.fileCount;
-        // alert(c.module);
-
-        if (c.fileTypes != "") {
-            search += '&type=' + c.fileTypes;
-        }
-
-        var url = (typeof (RootUrlDirectory) == "undefined" ? "/Webadmin" : RootUrlDirectory) + "/Material/Album.aspx?";
-
-        //用于先把上传的Flash控件给清除,否则在ie下会出现 __flash__removeCallback 未定义
-        function clearFlash() {
-            if (arguments[0] && arguments[0].$e) {
-                arguments[0].$e("#upload").remove();
-            }
-        }
-
-        pub.open(url + search, c.width, c.height, c.title, [{ callback: files.selectCallback, name: '确定', arguments: [c], focus: true }], files.loadSelect, [c.data], clearFlash);
-    },
-
-    //文件选择页面加载完成后执行的方法
-    loadSelect: function () {
-        var win = this,
-            srcs = '|' + arguments[0] + '|';
-
-        if (win.$e) {
-            //console.log(win.$e('input[type="checkbox"]').length);
-            win.$e('input[type="checkbox"]').each(function () {
-                //console.log(srcs.indexOf('|'+this.value+'|'));
-                if (srcs.indexOf('|' + this.value + '|') > -1) {
-                    this.checked = true;
-                }
-            });
-        }
-
-    },
-
-    selectImg: function (win) {
-        var imageIds = "";
-        var from = win.ECF("#DataFrom");
-        var childrens = from.children();
-
-        for (var i = 0; i < childrens.length; i++) {
-            if (childrens[i].attr("type") == "Images" && childrens[i].attr("class") == "select") {
-                imageIds += childrens[i].children()[1].value() + (i < childrens.length - 1 ? "|" : "");
-            }
-        }
-
-        //去掉字符串末尾的“|”
-        if (imageIds.lastIndexOf("|") == imageIds.length - 1) {
-            imageIds = imageIds.substr(0, imageIds.length - 1);
-        }
-
-        return imageIds;
-    },
-
-    //选择页面的确定按钮处理方法
-    selectCallback: function (c) {
-        var win = this.iwindow || window,
-            count = c.fileCount,
-            srcs = files.selectImg(win);
-
-        //判断是否选择了图片
-        if (srcs.length == 0) {
-
-            pub.top.pub.error("请选择图片后再确定！");
-            return;
-        }
-
-        //判断选择图片的张数
-
-        if (count > 0 && srcs.split("|").length > count + 1) {
-            pub.top.pub.error("一次最多只能选择" + count + "张图片！");
-            return;
-        }
-
-        if (c.element) {
-            if (typeof (c.element) == "string") {
-                var $el = [],
-                    selector = "#" + c.element + ',[name="' + c.element + '"]';
-
-                // 从最顶层获取对象
-                $el = pub.top.$e(selector);
-                if ($el.length < 1) {
-                    //如果最顶层获取不到对象就获获取框架内的
-                    $el = pub.iwin().$e(selector);
-                    if ($el.length < 1) {
-                        $el = $e(selector);
-                    }
-                }
-
-                //$el.each(function(){    //用于处理图片时加上图片服务器地址
-                //    //alert(this.tagName);
-                //    if(this.tagName ==  "IMG"){
-                //        this.src = imageDomain + srcs;
-                //    }
-                //    else{
-                //        this.value = srcs;
-                //    }
-                //});
-
-                $el.value(srcs);
-            }
-            else {
-                $e(c.element).value(srcs);
-            }
-        }
-
-        if (ECF.isArray(c.arguments)) {
-            c.arguments.push(srcs);
-        }
-
-        files.upUseTime(srcs, c.module);
-
-        if (typeof (c.callback) == "function") {
-            c.callback.apply(this, c.arguments);
-        }
-
-        this.close();
-    },
-
-    // 更新图片的使用时间
-    upUseTime: function (src, module) {
-        //var url = '../Core/SelectFiles.aspx';
-        //var fname = window.location.pathname.substring(window.location.pathname.lastIndexOf('/')).toLowerCase();
-
-        ////用于判断是否应该加上../的处理,判断是否使用的框架
-        //if (window.location.pathname == pub.top.location.pathname && fname != '/main.aspx') {
-        //    url = '../' + url;
-        //}
-
-        ECF.ajax({
-            url: imageDomain + '/MaterialService.axd',
-            data: '<action>imgusetime</action><srcs><![CDATA[' + src + ']]></srcs><module>' + module + '</module>',
-            dataType: "xml",
-            success: function () {
-            }
-        });
-    },
-
-    // 删除图片
-    deleteFile: function (o, id, src) {
-        pub.confirm("删除已选择的文件或图片后,会导致图片或文件无法访问,您确定要删除吗？", del, function () { });
-
-        function del() {
-            if (id < 1 || src == '') return;
-            ECF.ajax({
-                data: '<action>delete</action><Id>' + id + '</Id><Src><![CDATA[' + src + ']]></Src>',
-                dataType: "xml",
-                loading: function () {
-                    tip.show("数据处理中 ...");
-                },
-                success: function () {
-                    tip.hide();
-                    if (arguments[1].text > 0) {
-                        pub.top.pub.alert("产品图片删除成功！");
-                        //删除界面上的图片显示 
-                        if (o) {
-                            $e(o.parentNode.parentNode).remove();
-                        }
-                    }
-                    else {
-                        pub.top.pub.error("产品图片删除失败！", 1.5);
-                    }
-                },
-                error: function () {
-                    tip.hide();
-                    pub.top.pub.error("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1], 1.5);
-                }
-            });
-        };
-    },
-
-    selectFile: function (id) {
-        var chk = $e("#" + id)[0];
-        if (chk) {
-            if (chk.checked) {
-                chk.checked = false;
-            }
-            else {
-                chk.checked = true;
-            }
-        }
-    }
-};
+    
 
 //提示信息显示
 var tip = {
@@ -2029,78 +1575,41 @@ var tip = {
     box: null,
     //显示提示信息
     show: function (html, error) {
-        //alert(arguments.caller.toString() + 'ddd');
         //获取提示信息框
-        var lad = document.getElementById("vast_page_tips_box"),
-            title_icon = document.getElementById("vast_page_tips_icon");
-        text_panel = document.getElementById("vast_page_tips_text");
+        var lad = document.getElementById("vast_page_tips_box");
         var content = html || "数据加载中...";
-
-        var win = $e(window);
 
         //提示信息框不存在时创建提示信息框
         if (!lad) {
             lad = document.createElement("div");
-            //var close = document.createElement('div');
-            ////初始化关闭按钮
-            //close.style.cssText = 'width:16px;height:16px;position:absolute;top:50%;right:2px;margin-top:-8px;cursor:pointer;background:url(/Static/Images/close_tips.png) 0 0 no-repeat;';
-            //close.title = '点击关闭';
-            //$e(close).bind('click', function () { tip.hide(); });
-            //lad.appendChild(close);
+            var close = document.createElement('div');
+            //初始化关闭按钮
+            close.style.cssText = 'width:16px;height:16px;position:absolute;top:50%;right:2px;margin-top:-8px;cursor:pointer;background:url(/Static/Images/close_tips.png) 0 0 no-repeat;';
+            close.title = '点击关闭';
+            $(close).bind('click', function () { tip.hide(); });
+            lad.appendChild(close);
             //lad.className = clsName || "Loading_box";
             lad.id = "vast_page_tips_box";
-            lad.className = 'ui-tips-pop tips-pop-close';
-            lad.innerHTML = content;
             document.getElementsByTagName('body')[0].appendChild(lad);
-
-            //创建提示图标层
-            //var title_icon = document.createElement('i');
-            //title_icon.id = 'vast_page_tips_icon';
-            //title_icon.className = 'icon iconfont i-warning';
-            //lad.appendChild(title_icon);
-
-            //创建文字层
-            //var text_panel = document.createElement('div');
-            //text_panel.id = 'vast_page_tips_text';
-            //text_panel.className = 'text';
-            //lad.appendChild(text_panel);
         }
-
         //<div id="msgBoxDIV" style="position: absolute; width: 100%; padding-top: 2px; height: 24px; top: 43px; text-align: center; /* display: none; */"><span class="msg">删除成功&nbsp;<a href="#" style="color:white" onclick="getTop().rollback(2);return false;" initlized="true" md="0">[撤销]</a></span></div>
-
         //附提示信息html
-        //text_panel.innerHTML = content;
+        lad.innerHTML = "<span style='height:16px;line-height:16px;display:block;font-size:12px;white-space: nowrap;word-break: break-all;word-spacing: normal;word-break: break-all;'>" + content + "</span>";
         var fbs = lad.style;
         fbs.cssText = "";
         fbs.display = "";
+        fbs.opacity = "";
         fbs.zIndex = 2147483640;
+        fbs.cssFloat = "left";
+        fbs.width = "auto";
+        fbs.fontSize = "12px";
+        var w = lad.offsetWidth + "px",
+        h = lad.offsetHeight + "px", l = 0, t = 0;
 
-        var w = 120,
-            h = lad.offsetHeight,
-            l = 0,
-            t = 0,
-            max = $e(window).width() - 100,
-            _w = 0;
-
-        var nw = ['padding-left', 'padding-right', 'border-left-width', 'border-right-width'];
-        var nw_length = nw.length;
-        var nw_size = 0;
-        for (var i = 0; i < nw_length; i++) {
-            nw_size = nw_size + tip.cssSize(lad, nw[i]);
-        }
-
-        _w = Number(lad.innerHTML.length * 20);
-
-        if (_w > max) {
-            _w = max;
-        }
-
-        nw_size = nw_size + _w;
-
-        var win = $e(window),
-            doc = $e(document),
-            l = (win.width() - nw_size) / 2,
-            t = (win.height() - h) / 2;
+        var win = $(window),
+            doc = $(document),
+            l = (win.width() - lad.offsetWidth) / 2,
+            t = (win.height() - lad.offsetHeight) / 2;
 
         var scrollTop;
         if (document.documentElement && document.documentElement.scrollTop) {
@@ -2112,234 +1621,349 @@ var tip = {
 
         l = l + 'px';
 
-        var bgc = "#000";
-        var bog = "#000";
+        var bgc = "#f2f9d9";
+        var bog = "#abd909";
 
-        //if (!error || typeof (error) == 'undefined') {
-        //title_icon.className = 'icon iconfont i-iconchenggong';
-        //} else {
-        //title_icon.className = 'icon iconfont i-warning';
-        //}
+        if (error) {
+            bgc = "#fef9f9";
+            bog = "#fdcdcd";
+        }
 
-        //fbs.cssText = "background-color:" + bgc + "; position:fixed;width:" + w + "px;left:" + l + ";top:" + t + "px;border-color: " + bog;
-        fbs.cssText = "position:fixed;width:" + _w + "px;left:" + l + ";top:" + t + "px;";
+        fbs.cssText = "padding: 20px;text-align:cneter;border-radius: 2px;background-color:" + bgc + "; position:fixed;width:"
+            + w + ";height:" + h + ";left:" + l + ";top: 120px; font-size: 16px;z-index:9999999999;cursor:default;border-style: solid;border-width: 1px;border-color: " + bog;
+
+
 
         tip.box = lad;
-
-        lad.className = 'ui-tips-pop tips-pop-open';
-        //$e(tip.box).show(2);  
+        //$(tip.box).show(2);
     },
     //隐藏提示框
     hide: function () {
-        //console.log(tip.box + window.location.href);
         if (tip.box) {
-            //$e(tip.box).hide(2, null);
-            tip.box.className = 'ui-tips-pop tips-pop-close';
+            $(tip.box).hide(2, null);
         }
         else {
-            // $e("#vast_page_tips_box").hide(2, null);
-            //$e("#vast_page_tips_box")[0].className = 'ui-tips-pop tips-pop-close';
+            $("#vast_page_tips_box").hide(2, null);
         }
-
-        setTimeout(function () {
-            $e(tip.box).remove();
-        }, 450);
-    },
-    //获取CSS样式中的尺寸值
-    cssSize: function (obj, style) {
-        var si = 0;
-        var _obj = [];
-        if (obj.style[style]) {
-            var regx = /([\S]+)px/ig;
-            var sizer = regx.exec(obj.style[style])[0];
-            if (!sizer) {
-                sizer = '0px';
-            };
-        } else if (obj.currentStyle) {
-            try {
-                var regx = /([\S]+)px/ig;
-                var sizer = regx.exec(obj.currentStyle[style])[0];
-                if (!sizer) {
-                    sizer = '0px';
-                };
-            } catch (e) {
-                sizer = '0px';
-            };
-        } else if (window.getComputedStyle) {
-            try {
-                propprop = style.replace(/([A-Z])/g, "-$1");
-                propprop = style.toLowerCase();
-                var sizer = document.defaultView.getComputedStyle(obj, null);
-                if (sizer) {
-                    var regx = /([\S]+)px/ig;
-                    sizer = regx.exec(sizer.getPropertyValue(style))[0];
-                } else {
-                    sizer = '0px';
-                };
-            } catch (e) {
-                sizer = '0px';
-            };
-        };
-        if (sizer === 'auto' || sizer === '0px') {
-            si = 0;
-        } else {
-            si = Number(sizer.replace('px', ''));
-        };
-        return si;
     }
 };
 
-ECF.extend($e, {
-    //定位
-    locate: {
-        model: {
-            lng: 0,
-            lat: 0,
-            adcode: "",
-            province: "",
-            citycode: "",
-            city: "",
-            district: "",
-            street: "",
-            streetNumber: "",
-            township: "",
-            address: ""
-        },
-        init: function (callback) {
-            //if (ECF.isWeixin) {
-            //    //console.log("weixin-location");
-            //    $e.getScript("/Static/Js/jweixin-1.0.0.js", function () {
-            //        $e.getScript("/Static/Js/Wechat.js?v=1.2.0", function () {
-            //            wechat.init(function () {
-            //                wx.checkJsApi({
-            //                    jsApiList: ['getLocation'],
-            //                    success: function (res) {
-            //                        pub.tips("获取定位成功", 1);
-            //                        if (res.checkResult.getLocation) {
-            //                            wx.getLocation({
-            //                                success: function (n) {
-            //                                    var model = $e.locate.model;
-            //                                    model.lng = n.longitude;//经度
-            //                                    model.lat = n.latitude;//纬度
-            //                                    //model.province = res.addressComponent.province;
-            //                                    //model.city = res.addressComponent.city;
-            //                                    //model.district = res.addressComponent.district;
-            //                                    //model.street = res.addressComponent.street;
-            //                                    //model.streetNumber = res.addressComponent.streetNumber;
-            //                                    console.log("success-res：", n);
-            //                                    if (callback) {
-            //                                        callback(model);
-            //                                    }
-            //                                }
-            //                            });
-            //                        }
-            //                    },
-            //                    fail: function (res) {
-            //                        console.log("fail-res：", res);
-            //                        pub.tips("获取位置失败", 1);
-            //                    }
-            //                });
-            //            });
-            //        });
-            //    });
-            //} else if (ECF.isAndroid) {
-            //    //console.log("android-location");
-            //    if (window.JsInterface && typeof (window.JsInterface.JsStartLocationFunction) == "function") {
+//树状列表
+var treeGrid = {
+    childArray: [],
+    recursion: function (obj, num) {
+        var child = obj.find("tr[parentIndex='" + num + "']");
+        if (child.length > 0) {
+            child.each(function () {
+                treeGrid.recursion(obj, $(this).attr("treeIndex"));
 
-            //        window.JsInterface.JsStartLocationFunction("onComplete", "onError");
-
-            //        function onComplete(lng, lat) {
-            //            console.log("success-res：", lng, lat);
-
-            //            if (callback) {
-            //                callback(lng, lat);
-            //            }
-            //        }
-
-            //        function onError() {
-            //            console.log("fail-res：", arguments[0]);
-            //        }
-            //    }
-
-            //} else if (ECF.isIOS) {
-            //    //console.log("ios-location");
-
-            //} else {
-            //console.log("web-location");
-            //高德地图定位
-            var map, geolocation;
-            /*加载地图，调用浏览器定位服务*/
-            map = new AMap.Map('', {
-                resizeEnable: true
-            });
-            map.plugin('AMap.Geolocation', function () {
-                geolocation = new AMap.Geolocation({
-                    enableHighAccuracy: true,/* 是否使用高精度定位，默认:true */
-                    timeout: 10000,          /*超过10秒后停止定位，默认：无穷大*/
-                    buttonOffset: new AMap.Pixel(10, 20),/*定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)*/
-                    zoomToAccuracy: true,      /*定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false*/
-                    buttonPosition: 'RB'
-                });
-                map.addControl(geolocation);
-                geolocation.getCurrentPosition();
-                AMap.event.addListener(geolocation, 'complete', onMapComplete);/*返回定位信息*/
-                AMap.event.addListener(geolocation, 'error', onError);      /*返回定位出错信息*/
+                treeGrid.childArray[treeGrid.childArray.length] = this;
             });
 
-            /*解析定位结果*/
-            function onMapComplete(res) {
-                var model = $e.locate.model;
-                model.lng = res.position.getLng();//经度
-                model.lat = res.position.getLat();//纬度
-                model.province = res.addressComponent.province;
-                model.city = res.addressComponent.city;
-                model.district = res.addressComponent.district;
-                model.street = res.addressComponent.street;
-                model.streetNumber = res.addressComponent.streetNumber;
-                //console.log("success-res：", res);
-                if (callback) {
-                    callback(model);
+            return treeGrid.childArray;
+        }
+    },
+    //展开/收缩
+    toggle: function (o) {
+        //By Zkai 2016-6-2 13:57:50
+        var $tr = $(o).parents("tr:eq(0)"),
+            treeIndex = $tr.attr("treeIndex"),
+            parentIndex = $tr.attr("parentIndex");
+
+        var par = $tr.parent("tbody");
+
+        //如果是最后一级点击就不起效
+        if ($tr.hasClass("nochild")) return;
+
+        //初始化数据
+        treeGrid.childArray = [];
+
+        var child = treeGrid.recursion(par, treeIndex);
+     
+        if ($tr.hasClass("open")) {
+            $tr.removeClass("open").addClass("close");
+
+            //收缩列表
+            for (var i = 0; i < child.length; i++) {
+               // console.log($(child[i]).html());
+                //关闭所有展开项
+                if ($(child[i]).hasClass("open")) {
+                    $(child[i]).removeClass("open").addClass("close");
                 }
-            };
-            //解析定位错误信息
-            function onError(res) {
-                console.log("error-res：", res);
-            };
-            //}
-        },
-        show: function (callback) {
-            //调用wechat.js中的方法
-            getAMapLocation($e.locate.model.lng, $e.locate.model.lat, function (point, address) {
-                //console.log(arguments);
-                var model = $e.locate.model;
-                model.lng = point.lng;//经度
-                model.lat = point.lat;//纬度
-                model.province = address.province;
-                model.city = address.city;
-                model.district = address.district;
-                model.street = address.street;
-                model.streetNumber = address.streetNumber;
-                if (callback) {
-                    callback(model);
+
+                $(child[i]).css({
+                    'display': 'none'
+                });
+            }
+        } else {
+            $tr.removeClass("close").addClass("open");
+
+            var childs = $tr.parent("tbody").find("tr[parentIndex='" + treeIndex + "']");
+            childs.each(function () {
+                // console.log($(this).html());
+                $(this).css({
+                    'display': ''
+                });
+            });
+        }
+        if (typeof (top.main) != "undefined" && typeof (top.main.autoSize) == "function") top.main.autoSize(true);
+        return;
+
+    },
+    //获取子列表
+    getChild: function (o) {
+
+        var $tr = $(o).parent("tr"),
+            treeIndex = $tr.attr("treeIndex");
+        var child = $tr.parent("tbody").find("tr[parentIndex='" + treeIndex + "']");
+
+        return child;
+    },
+    //获取子节点Id
+    getChildrenId: function (parentId, obj) {
+        var child = treeGrid.getChild(obj);
+
+        var ids = "";
+
+        if (child && child.length > 0) {
+
+            for (var i = 0; i < child.length; i++) {
+                var childObj = $("#ID", child[i]);
+
+                if (childObj && childObj.length > 0) {
+
+                    var childId = childObj[0].value;
+
+                    if (childId > 0) {
+                        ids += treeGrid.getChildrenId(childId, childObj);
+                    }
+                }
+            }
+        }
+
+        ids += parentId + ",";
+
+        return ids;
+    },
+    //删除树状列表
+    del: function (id, cinfo, sinfo, einfo, obj) {
+        var ids = treeGrid.getChildrenId(id, obj);
+
+        if (ids.indexOf(",")) {
+            ids = ids.toString().substr(0, ids.length - 1);
+        }
+
+        if (ids.length == 0) {
+            alert("请选择要删除的数据！");
+            return;
+        }
+        cinfo = cinfo || "你是否确认要删除当前选中记录？";
+        if (pub.confirm(cinfo)) {
+            sinfo = sinfo || "删除数据成功";
+            einfo = einfo || "删除数据失败";
+            $.ajax({
+                data: '{"action":"batchdel","strId":"' + ids + '"}',
+                dataType: "json",
+                loading: function () {
+                    tip.show("数据处理中 ...");
+                },
+                success: function () {
+                    tip.hide();
+                    if (arguments[1].text > 0) {
+                        alert(sinfo, 1.5);
+                        //pub.refresh();
+                        // 删除数据用reBind
+                        pub.iwin().location.reload();
+                    }
+                    else {
+                        alert(einfo, 1.5);
+                    }
+                },
+                error: function () {
+                    tip.hide();
+                    alert("数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1], 1.5);
                 }
             });
         }
-    }
-});
 
-// 当页面加载完成之后对地址进行一次批量处理，添加运营主体的参数
-$e(function () {
-    if (typeof (proprietor) != "undefined") {
-        var de_p = ECF.code.deBase64(proprietor);
-        //url正则表达式
-        var reg = /^([^":']*?(?=\.aspx)\.aspx[^"']*?)/;
-        $e("a:not([href*='" + de_p + "'])").each(function () {
-            var $a = $e(this),
-                href = $a.attr("href");
-            if (reg.test(href)) {
-                if (typeof (href) == "string")
-                    $a.attr("href", href.toUrl());
+    },
+    //初始化树状列表
+    initTreeGrid: function (templateId, formId, func,data,isShowAll) {
+
+        var opt = {};
+
+        if (arguments.length == 1 && $.isObject(arguments[0])) {
+            opt = arguments[0];
+        }
+        else {
+            opt = {
+                formId: formId,
+                templateId: templateId,
+                action: "loaddata",
+                func: func,
+                data: data || "",
+                isShowAll: isShowAll||false
+            };
+        }
+
+        var tep = $("#" + opt.templateId).html();
+
+        var template = "";
+
+        var endTemplate = "", indexs = "", ps = "";
+
+        for (var i = 0; i < 5; i++) {
+            indexs += "${it" + i + ".Id}";
+
+            template += "{@each " + (i == 0 ? "_" : "it" + (i - 1) + ".children") + " as it" + i + ",index" + i + "}" +
+                tep.replace(/\[\#i\]/g, i).replace(/\[\#index\]/g, indexs).replace(/\[\#parent\]/g, ps).replace(/\[\#style\]/g, ((!opt.isShowAll && i) > 0 ? "style='display:none;'" : ""));
+
+            endTemplate += "{@/each}";
+
+            ps = indexs;
+        }
+
+        template += endTemplate;
+
+        opt.template = template;
+        if (template == "") {
+            alert("模板数据错误。");
+        };
+
+        $.ajax({
+            url: opt.url,
+            dataType: "xml",
+            data: "<action>" + opt.action + "</action>" + opt.data,
+            loading: function () { },
+            success: function () {
+
+                var doc = arguments[1].xml ? arguments[1].xml : arguments[1].text,
+                    json = null;
+
+                if (typeof (doc) == "string") {
+                    json = $.parseJSON(arguments[1].text);
+                }
+                else {
+                    json = $.xml.toJson(doc);
+                }
+
+                if (json.length <= 0) {
+                    var errorNull = '<div class=\"errornull\">暂无数据</div>';
+                    if ($("#" + opt.formId)[0].nodeName == 'TBODY') {
+                        //找col
+                        var cols = $('colgroup > col', $("#" + opt.formId)[0].parentNode);
+
+                        var newErrorNull = "<tr><td colspan=\"" + cols.length + "\">" + errorNull + "</td></tr>";
+                    }
+                    $("#" + opt.formId).html(newErrorNull);
+                } else {
+                    var box = $("#" + opt.formId);
+                    box.html(jte(opt.template, json));
+                    if (box[0].nodeName == "TBODY") {
+                        $(">tr", box[0]).each(function () {
+                            $(this).bind("mouseover", function () {
+                                $(">th,>td", this).css("background-color", "#EEF3F7");
+                            });
+                            $(this).bind("mouseout", function () {
+                                $(">th,>td", this).css("background-color", "");
+                            });
+                        });
+                    }
+                }
+
+                // 判断动态刷新框架高度
+                //if (window.top) {
+                //	if (window.top.main) {
+                //		if (typeof (window.top.main.autoSize) == "function") {
+                //			window.top.main.autoSize(false);
+                //		}
+                //	}
+                //};
+
+                if (typeof (opt.func) == "function") {
+                    opt.func.apply();
+                }
+
+                //可拖动Table列表宽度UI
+                if (typeof $().customChangeTableUI === 'function') {
+                    $('#customChangeTable').customChangeTableUI({ min: 60 });
+                }
+
+                //自定义单选复选UI
+                if (typeof $().customCheck === 'function') {
+                    $(document).customCheck();
+                }
+            },
+            error: function () {
+                alert("数据获取失败...");
             }
         });
+
+
+    }
+};
+
+/**
+ * 为$扩展areas方法
+ * @param  {[type]} ctlId      [description]
+ * @param  {[type]} secendId   [description]
+ * @param  {String} thirdId){                     var jsonUrl [description]
+ * @param  {[type]} true);                                                        ctl.bind("change", function() {            var obj [description]
+ * @return {[type]}            [description]
+ */
+$.extend($, {
+    areas: function(ctlId, secendId, thirdId,fun) {
+        var jsonUrl = "/fire/Static/Js/areas.js",
+          
+            ctl = $("#" + ctlId),
+            sctl = $("#" + secendId),
+            tctl = $("#" + thirdId),
+            areaList = {};
+        ctl.append('<option value="" parentId="" >请选择</option>');
+
+        $.getScript(jsonUrl, function(item) {
+        	
+            areaList = chinaAreas;
+            ;
+            for (var key in areaList) {
+                ctl.append('<option value="' + key + '" parentId="" subContrlId="' + '" >' + key + '</option>');
+            }
+            if (typeof (fun) == "function") {
+                fun();
+            }
+        }, true);
+
+        // 为一级区域添加改为方法
+        ctl.bind("change", function () {
+            var obj = $(this),
+                val = obj.val(),
+                slist = areaList[val];
+                // 重置三级元素
+                sctl.empty();
+                sctl.append('<option value="" parentId="" >请选择</option>');
+                // 重置三级元素
+                tctl.empty();
+                tctl.append('<option value="" parentId="" >请选择</option>');
+            for (var skey in slist) {
+                sctl.append('<option value="' + skey + '">' + skey + '</option>');
+            }
+
+            // 为二级区域添加改变方法
+            sctl.bind("change", function() {
+                var tobj = $(this),
+                    tval = tobj.val(),
+                    tlist = slist[tval];
+                    tctl.empty();
+                tctl.append('<option value="" parentId="" >请选择</option>');
+                if(typeof(tlist) == "undefined") return;
+                for (var i = 0; i < tlist.length; i++) {
+                    tctl.append('<option value="' + tlist[i] + '">' + tlist[i] + '</option>');
+                }
+            });
+        });
+       
     }
 });
+String.prototype.firstUpperCase=function(){
+    return this.replace(/^\S/,function(s){return s.toUpperCase();});
+}
