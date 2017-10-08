@@ -3,21 +3,17 @@ package fireh5.company.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import fire.company.entity.CompanyResult;
-import fire.company.entity.Manager;
-import fire.modules.entity.FormatType;
+import fire.common.entity.CompanyResult;
 import fire.proxy.service.ProxyBase;
 import fire.sdk.utils.JsonResult;
 import fire.sdk.utils.JsonUtils;
-import fireh5.web.utils.Constants;
+import fireh5.web.utils.Company;
 
 
 @Controller
@@ -42,10 +38,10 @@ public Object login(String username,String password,String code,HttpSession sess
 	map.put("UserName", username);    
 	map.put("Password", password);  
 	
-	JsonResult result=new ProxyBase().GetResponse("company", "login", map);
+	JsonResult result=new ProxyBase().GetResponse("company.manager", "login", map);
 	if(result.getState()==0){
 		CompanyResult user=JsonUtils.JSONToObj(JsonUtils.objectToJson(result.getData()), CompanyResult.class)	;
-		session.setAttribute(Constants.CompanyPre+Constants.LoginCacheKey, user);
+		Company.setCookie(user);
 		return new JsonResult();
 	}
 	return result.toString();

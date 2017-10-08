@@ -1,10 +1,20 @@
 package fireh5.web.utils;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.ServletWebRequest;
 
-import fire.company.entity.CompanyResult;
+import fire.common.entity.CompanyResult;
+import fire.proxy.service.ProxyBase;
+import fire.sdk.utils.JsonResult;
+import fire.sdk.utils.JsonUtils;
 
 
 public class Company {
@@ -24,7 +34,42 @@ public class Company {
 		return getCompany().getId();
 
 	}
-	public void setCookie(){
+	public static void setCookie(CompanyResult user){
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpSession session=request.getSession();
+
+		HttpServletResponse response = ((ServletWebRequest)RequestContextHolder.getRequestAttributes()).getResponse();
+		session.setAttribute(Constants.CompanyPre+Constants.LoginCacheKey, user);
+		CookiesUtil.addCookie(response, Constants.CompanyPre+Constants.LoginCacheKey,user.getToken(), 1);
+	}
+	public static boolean IsLogin(){
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpSession session=request.getSession();
+		if(session.getAttribute(Constants.CompanyPre+Constants.LoginCacheKey)!=null){
+			return true;
+		}
+		Cookie cookie=CookiesUtil.getCookieByName(request, Constants.CompanyPre+Constants.Ticket);
 		
+	   if(request.getSession().getAttribute(Constants.CompanyPre+Constants.LoginCacheKey)==null&&cookie==null){
+			return false;
+		}
+		else if(cookie!=null){
+			//模拟登录
+			if(AutologLogin(cookie.getValue())){
+				return true;
+			}
+		}
+	   return false;
+	}
+	public static boolean AutologLogin(String token){
+		Map<String, String> map = new HashMap<String, String>(); 
+		map.put("Token",token);
+		JsonResult result=new ProxyBase().GetResponse("company", "autologin", map);
+		if(result.getState()==0){
+			CompanyResult user=JsonUtils.JSONToObj(JsonUtils.objectToJson(result.getData()), CompanyResult.class)	;
+			setCookie(user);
+						return true;
+		}
+		return false;
 	}
 }
