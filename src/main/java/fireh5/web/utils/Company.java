@@ -34,41 +34,41 @@ public class Company {
 		return getCompany().getId();
 
 	}
-	public static void setCookie(CompanyResult user){
+	public static void setCookie(CompanyResult user,HttpServletResponse response){
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		HttpSession session=request.getSession();
-
-		HttpServletResponse response = ((ServletWebRequest)RequestContextHolder.getRequestAttributes()).getResponse();
+		//HttpServletResponse response = ((ServletWebRequest) RequestContextHolder.getRequestAttributes()).getResponse();
 		session.setAttribute(Constants.CompanyPre+Constants.LoginCacheKey, user);
-		CookiesUtil.addCookie(response, Constants.CompanyPre+Constants.LoginCacheKey,user.getToken(), 1);
+		CookiesUtil.addCookie(response, Constants.CompanyPre+Constants.LoginCacheKey,user.getToken(), 0);
 	}
-	public static boolean IsLogin(){
+	public static boolean IsLogin(HttpServletResponse response){
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		HttpSession session=request.getSession();
+		Cookie cookie=CookiesUtil.getCookieByName(request, Constants.CompanyPre+Constants.Ticket);
+
 		if(session.getAttribute(Constants.CompanyPre+Constants.LoginCacheKey)!=null){
 			return true;
 		}
-		Cookie cookie=CookiesUtil.getCookieByName(request, Constants.CompanyPre+Constants.Ticket);
 		
-	   if(request.getSession().getAttribute(Constants.CompanyPre+Constants.LoginCacheKey)==null&&cookie==null){
+		if(request.getSession().getAttribute(Constants.CompanyPre+Constants.LoginCacheKey)==null&&cookie==null){
 			return false;
 		}
 		else if(cookie!=null){
 			//模拟登录
-			if(AutologLogin(cookie.getValue())){
+			if(AutologLogin(cookie.getValue(),response)){
 				return true;
 			}
 		}
-	   return false;
+		return false;
 	}
-	public static boolean AutologLogin(String token){
+	public static boolean AutologLogin(String token,HttpServletResponse response){
 		Map<String, String> map = new HashMap<String, String>(); 
 		map.put("Token",token);
 		JsonResult result=new ProxyBase().GetResponse("company", "autologin", map);
 		if(result.getState()==0){
 			CompanyResult user=JsonUtils.JSONToObj(JsonUtils.objectToJson(result.getData()), CompanyResult.class)	;
-			setCookie(user);
-						return true;
+			setCookie(user,response);
+			return true;
 		}
 		return false;
 	}

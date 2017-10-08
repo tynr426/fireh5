@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="fireh5.web.utils.*"%> 
-    <%@ page import="fire.company.entity.CompanyResult" %>
+    <%@ page import="fire.common.entity.CompanyResult" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
