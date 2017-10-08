@@ -1,0 +1,327 @@
+﻿
+.swfUpload_progressWrapper
+{
+	width: 357px;
+	overflow: hidden;
+}
+
+.swfUpload_progressContainer
+{
+	margin: 5px;
+	padding: 4px;
+	border: solid 1px #E8E8E8;
+	background-color: #F7F7F7; /*overflow: hidden;*/
+}
+/* Message */
+.swfUpload_message
+{
+	margin: 1em 0;
+	padding: 10px 20px;
+	border: solid 1px #FFDD99;
+	background-color: #FFFFCC;
+	overflow: hidden;
+}
+/* Error */
+.swfUpload_red
+{
+	border: solid 1px #B50000;
+	background-color: #FFEBEB;
+}
+
+/* Current */
+.swfUpload_green
+{
+	border: solid 1px #DDF0DD;
+	background-color: #EBFFEB;
+}
+
+/* Complete */
+.swfUpload_blue
+{
+	border: solid 1px #CEE2F2;
+	background-color: #F0F5FF;
+}
+
+.swfUpload_progressName
+{
+	font-size: 8pt;
+	font-weight: 700;
+	color: #555;
+	width: 323px;
+	height: 14px;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.swfUpload_progressBarInProgress, .swfUpload_progressBarComplete, .swfUpload_progressBarError
+{
+	font-size: 0;
+	width: 0%;
+	height: 5px;
+	background-color: blue;
+	margin-top: 12px;
+}
+
+.swfUpload_progressBarComplete
+{
+	width: 100%;
+	background-color: green;
+	visibility: hidden;
+}
+
+.swfUpload_progressBarError
+{
+	width: 100%;
+	background-color: red;
+	visibility: hidden;
+}
+
+.swfUpload_progressBarStatus
+{
+	margin-top: 2px;
+	width: 337px;
+	font-size: 7pt;
+	font-family: Arial;
+	text-align: left;
+	white-space: nowrap;
+}
+
+a.swfUpload_progressCancel
+{
+	font-size: 0;
+	display: block;
+	height: 14px;
+	width: 14px;
+	background-image: url(/swfupload/images/cancelbutton.gif);
+	background-repeat: no-repeat;
+	background-position: -14px 0px;
+	float: right;
+}
+
+a.swfUpload_progressCancel:hover
+{
+	background-position: 0px 0px;
+}
+
+
+/* -- SWFUpload Object Styles ------------------------------- */
+.swfupload {vertical-align: top;float:left;}
+.swfUpload_progressBarInProgress_BottomMode
+{
+	background-color: blue;
+	text-align: center;
+	color: White;
+}
+.divFileProgressContainer_BottomMode
+{
+	border: #d6d6d6 1px solid;
+	width: 150px;
+	padding: 5px 5px 5px 5px;
+	margin: 5px 0 5px 0;
+}
+
+/*END*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body, dl, dt, dd, ul
+{
+	margin: 0;
+	padding: 0;
+}
+li, dl
+{
+	list-style-type: none;
+}
+.swfupload_main a:link, .swfupload_main a:visited
+{
+	text-decoration: none;
+	color: #333;
+}
+.swfupload_main a:hover
+{
+	text-decoration: underline;
+	color: #0657b2;
+}
+
+
+
+.swfupload_li
+{
+	list-style: none;
+}
+.swfupload_header
+{
+	font: normal 100 12px simsun;
+	width: 100%;
+	height: 22px;
+	line-height: 22px;
+	border-bottom: 1px dotted #d4dcdf;
+	color: #334f67;
+	background: #f5f5f5;
+	overflow: hidden;
+}
+.swfupload_pic_name, .swfupload_pic_state, .swfupload_pic_option, .swfupload_pic_percent
+{
+	float: left;
+}
+.swfupload_pic_name
+{
+	position: relative;
+	width: 35%;
+	text-indent: 15px;
+}
+.swfupload_pic_state
+{
+	width: 20%;
+	text-align: center;
+}
+.swfupload_pic_option
+{
+	width: 25%;
+	overflow: hidden;
+}
+.swfupload_pic_percent
+{
+	width: 18%;
+	text-indent: 20px;
+	text-align: center;
+}
+
+
+.swfupload_main
+{
+	width: 100%;
+	zoom: 1;
+	font: normal 100 12px simsun;
+}
+.swfupload_main li
+{
+	padding: 0;
+	height: 30px;
+	line-height: 30px;
+	border-bottom: 1px dotted #d4dcdf;
+}
+.swfupload_main .swfupload_pic_name
+{
+	position: relative;
+	z-index: 2;
+}
+.swfupload_main .swfupload_pic_name a, .swfupload_main .swfupload_pic_name em
+{
+	display: block;
+	height: 22px;
+	width: 160px;
+	overflow: hidden;
+}
+.swfupload_main .swfupload_pic_name span
+{
+	position: absolute;
+	bottom: 24px;
+	left: 0;
+	z-index: 5; /*display:none;*/
+}
+.swfupload_main .swfupload_pic_name span img
+{
+	border: 1px solid #b5ce85;
+}
+
+
+.uploadpic
+{
+	background: #f5f5f5;
+	padding: 10px;
+	margin: auto;
+}
+.upbatch
+{
+	/*clear:both;*/
+	margin-top: -1px;
+	padding: 10px;
+	border-top: 1px solid #d4e3b3;
+	background: #fff;
+	zoom: 1;
+}
+
+a.swfupload_pic_del
+{
+	margin: 6px auto 0px;
+	width: 17px;
+	display: block;
+	background: url(/swfupload/images/icon.gif) no-repeat 5px -475px;
+	height: 0px;
+	overflow: hidden;
+	padding-top: 16px;
+}
+
+.clearfix:after,.container:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
+.clearfix,.container{display:inline-block;}
+* html .clearfix,* html .container{height:1%;}
+.clearfix,.container{display:block;}
+.clear{clear:both;}
+
+.product-pic-area{width:300px;padding:0;}
+.product-pic-area .action-bar{background:#F0F0F0;border-bottom:3px solid #6F777A;border-top:1px solid #FFF;line-height:30px;padding:0 8px;}
+.product-pic-area .action-bar .btn{margin:3px 0 0 0;height:24px;*padding:2px 0;*height:24px;*width:148px;*overflow:hidden;}
+
+
+
+
+
+
+/* 图片上传框样式开始 */
+.upload_box {width:auto;height:auto;border:#efefef 1px solid;clear:both;overflow:hidden;zoom:1;padding-bottom:5px;}
+/* 图片上传按钮 */
+.upload_box .buttons{padding:2px;border-bottom:#efefef solid 1px;overflow:hidden;zoom:1;margin-bottom:5px;}
+
+/* 图片上传大图预览区 */
+.upload_box .max_pic_box{width:100%;text-align:center;float:left;position:relative;}
+/*.max_pic_box img{width:200px; height:150px;}
+
+/* 图片上传图片缩略区域 */
+.upload_box .thumbs_box{margin: -5px 0 0 -5px;}
+.thumbs_inner {float:left;margin: 5px 0 0 5px;overflow:hidden;zoom:1;}
+.thumbs_inner .current{border:1px solid #333;}
+.thumbs_inner .picbox {display:block;width:80px;height:80px;vertical-align:middle;overflow:hidden;border:1px #ccc dotted;text-align:center;}
+.thumbs_inner .picbox a {height: 80px;width: 80px;text-align: center;display: table-cell;vertical-align: middle;*display: block;*font-size: 80px;*font-family: 'Arial';font-size: 12px;}
+.thumbs_inner .picbox a img{vertical-align:middle;max-width:80px;max-height:80px;}
+.thumbs_inner .thumb_btn_bar {text-align:center;height:20px;background:#f2f2f2;color:#c8c8c8;border-style: solid;border-color: #ccc;border-width: 0 1px 1px 1px;}
+.thumb_btn_bar span{display:inline-block;display:-moz-inline-stack;*display:inline;zoom:1;width:10px;height:10px;font-size:1px;background-image:url(btn_gimg.gif);background-repeat:no-repeat;border:none;padding:0 6px;margin:2px 0 0;overflow:hidden;}
+.thumb_btn_bar i{visibility:hidden;}
+
+span.thumb_btn_view{background-position:center 0;}
+span.thumb_btn_view:hover{background-position:center -50px;}
+span.thumb_btn_delete{background-position:center -99px;font-size: 12px;}
+span.thumb_btn_delete:hover{background-position:center -149px;}
+
+/*删除效果图样式*/
+#uploadDemo_box .max_pic_delete{ background:url(btn_gimg.gif) left -99px no-repeat; width:10px; height:10px; float:left; margin-left:190px;}
+/*#uploadDemo_box  .max_pic_box img{ float:left; clear:both;}*/
+ .max_pic_delete {background:url(btn_gimg.gif) left -99px no-repeat;width:10px;height:10px; }
+ .max_pic_delete:hover{ background:url(btn_gimg.gif) left -149px no-repeat; width:10px; height:10px; cursor:pointer; }
+ 
+.max_pic_box{float:left;overflow: hidden;zoom: 1;display: none;width: 0;height: 0;}
+.max_pic_box  .max_pic_delete {float:left;position:absolute;top:5px;right:5px;}
+#showPic,#showPic_xing{ float:left;}
+#showPic .undefined,#showPic_xing .undefined{ float:left;}
+#showPic .max_pic_box{ float:left; clear:both; width:200px;}
+#showPic .undefined .max_pic_delete{ float:right;}
+#showPic .max_pic_box img{  margin-top:2px; clear:both;}
+#uploadDemo_thumbs_box { overflow: hidden;zoom: 1;}
+
+/*添加商品图片*/
+#showPic_xing .max_pic_box{float:left; clear:both;}
+#showPic_xing .max_pic_box img{  margin-top:4px; clear:both; width:295px; margin-left:5px; _margin-left:0px; float:left;}

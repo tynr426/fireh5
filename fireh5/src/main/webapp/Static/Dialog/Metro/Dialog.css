@@ -1,0 +1,55 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+/* 清除浮动 */
+.clear {width: 0px;display: block;clear: both;font-size: 0;line-height: 0;visibility: hidden;}
+
+/* 盒子 */
+.dilogbox {cursor: default;overflow: hidden;zoom: 1;}
+
+/* 头部上 */
+.dilogbox .box_top_left,
+.dilogbox .box_top_center,
+.dilogbox .box_top_right {height: 3px;overflow: hidden;zoom: 1;font-size: 0;float: left;}
+.dilogbox .box_top_left {background: url(images/ubg.png) 0 0 no-repeat;width: 3px;}
+.dilogbox .box_top_center {background: url(images/top_top_center.png) 0 0 repeat-x;}
+.dilogbox .box_top_right {background: url(images/ubg.png) -8px 0 no-repeat;width: 3px;}
+
+/* 头部中 */
+.dilogbox .box_title_left,
+.dilogbox .box_title,
+.dilogbox .box_title_right {height: 37px;overflow: hidden;zoom: 1;font-size: 0;float: left;}
+.dilogbox .box_title_left {background: url(images/ubg.png) 0 -8px no-repeat;width: 3px;}
+.dilogbox .box_title {/*background: url(images/top_title_center.png) 0 0 repeat-x;*/cursor: move;overflow: visible;position: relative;background-color:#578ec7;}
+.dilogbox .box_title b.box_title_info {height: 34px;display: block;line-height: 34px;font-size: 14px;color: #fff;overflow: hidden;zoom: 1;text-align: center;}
+.dilogbox .box_title span.box_title_buttons {width: 34px;height: 34px;display: block;float: right;position: absolute;top: 0;right: 0;overflow: hidden;zoom: 1;}
+.dilogbox .box_title span.box_title_buttons a.box_title_close {width: 34px;height: 34px;display: block;/*background: url(images/ubg.png) -16px 0 no-repeat;*/overflow: hidden;zoom: 1;-webkit-transition: transform 0.2s ease-in 0.0s;-moz-transition: transform 0.2s ease-in 0.0s;-o-transition: transform 0.2s ease-in 0.0s;transition: transform 0.2s ease-in 0.0s;background:url("images/icon-close.png") 50% 50% no-repeat;}
+/*.dilogbox .box_title span.box_title_buttons a.box_title_close:hover {background-position: -55px 0;-webkit-transform: rotate(15deg);-webkit-transform-origin: 50% 50%;-moz-transform: rotate(15deg);-moz-transform-origin: 50% 50%;-o-transform: rotate(15deg);-o-transform-origin: 50% 50%;transform: rotate(15deg);transform-origin: 50% 50%;}*/
+.dilogbox .box_title_right {background: url(images/ubg.png) -8px -8px no-repeat;width: 3px;}
+
+/* 体部 */
+.dilogbox .box_main_left,
+.dilogbox .box_main,
+.dilogbox .box_main_right {overflow: hidden;zoom: 1;font-size: 0;float: left;}
+.dilogbox .box_main_left {width: 0;background: url(images/body_left.png) 0 0 repeat-y;}
+.dilogbox .box_main {background-color: #fff;}
+.dilogbox .box_main .box_content {margin: 5px;padding: 0;overflow-x: hidden;overflow-y: auto;zoom: 1;font-size: 12px;color: #000;line-height: 20px;_display: inline;}
+.dilogbox .box_main_right {width: 0;background: url(images/body_right.png) 0 0 repeat-y;}
+
+/* 按钮 */
+.dilogbox .box_buttons_left,
+.dilogbox .box_buttons,
+.dilogbox .box_buttons_right {overflow: hidden;zoom: 1;font-size: 0;float: left;}
+.dilogbox .box_buttons_left {width: 3px;background-color: #fff;}
+.dilogbox .box_buttons {background-color: #fff;text-align: center;}
+.dilogbox .box_buttons button {width: 102px;height: 30px;/*background: url(images/ubg.png) 0 -85px no-repeat;*/text-align: center;color: #fff;outline: none;font-size: 14px;font-family: 'Arial','Microsoft YaHei';margin: 0 10px 0 10px;_display: inline;background-color:#838383;}
+.dilogbox .box_buttons button.box_button_focus {background-color:#578ec7;}
+.dilogbox .box_buttons_right {width: 3px;background-color: #fff;}
+
+/* 底部 */
+.dilogbox .box_bottom_left,
+.dilogbox .box_bottom_center,
+.dilogbox .box_bottom_right {height: 20px;overflow: hidden;zoom: 1;font-size: 0;float: left;}
+.dilogbox .box_bottom_left {width: 3px;background: url(images/ubg.png) -92px -20px no-repeat;}
+.dilogbox .box_bottom_center {background-color: #fff;}
+.dilogbox .box_bottom_right {width: 3px;background: url(images/ubg.png) -99px -20px no-repeat;}
