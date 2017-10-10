@@ -62,7 +62,7 @@ public class Company {
 		return false;
 	}
 	public static boolean AutologLogin(String token,HttpServletResponse response){
-		Map<String, String> map = new HashMap<String, String>(); 
+		Map<String, Object> map = new HashMap<String, Object>(); 
 		map.put("Token",token);
 		JsonResult result=new ProxyBase().GetResponse("company", "autologin", map);
 		if(result.getState()==0){

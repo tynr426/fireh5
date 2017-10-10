@@ -34,7 +34,7 @@ public class LoginController {
 	@RequestMapping("/login.do")
 	@ResponseBody
 	public Object login(String username,String password,String code,HttpSession session,HttpServletResponse response){
-		Map<String, String> map = new HashMap<String, String>();   
+		Map<String, Object> map = new HashMap<String, Object>();   
 		map.put("Code",code);
 		map.put("UserName", username);    
 		map.put("Password", password);  
@@ -43,7 +43,7 @@ public class LoginController {
 		if(result.getState()==0){
 			CompanyResult user=JsonUtils.JSONToObj(JsonUtils.objectToJson(result.getData()), CompanyResult.class)	;
 			Company.setCookie(user,response);
-			return new JsonResult();
+			return new JsonResult("");
 		}
 		return result.toString();
 	}

@@ -5,6 +5,35 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="format-detection" content="address=no" />
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+<!-- 初始化 -->
+<link type="text/css" rel="stylesheet" href="/fireh5/Static/Css/style.min.css">
+
+<!-- 内页样式 -->
+<link type="text/css" rel="stylesheet" href="/fireh5/css/device.css">
+
+<script language="javascript" type="text/javascript"
+	src="/fireh5/Static/Js/jquery-1.8.2.js?v=2.0.14.715">
+</script>
+<script type="text/javascript" src="/fireh5/js/basevalue.js">
+</script>
+<script type="text/javascript" src="/fireh5/js/webCompany/device.js">
+</script>
+<script type="text/javascript" src="/fireh5/Static/Js/page.js">
+</script>
+<script type="text/javascript" src="/fireh5/Static/Js/Public.js">
+</script>
+
 </head>
 <body>
     <!--框架-->
