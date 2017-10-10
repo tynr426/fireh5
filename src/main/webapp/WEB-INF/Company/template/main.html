@@ -1,0 +1,51 @@
+
+<script type="text/template" id="OrderCountTemplate_old">
+    <ul class="box box-horizontal">
+        {@each _ as it,index}
+        <!--<li class="box1">
+            <a href="Order/Extract.aspx">
+                <i class="icon code">
+                </i>
+                <p>提取码</p>
+            </a>
+        </li>-->
+        <li class="box1">
+            <a href="Order/List.aspx?status=1">
+                <i class="icon pay">
+                    <em>${it.NotPayCount1}</em>
+                </i>
+                <p>待付款</p>
+            </a>
+        </li>
+        <li class="box1">
+            <a href="Order/List.aspx?status=4">
+                <i class="icon print">
+                    <em>${it.PrintCount}</em>
+                </i>
+                <p>待打印</p>
+            </a>
+        </li>
+        <li class="box1">
+            <a href="Order/List.aspx?status=5">
+                <i class="icon send">
+                    <em>${it.SendCount}</em>
+                </i>
+                <p>待发货</p>
+            </a>
+        </li>
+        <li class="box1">
+            <a href="Order/List.aspx?status=6">
+                <i class="icon take">
+                    <em>${it.ReceiptCount}</em>
+                </i>
+                <p>待收货</p>
+            </a>
+        </li>
+        {@/each}
+    </ul>
+</script>
+<script type="text/template" id="OrderCountTemplate">
+    {@if (parseInt(_[0].NotPayCount1)+parseInt(_[0].PrintCount)+parseInt(_[0].SendCount))>0}
+    [${parseInt(_[0].NotPayCount1)+parseInt(_[0].PrintCount)+parseInt(_[0].SendCount)}]
+    {@/if}
+</script>>
