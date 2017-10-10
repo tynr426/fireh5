@@ -166,7 +166,7 @@ CompanyResult company=Company.getCompany();
                                             <ul>
                                                 <li>
                                                     <!--<a href="/default.aspx?fkway=2">-->
-                                                    <a href="/Supplier/Product/Category.aspx" class="box box-horizontal">
+                                                    <a href="<%=request.getContextPath() %>/company/device/toDevice.do" class="box box-horizontal">
                                                         <span>
                                                             <i class="icon retreat"></i>
                                                             <em>设备录入</em>
