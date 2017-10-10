@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import fire.company.entity.Manager;
+import fire.common.entity.Manager;
 import fire.modules.entity.FormatType;
 import fire.proxy.service.ProxyBase;
 import fire.sdk.utils.JsonResult;
