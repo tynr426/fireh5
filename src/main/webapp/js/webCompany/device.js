@@ -55,7 +55,7 @@ var device={
 				devicejson['list[' + index +'].Value']=arrValue[index].Value;
 			}
 			$.ajax({
-				url:companypath+"/device/add.do",
+				url:path+"/company/device/add.do",
 				type:"post",
 				data:devicejson,
 				dataType:"json",
@@ -76,7 +76,7 @@ var device={
 		},
 		getDevice:function(Id){
 			$.ajax({
-				url:companypath+"/manager/getManager.do",
+				url:path+"/company/manager/getManager.do",
 				type:"post",
 				data:{Id:Id},
 				dataType:"json",
@@ -137,7 +137,7 @@ var device={
 		//获得所有的设备类型
 		getDeviceType:function(){
 			$.ajax({
-				url:companypath+"/deviceType/findAll.do",
+				url:path+"/company/deviceType/findAll.do",
 				async:false,
 				type:"post",
 				dataType:"json",

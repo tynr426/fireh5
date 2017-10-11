@@ -20,7 +20,7 @@
 <link type="text/css" rel="stylesheet" href="/fireh5/Static/Css/style.min.css">
 
 <!-- 内页样式 -->
-<link type="text/css" rel="stylesheet" href="/fireh5/css/device.css">
+<link type="text/css" rel="stylesheet" href="/fireh5/css/device/device.css">
 
 <script language="javascript" type="text/javascript"
 	src="/fireh5/Static/Js/jquery-1.8.2.js?v=2.0.14.715">
@@ -33,7 +33,14 @@
 </script>
 <script type="text/javascript" src="/fireh5/Static/Js/Public.js">
 </script>
-
+<script type="text/javascript" src="/fire/Static/Js/Calendar/WdatePicker.js">
+</script>
+<script type="text/javascript" src="/fire/Static/Js/formValidate.js">
+</script>
+<script type="text/javascript" src="/fire/js/data.json">
+</script>
+<script type="text/javascript" src="/fire/js/data.json">
+</script>
 </head>
 <body>
     <!--框架-->
@@ -47,29 +54,132 @@
                 <div class="dhxt-wrap find-system">
                     <div class="header">
                         <ul class="step-list">
-                            <li tag="step"  class="step1 on"><div><em>1</em><p>验证手机号</p></div></li>
-                            <li tag="step"  class="step2"><div><em>2</em><p>重置密码</p></div></li>
-                            <li tag="step"  class="step3"><div><em>3</em><p>重置成功</p></div></li>
+                            <li tag="step"  class="step1 on"><div><em>1</em><p>设备录入</p></div></li>
+                            <li tag="step"  class="step2"><div><em>2</em><p>参数录入</p></div></li>
+                            <li tag="step"  class="step3"><div><em>3</em><p>录入成功</p></div></li>
                         </ul>
                     </div>
                     <!--验证手机号   元素step1加class:on-->
                     <div tag="step" class="inner-cont divstep1">
                         <div class="main">
-                            <ul class="info">
-                                <li>
-                                    <input type="text" name="ForgetKeyword" class="input_text" id="ForgetKeyword" placeholder="请输入手机号码" value="" onblur="iforget.compare(this);" />
-                                </li>
-                                <li class="yzm">
-                                    <input type="text" name="ForgetMobileCode" class="input_text" id="ForgetMobileCode" value="" placeholder="请输入手机验证" />
-                                    <a href="javascript:void(0);" onclick="iforget.verify(this,0);" id="iforget_verify">获取验证码</a>
-                                </li>
-                            </ul>
-                            <div class="btn-group">
-                                <button type="submit" class="btn yes-btn" id="iforget1">验证</button>
+                            <div class="custom-table">
+    <div class="form" id="DeviceForm">
+        <table border="0" cellpadding="0" cellspacing="0">
+            <colgroup>
+                <col style="width: 150px;" />
+                <col style="width:auto;" />
+                <col style="width: 150px;" />
+                <col style="width:auto;" />
+            </colgroup>
+
+            <tbody id="tbDevice">
+                <tr>
+                    <th>
+                        <p class="name rm">
+                            <em class="red">*</em>设备类型：
+<input type="hidden" id="Id" />
+                        </p>
+                    </th>
+                    <td>
+                        <div class="selectbox">
+                            <select id="DeviceTypeId" onchange="device.deviceTypeChange(this)" error="请选择设备！" validate="isnull">
+								<option value="">选择设备</option>
+							</select>
+                        </div>
+                    </td>
+<th>
+                        <p class="name rm">
+                            <em class="red">*</em>生产厂家：
+                        </p>
+                    </th>
+                    <td>
+                        <div class="inputbox">
+                            <input type="text" name="Manufacturer" id="Manufacturer" error="输入格式不正确！" validate="isnull|username" maxlength="20" value="" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                 	<th>
+                        <p class="name rm">
+                            <em class="red">*</em>型号：
+                        </p>
+                    </th>
+                    <td>
+                        <div class="inputbox">
+                            <input type="text" name="Model" id="Model" error="输入格式不正确！" validate="isnull" maxlength="20" value="" />
+                        </div>
+                    </td><th>
+                        <p class="name rm">
+                            <em class="red">*</em>规格：
+                        </p>
+                    </th>
+                    <td>
+                        <div class="inputbox">
+                            <input type="text" name="Spec" id="Spec" error="输入格式不正确！" validate="isnull" maxlength="20" value="" />
+                        </div>
+                    </td>
+                </tr>
+				<tr>
+					<th>
+                        <p class="name rm">
+                            <em class="red">*</em>录入时间：
+                        </p>
+                    </th>
+                    <td>
+                        <div class="inputbox">
+                            <input type="text" name="AddTime" id="AddTime" readonly=readonly onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd'});" error="输入格式不正确！" validate="isnull"/>
+                        </div>
+                    </td>
+				</tr>				
+                <tr>
+					<th>
+                            <p class="name">
+                                <em class="red">*</em>安装位置：
+                            </p>
+                        </th>
+                        <td colspan="3">
+							<div class="selectbox">
+                                <select id="Buildings" name="Buildings" validate="isnull" error="输入格式不正确！">
+									<option value="">栋数</option>
+                                    <option value='1'>1</option>
+ 									<option value='2'>2</option>
+                                    <option value='3'>3</option>
+                                    <option value='4'>4</option>
+                                    <option value='5'>5</option>
+                                    <option value='6'>6</option>
+                                    <option value='7'>7</option>
+                                    <option value='8'>8</option>
+                                    <option value='9'>9</option>
+                                    <option value='10'>10</option>
+                                </select>
                             </div>
-                            <div class="apply-button box box-horizontal">
-                                <div class="text box1">已有账号，点击登录</div>
-                                <a class="btn" href="/join/login.aspx?role=<$var Role/>">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+                            <div class="selectbox">
+                                <select id="Floor" name="Floor" validate="isnull" error="输入格式不正确！">
+                                 <option value="">楼层</option>
+                                </select>
+                            </div>
+ 							<div class="selectbox">
+                                <select id="Position" name="Position" validate="isnull" error="输入格式不正确！">
+                                  <option value="">方位</option>
+                                </select>
+                            </div>
+							<div class="selectbox">
+                                <select id="Passageway" name="Passageway" validate="isnull" error="输入格式不正确！" >
+                                 <option value="">通道</option>
+                                </select>
+                            </div>
+  							<div class="inputbox">
+                            <input type="text" name="Detail" id="Detail" error="输入格式不正确！" placeholder="详细位置" validate="isnull|username" maxlength="20" value="" />
+                        </div>
+                </td>
+                </tr>
+				
+            </tbody>
+        </table>
+    </div>
+</div>
+                            <div class="btn-group">
+                                <button type="button" onclick="device.addDevice()" class="btn yes-btn" id="iforget1">保存</button>
                             </div>
                         </div>
                     </div>
@@ -109,10 +219,12 @@
         <!--//体部-->
     </section>
     <!--//框架-->
-    <script type="text/javascript">
-        $e(function () {
-            iforget.init(1);
-        });
-    </script>
+    
 </body>
+<jsp:include  page="template/device.html"></jsp:include>
+<script type="text/javascript">
+	$(function() {
+		device.deviceFinish();
+	});
+</script>
 </html>
