@@ -66,7 +66,7 @@ public class Company {
 		map.put("Token",token);
 		JsonResult result=new ProxyBase().GetResponse("company", "autologin", map);
 		if(result.getState()==0){
-			CompanyResult user=JsonUtils.JSONToObj(JsonUtils.objectToJson(result.getData()), CompanyResult.class)	;
+			CompanyResult user=JsonUtils.JSONToObj(JsonUtils.objectToJson(result.getData()), CompanyResult.class);
 			setCookie(user,response);
 			return true;
 		}

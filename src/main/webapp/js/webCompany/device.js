@@ -1,7 +1,6 @@
 var device={
 		deviceTypeList:null,
 		addDevice:function(obj){
-			if(!$("#DeviceForm").formValidate())return;
 			var DeviceTypeId = $("#DeviceTypeId").val().trim();
 			var Manufacturer = $("#Manufacturer").val().trim();
 			var Model = $("#Model").val().trim();
