@@ -3,228 +3,232 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<meta name="format-detection" content="telephone=no" />
-<meta name="format-detection" content="address=no" />
-
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
-
-<!-- 初始化 -->
-<link type="text/css" rel="stylesheet" href="/fireh5/Static/Css/style.min.css">
-
-<!-- 内页样式 -->
-<link type="text/css" rel="stylesheet" href="/fireh5/css/device/device.css">
-
-<script language="javascript" type="text/javascript"
-	src="/fireh5/Static/Js/jquery-1.8.2.js?v=2.0.14.715">
-</script>
-<script type="text/javascript" src="/fireh5/js/basevalue.js">
-</script>
-<script type="text/javascript" src="/fireh5/js/webCompany/device.js">
-</script>
-<script type="text/javascript" src="/fireh5/Static/Js/page.js">
-</script>
-<script type="text/javascript" src="/fireh5/Static/Js/Public.js">
-</script>
-<script type="text/javascript" src="/fire/Static/Js/Calendar/WdatePicker.js">
-</script>
-<script type="text/javascript" src="/fire/Static/Js/formValidate.js">
-</script>
-<script type="text/javascript" src="/fire/js/data.json">
-</script>
-<script type="text/javascript" src="/fire/js/data.json">
-</script>
+<jsp:include page="block/Meta-2.html" ></jsp:include>
 </head>
 <body>
-    <!--框架-->
+<!--框架-->
     <section class="ui-wrap">
-      
         <!--体部-->
         <article class="ui-page">
             <!--内盒-->
             <div class="ui-content iscroll-wrapper">
-                <!--注册-->
-                <div class="dhxt-wrap find-system">
-                    <div class="header">
-                        <ul class="step-list">
-                            <li tag="step"  class="step1 on"><div><em>1</em><p>设备录入</p></div></li>
-                            <li tag="step"  class="step2"><div><em>2</em><p>参数录入</p></div></li>
-                            <li tag="step"  class="step3"><div><em>3</em><p>录入成功</p></div></li>
+                <!--个人信息-->
+                <div class="usercenter-info" id="Profile">
+                    <!--用户基本信息-->
+                    <div class="user-info box box-horizontal">
+                        <!--用户头像-->
+                        <div class="pic load">
+                            <a href="javascript:void(0);">
+                                <img lazy_src="<$var sources.ImageDomain/><$var user.face>isNull:</$var>" alt="" error="~/Images/user-pic.png" />
+                            </a>
+                        </div>
+                        <!--//用户头像-->
+                        <!--用户信息-->
+                        <div class="info box1">
+                            <p class="name">会员名1：<em>                                
+                                           <$var userinfo.NickName>Ifnull:</$var>     
+                                </em></p>
+                            <p class="time">注册时间：<em><$var userinfo.regdate>IfNull:</$var></em></p>
+                        </div>
+                        <!--//用户信息-->
+                        <!--信息编辑-->
+                        <div class="edit">
+                            <a href="javascript:void(0);" class="btn" edit='off' onclick="editUserInfo(this);"></a>
+                        </div>
+                        <!--//信息编辑-->
+                    </div>
+                    <!--//用户基本信息-->
+                    <!--详细信息-->
+                    <div class="user-area" edit-area>
+                        <ul>
+                            <li class="box box-horizontal">
+                                <p class="name">昵称：</p>
+                               
+                                <div class="edit-box box1">
+                                    <div class="inputbox">
+                                        <input type="text" value="" name="" id="" placeholder="粉红猪" validate="">
+                                    </div>
+                                </div>
+                            </li>
+                            
+                            <li class="box box-horizontal">
+                                <p class="name">生日：</p>
+                               
+                                <div class="edit-box box1">
+                                    <div class="selectarea">
+                                        <div class="selectbox">
+                                            <select name="BirthYear" id="BirthYear" onchange="user.loadBirth();" validate="isnull" error="请选择生日年份">
+                                                <option value="-1" selected="selected">年份</option>
+                                            </select>
+                                        </div>
+
+                                        <span class="tips">年</span>
+
+                                        <div class="selectbox">
+                                            <select name="BirthMonth" id="BirthMonth" onchange="user.loadBirthDay(this)" validate="isnull" error="请选择生日月份">
+                                                <option value="-1" selected="selected">月份</option>
+                                            </select>
+                                        </div>
+
+                                        <span class="tips">月</span>
+
+                                        <div class="selectbox">
+                                            <select name="BirthDay" id="BirthDay" validate="isnull" error="请选择生日日期">
+                                                <option value="-1" selected="selected">日期</option>
+                                            </select>
+                                        </div>
+
+                                        <span class="tips">日</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <!--<li class="box box-horizontal">
+                                <p class="name">性别：</p>
+                                <div class="text box1">女</div>
+                                <div class="edit-box box1">
+                                    <input type="radio" value="1" name="Sex" id="SexMale">
+                                    <label>男性</label>
+
+                                    <input type="radio" value="2" name="Sex" id="SexFemale">
+                                    <label>女性</label>
+                                    <input type="radio" value="0" name="Sex" id="SexSecret">
+                                    <label>保密</label>
+                                </div>
+                            </li>-->
+                            <li class="box box-horizontal">
+                                <p class="name">手机：</p>
+                                <div class="text box1"><$var userinfo.mobile /></div>
+                                <div class="edit-box box1">
+                                    <div class="inputbox">
+                                        <input type="text" value="<$var userinfo.mobile></$var>" name="Mobile" id="Mobile" placeholder="" validate="isnull|mobile" error="请输入手机">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="box box-horizontal">
+                                <p class="name">邮箱：</p>
+                                <div class="text box1"><$var userinfo.email /></div>
+                                <div class="edit-box box1">
+                                    <div class="inputbox">
+                                        <input type="text" value="<$var userinfo.email></$var>" name="Email" id="Email" placeholder="" validate="email">
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
-                    <!--验证手机号   元素step1加class:on-->
-                    <div tag="step" class="inner-cont divstep1">
-                        <div class="main">
-                            <div class="custom-table">
-    <div class="form" id="DeviceForm">
-        <table border="0" cellpadding="0" cellspacing="0">
-            <colgroup>
-                <col style="width: 150px;" />
-                <col style="width:auto;" />
-                <col style="width: 150px;" />
-                <col style="width:auto;" />
-            </colgroup>
+                    <!--//详细信息-->
+                    <!--详细信息-->
+                    <div class="user-area" edit-area>
+                        <ul>
+                            <li class="box box-horizontal">
+                                <p class="name">区域：</p>
+                                <div class="text box1"><$var userinfo.Province/> <$var userinfo.City /> <$var userinfo.Area /></div>
+                                <div class="edit-box box1">
+                                    <div class="selectarea">
+                                        <div class="selectbox">
+                                            <select id="Province" onchange="area.loadArea(this,'City');" error="请输入省" validate="isnull">
+                                                <option value="-1">请选择</option>
+                                            </select>
+                                        </div>
 
-            <tbody id="tbDevice">
-                <tr>
-                    <th>
-                        <p class="name rm">
-                            <em class="red">*</em>设备类型：
-<input type="hidden" id="Id" />
-                        </p>
-                    </th>
-                    <td>
-                        <div class="selectbox">
-                            <select id="DeviceTypeId" onchange="device.deviceTypeChange(this)" error="请选择设备！" validate="isnull">
-								<option value="">选择设备</option>
-							</select>
-                        </div>
-                    </td>
-<th>
-                        <p class="name rm">
-                            <em class="red">*</em>生产厂家：
-                        </p>
-                    </th>
-                    <td>
-                        <div class="inputbox">
-                            <input type="text" name="Manufacturer" id="Manufacturer" error="输入格式不正确！" validate="isnull|username" maxlength="20" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                 	<th>
-                        <p class="name rm">
-                            <em class="red">*</em>型号：
-                        </p>
-                    </th>
-                    <td>
-                        <div class="inputbox">
-                            <input type="text" name="Model" id="Model" error="输入格式不正确！" validate="isnull" maxlength="20" value="" />
-                        </div>
-                    </td><th>
-                        <p class="name rm">
-                            <em class="red">*</em>规格：
-                        </p>
-                    </th>
-                    <td>
-                        <div class="inputbox">
-                            <input type="text" name="Spec" id="Spec" error="输入格式不正确！" validate="isnull" maxlength="20" value="" />
-                        </div>
-                    </td>
-                </tr>
-				<tr>
-					<th>
-                        <p class="name rm">
-                            <em class="red">*</em>录入时间：
-                        </p>
-                    </th>
-                    <td>
-                        <div class="inputbox">
-                            <input type="text" name="AddTime" id="AddTime" readonly=readonly onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd'});" error="输入格式不正确！" validate="isnull"/>
-                        </div>
-                    </td>
-				</tr>				
-                <tr>
-					<th>
-                            <p class="name">
-                                <em class="red">*</em>安装位置：
-                            </p>
-                        </th>
-                        <td colspan="3">
-							<div class="selectbox">
-                                <select id="Buildings" name="Buildings" validate="isnull" error="输入格式不正确！">
-									<option value="">栋数</option>
-                                    <option value='1'>1</option>
- 									<option value='2'>2</option>
-                                    <option value='3'>3</option>
-                                    <option value='4'>4</option>
-                                    <option value='5'>5</option>
-                                    <option value='6'>6</option>
-                                    <option value='7'>7</option>
-                                    <option value='8'>8</option>
-                                    <option value='9'>9</option>
-                                    <option value='10'>10</option>
-                                </select>
-                            </div>
-                            <div class="selectbox">
-                                <select id="Floor" name="Floor" validate="isnull" error="输入格式不正确！">
-                                 <option value="">楼层</option>
-                                </select>
-                            </div>
- 							<div class="selectbox">
-                                <select id="Position" name="Position" validate="isnull" error="输入格式不正确！">
-                                  <option value="">方位</option>
-                                </select>
-                            </div>
-							<div class="selectbox">
-                                <select id="Passageway" name="Passageway" validate="isnull" error="输入格式不正确！" >
-                                 <option value="">通道</option>
-                                </select>
-                            </div>
-  							<div class="inputbox">
-                            <input type="text" name="Detail" id="Detail" error="输入格式不正确！" placeholder="详细位置" validate="isnull|username" maxlength="20" value="" />
-                        </div>
-                </td>
-                </tr>
-				
-            </tbody>
-        </table>
-    </div>
-</div>
-                            <div class="btn-group">
-                                <button type="button" onclick="device.addDevice()" class="btn yes-btn" id="iforget1">保存</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!--//验证手机号-->
-                    <!--重置密码     元素step1、step2加class:on-->
-                    <div tag="step" class="inner-cont divstep2" style="display:none;">
-                        <div class="main">
-                            <ul class="info">
-                                <li>
-                                    <input type="password" id="ForgetPassword" name="ForgetPassword" class="input_text"  placeholder="请输入新密码"/>
-                                </li>
-                                <li>
-                                    <input type="password" id="ForgetPasswordBak" name="ForgetPasswordBak" class="input_text" placeholder="请确认新密码"  />
-                                </li>
-                            </ul>
-                            <div class="btn-group">
-                                <button type="submit" class="btn yes-btn" id="iforget2">提交</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!--//重置密码-->
-                    <!--重置成功     元素step1、step2、step3加class:on-->
-                    <div tag="step" class="inner-cont divstep3" style="display:none;">
-                        <div class="success">
-                            <p><i></i>密码重置成功，<a href="/join/login.aspx?role=<$var Role/>">去登录！</a></p>
-                        </div>
-                    </div>
-                    <!--//重置成功-->
+                                        <span class="tips">省</span>
 
+                                        <div class="selectbox">
+                                            <select id="City" onchange="area.loadArea(this,'Area');" error="请输入市" validate="isnull">
+                                                <option value="-1">请选择</option>
+                                            </select>
+                                        </div>
 
-                  
+                                        <span class="tips">市</span>
+
+                                        <div class="selectbox">
+                                            <select id="Area" error="请输入区/县" validate="isnull">
+                                                <option value="-1">请选择</option>
+                                            </select>
+                                        </div>
+
+                                        <span class="tips">区/县</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="box box-horizontal">
+                                <p class="name">详细地址：</p>
+                                <div class="text box1">
+                                    <$var userinfo.address />
+                                </div>
+                                <div class="edit-box box1">
+                                    <div class="textareabox">
+                                        <textarea name="Address" id="Address" rows="1" cols=""><$var userinfo.address></$var></textarea>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--//详细信息-->
+
+                    <div class="button box box-horizontal" style="display:none" id="btnEdit">
+                        <a href="javascript:void(0);" class="btn box1 seccess" onclick="user.editUserExtension();">确定修改</a>
+                        <a href="javascript:void(0);" class="btn box1 cancel" onclick="cancel()">取消</a>
+                    </div>
                 </div>
-                <!--//注册-->
+                <!--//个人信息-->
             </div>
             <!--//内盒-->
         </article>
         <!--//体部-->
     </section>
     <!--//框架-->
-    
 </body>
-<jsp:include  page="template/device.html"></jsp:include>
-<script type="text/javascript">
-	$(function() {
-		device.deviceFinish();
-	});
-</script>
 </html>
+
+<script type="text/javascript">
+    $(function () {
+        var json = $.parseJSON('<$var UserInfoJson/>');
+        user.showProfile(json[0]);
+    });
+</script>
+<body>
+<script type="text/javascript" language="javascript" charset="utf-8">
+    //编辑
+    var editUserInfo = function (obj) {
+        if (!obj.hasAttribute('edit')) { return; }
+
+        var edit_panel = $('*[edit-area]');
+
+        if (edit_panel.length <= 0) { return; }
+
+        var i = 0;
+
+        if (obj.getAttribute('edit') === 'off') {
+            obj.setAttribute('edit', 'on');
+            $("#btnEdit").show();
+        } else {
+            obj.setAttribute('edit', 'off');
+            $("#btnEdit").hide();
+        }
+
+        if (obj.getAttribute('edit') === 'off') {
+            for (; i < edit_panel.length; i++) {
+                $(edit_panel[i]).removeClass('edit');
+            }
+        } else {
+            for (; i < edit_panel.length; i++) {
+                $(edit_panel[i]).addClass('edit');
+            }
+        }
+
+        //iScroll刷新
+        if ($.iscroll) {
+            $.iscroll.refresh();
+        }
+
+        //自定义单选复选
+        if (typeof $().customCheck === 'function') {
+            $(document).customCheck();
+        }
+    };
+    var cancel = function () {
+        console.log($("a[edit='on']"));
+        editUserInfo($("a[edit='on']")[0]);
+    }
+</script>
+  
