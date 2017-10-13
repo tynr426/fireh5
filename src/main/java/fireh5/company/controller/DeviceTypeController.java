@@ -26,23 +26,10 @@ public class DeviceTypeController {
 	
 	@RequestMapping("/findAll.do")
 	@ResponseBody	
-	public Object getfindAll(DeviceTypeResult dtp){
-		Map<String, Object> map;
-		try {
-			map = DTOBeanUtils.convertBeanToMap(dtp);
-			return new ProxyBase().GetResponse("company.deviceType", "findAll", map);
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return new JsonResult(e);
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return new JsonResult(e);
-		} catch (IntrospectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return new JsonResult(e);
-		}
+	public Object getfindAll(){
+		Map<String, Object> map=new HashMap<String,Object>();
+				
+	    return new ProxyBase().GetResponse("company.deviceType", "findAll", map);
+		
 	}
 }

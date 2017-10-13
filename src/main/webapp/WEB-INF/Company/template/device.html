@@ -37,192 +37,63 @@ ${dict.passageway[(passageway)]}
         </tr>
         
     </script>
-<script type="text/x-jquery-tmpl" id="DeviceFormTemplate">
-    <div class="custom-table">
-    <div class="form" id="DeviceForm">
-        <table border="0" cellpadding="0" cellspacing="0">
-            <colgroup>
-                <col style="width: 150px;" />
-                <col style="width:auto;" />
-                <col style="width: 150px;" />
-                <col style="width:auto;" />
-            </colgroup>
 
-            <tbody id="tbDevice">
-                <tr>
-                    <th>
-                        <p class="name rm">
-                            <em class="red">*</em>设备类型：
-<input type="hidden" id="Id" />
-                        </p>
-                    </th>
-                    <td>
-                        <div class="selectbox">
-                            <select id="DeviceTypeId" onchange="device.deviceTypeChange(this)" error="请选择设备！" validate="isnull">
-								<option value="">选择设备</option>
-							</select>
-                        </div>
-                    </td>
-<th>
-                        <p class="name rm">
-                            <em class="red">*</em>生产厂家：
-                        </p>
-                    </th>
-                    <td>
-                        <div class="inputbox">
-                            <input type="text" name="Manufacturer" id="Manufacturer" error="输入格式不正确！" validate="isnull|username" maxlength="20" value="" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                 	<th>
-                        <p class="name rm">
-                            <em class="red">*</em>型号：
-                        </p>
-                    </th>
-                    <td>
-                        <div class="inputbox">
-                            <input type="text" name="Model" id="Model" error="输入格式不正确！" validate="isnull" maxlength="20" value="" />
-                        </div>
-                    </td><th>
-                        <p class="name rm">
-                            <em class="red">*</em>规格：
-                        </p>
-                    </th>
-                    <td>
-                        <div class="inputbox">
-                            <input type="text" name="Spec" id="Spec" error="输入格式不正确！" validate="isnull" maxlength="20" value="" />
-                        </div>
-                    </td>
-                </tr>
-				<tr>
-					<th>
-                        <p class="name rm">
-                            <em class="red">*</em>录入时间：
-                        </p>
-                    </th>
-                    <td>
-                        <div class="inputbox">
-                            <input type="text" name="AddTime" id="AddTime" readonly=readonly onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd'});" error="输入格式不正确！" validate="isnull"/>
-                        </div>
-                    </td>
-				</tr>				
-                <tr>
-					<th>
-                            <p class="name">
-                                <em class="red">*</em>安装位置：
-                            </p>
-                        </th>
-                        <td colspan="3">
-							<div class="selectbox">
-                                <select id="Buildings" name="Buildings" validate="isnull" error="输入格式不正确！">
-									<option value="">栋数</option>
-                                    <option value='1'>1</option>
- 									<option value='2'>2</option>
-                                    <option value='3'>3</option>
-                                    <option value='4'>4</option>
-                                    <option value='5'>5</option>
-                                    <option value='6'>6</option>
-                                    <option value='7'>7</option>
-                                    <option value='8'>8</option>
-                                    <option value='9'>9</option>
-                                    <option value='10'>10</option>
-                                </select>
-                            </div>
-                            <div class="selectbox">
-                                <select id="Floor" name="Floor" validate="isnull" error="输入格式不正确！">
-                                 <option value="">楼层</option>
-                                </select>
-                            </div>
- 							<div class="selectbox">
-                                <select id="Position" name="Position" validate="isnull" error="输入格式不正确！">
-                                  <option value="">方位</option>
-                                </select>
-                            </div>
-							<div class="selectbox">
-                                <select id="Passageway" name="Passageway" validate="isnull" error="输入格式不正确！" >
-                                 <option value="">通道</option>
-                                </select>
-                            </div>
-  							<div class="inputbox">
-                            <input type="text" name="Detail" id="Detail" error="输入格式不正确！" placeholder="详细位置" validate="isnull|username" maxlength="20" value="" />
-                        </div>
-                </td>
-                </tr>
-				
-            </tbody>
-        </table>
-    </div>
-</div>
-    </script>
-    
-    <script type="text/x-jquery-tmpl" id="DeviceTypeParameterFormTemplate">
+<script type="text/x-jquery-tmpl" id="DeviceTypeParameterFormTemplate">
 {{if (required=="1")}} 
- <tr>
-    <th>
-        <p class="name rm">
-			
-            <em class="red">*</em>
-			
-			${description}：
-        </p>
-    </th>
+<li class="box box-horizontal">
+						<p class="name"> 
+ <em class="red">*</em>${description}：</p>
 
-    <td colspan="${colspan}">
+<div class="edit-box box1">
  {{if (editorType=="text")}}
- <div class="inputbox">
-            <input type="text"  id="parameter_${id}" error="输入格式不正确！" validate="isnull|username" maxlength="20" value="" />
-  </div>
+<div class="inputbox">
+<input type="text" id="parameter_${id}" error="输入格式不正确！" validate="isnull|username" maxlength="20" value="" />
+</div>
   {{else (editorType=="texts")}}
-
 	{{each(j,child) candidate}}
- 	<div class="inputbox">
-     <input type="text" style='width:40px' placeholder="${child.Field}" id="parameter_${id}_${j}"  error="输入格式不正确！" validate="isnull|username" maxlength="20" value="" />
-  	</div>
-	{{/each}}
+<div class="inputbox">
+	<input type="text" style='width:40px' placeholder="${child.Field}" id="parameter_${id}_${j}"  error="输入格式不正确！" validate="isnull|username" maxlength="20" value="" />
+</div>
+{{/each}}
  {{else (editorType=="select")}}
-  <div class="selectbox">
-            <select id="parameter_${id}" error="请选择！" validate="isnull">
-				{{each(j,child) candidate}}
+<div class="selectarea">
+	<div class="selectbox">
+		<select id="parameter_${id}" error="请选择！" validate="isnull">
+          {{each(j,child) candidate}}
 				<option value="${child.Value}">${child.Field}</option>
-				{{/each}}
-			</select>
-        </div>
+		  {{/each}}								
+	</select>
+	</div>
+</div>
  {{/if}}
-      
-    </td>
-</tr>
+	</li>
 {{else}}
- <tr>
-    <th>
-        <p class="name rm">
+<li class="box box-horizontal">
+	<p class="name"> ${description}：</p>
 
-			${description}：
-        </p>
-    </th>
-
-    <td colspan="${colspan}">
- {{if (editorType=="text")}}
- <div class="inputbox">
-            <input type="text"  id="parameter_${id}"  maxlength="20" value="" />
-  </div>
+	<div class="edit-box box1">
+ 	{{if (editorType=="text")}}
+	<div class="inputbox">
+	<input type="text" id="parameter_${id}" error="输入格式不正确！" validate="true" maxlength="20" value="" />
+	</div>
   {{else (editorType=="texts")}}
-
 	{{each(j,child) candidate}}
- 	<div class="inputbox">
-     <input type="text" style='width:40px' placeholder="${child.Field}" id="parameter_${id}_${j}" maxlength="20" value="" />
-  	</div>
-	{{/each}}
+<div class="inputbox">
+	<input type="text" style='width:40px' placeholder="${child.Field}" id="parameter_${id}_${j}"  error="输入格式不正确！" validate="true" maxlength="20" value="" />
+</div>
+{{/each}}
  {{else (editorType=="select")}}
-  <div class="selectbox">
-            <select id="parameter_${id}">
-				{{each(j,child) candidate}}
+<div class="selectarea">
+	<div class="selectbox">
+		<select id="parameter_${id}" error="请选择！" >
+          {{each(j,child) candidate}}
 				<option value="${child.Value}">${child.Field}</option>
-				{{/each}}
-			</select>
-        </div>
- {{/if}}    
-    </td>
-</tr>
+		  {{/each}}								
+	</select>
+	</div>
+</div>
+ {{/if}}
+	</li>
+ 
 {{/if}}
     </script>

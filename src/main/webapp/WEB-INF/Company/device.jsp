@@ -1,5 +1,5 @@
-<%@page import="fireh5.web.utils.Device"%>
- <%@ page import="fire.common.entity.DeviceTypeResult" %>
+
+<%@ page import="fire.common.entity.DeviceTypeResult"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -7,12 +7,11 @@
 <head>
 <jsp:include page="block/Meta-2.html"></jsp:include>
 <link type="text/css" rel="stylesheet"
-	href="/fireh5/Static/Js/Calendar/skin/WdatePicker.css"/>
-<script type="text/javascript" src="/fireh5/Static/Js/Calendar/WdatePicker.js">
+	href="/fireh5/Static/Js/Calendar/skin/WdatePicker.css" />
+<script type="text/javascript"
+	src="/fireh5/Static/Js/Calendar/WdatePicker.js">
 </script>
-<%
-	DeviceTypeResult dtr = Device.getDTR() ;
-%> 
+
 </head>
 <body>
 	<!--框架-->
@@ -34,20 +33,20 @@
 				<!--用户信息-->
 				<div class="info box1">
 					<p class="name">
-						公司名称：<em> <%=dtr.getName() %></em>
+						公司名称：<em> </em>
 					</p>
 				</div>
 				<!--//用户信息-->
 				<!--信息编辑-->
 				<div class="edit">
-					<a href="javascript:void(0);" class="btn" edit='off'
+					<a href="javascript:void(0);" class="btn" edit='on'
 						onclick="editUserInfo(this);"></a>
 				</div>
 				<!--//信息编辑-->
 			</div>
 			<!--//用户基本信息-->
 			<!--详细信息-->
-			<div class="user-area" edit-area>
+			<div class="user-area edit" id="firstStep" edit-area>
 				<ul>
 					<li class="box box-horizontal">
 						<p class="name">设备类型：</p>
@@ -55,12 +54,12 @@
 						<div class="edit-box box1">
 							<div class="selectarea">
 								<div class="selectbox">
-									<select id="DeviceTypeId" onchange=""
-										error="请选择设备" validate="isnull">
+									<select id="DeviceTypeId" onchange="device.deviceTypeChange(this)" error="请选择设备"
+										validate="isnull">
 										<option value="-1">请选择</option>
 									</select>
 								</div>
-						</div>
+							</div>
 					</li>
 					<li class="box box-horizontal">
 						<p class="name">生产厂家：</p>
@@ -78,17 +77,19 @@
 
 						<div class="edit-box box1">
 							<div class="inputbox">
-                            <input type="text" name="Model" id="Model" error="输入格式不正确！" validate="isnull" maxlength="20" value="" />
-                        	</div>
+								<input type="text" name="Model" id="Model" error="输入格式不正确！"
+									validate="isnull" maxlength="20" value="" />
+							</div>
 						</div>
 					</li>
 					<li class="box box-horizontal">
 						<p class="name">规格：</p>
 
 						<div class="edit-box box1">
-							 <div class="inputbox">
-                            <input type="text" name="Spec" id="Spec" error="输入格式不正确！" validate="isnull" maxlength="20" value="" />
-                        	</div>
+							<div class="inputbox">
+								<input type="text" name="Spec" id="Spec" error="输入格式不正确！"
+									validate="isnull" maxlength="20" value="" />
+							</div>
 						</div>
 					</li>
 					<li class="box box-horizontal">
@@ -96,8 +97,10 @@
 
 						<div class="edit-box box1">
 							<div class="inputbox">
-                            <input type="text" name="AddTime" id="AddTime" readonly=readonly onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd'});" error="输入格式不正确！" validate="isnull"/>
-                        </div>
+								<input type="text" name="AddTime" id="AddTime" readonly=readonly
+									onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd'});"
+									error="输入格式不正确！" validate="isnull" />
+							</div>
 						</div>
 					</li>
 					<!--<li class="box box-horizontal">
@@ -114,10 +117,6 @@
                                 </div>
                             </li>-->
 				</ul>
-			</div>
-			<!--//详细信息-->
-			<!--详细信息-->
-			<div class="user-area" edit-area>
 				<ul>
 					<li class="box box-horizontal">
 						<p class="name">安装位置：</p>
@@ -126,68 +125,83 @@
 						<div class="edit-box box1">
 							<div class="selectarea">
 								<div class="selectbox">
-									<select id="Buildings" name="Buildings" validate="isnull" error="输入格式不正确！">
-									<option value="">栋数</option>
-                                    <option value='1'>1</option>
- 									<option value='2'>2</option>
-                                    <option value='3'>3</option>
-                                    <option value='4'>4</option>
-                                    <option value='5'>5</option>
-                                    <option value='6'>6</option>
-                                    <option value='7'>7</option>
-                                    <option value='8'>8</option>
-                                    <option value='9'>9</option>
-                                    <option value='10'>10</option>
-                                </select>
+									<select id="Buildings" name="Buildings" validate="isnull"
+										error="输入格式不正确！">
+										<option value="">栋数</option>
+										<option value='1'>1</option>
+										<option value='2'>2</option>
+										<option value='3'>3</option>
+										<option value='4'>4</option>
+										<option value='5'>5</option>
+										<option value='6'>6</option>
+										<option value='7'>7</option>
+										<option value='8'>8</option>
+										<option value='9'>9</option>
+										<option value='10'>10</option>
+									</select>
 								</div>
 
 								<span class="tips">栋</span>
 
 								<div class="selectbox">
-									<select id="Floor" name="Floor" validate="isnull" error="输入格式不正确！">
-                                 <option value="">楼层</option>
-                                </select>
+									<select id="Floor" name="Floor" validate="isnull"
+										error="输入格式不正确！">
+										<option value="">楼层</option>
+									</select>
 								</div>
 
 								<span class="tips">楼</span>
 
 								<div class="selectbox">
-									<select id="Position" name="Position" validate="isnull" error="输入格式不正确！">
-                                  <option value="">方位</option>
-                                </select>
+									<select id="Position" name="Position" validate="isnull"
+										error="输入格式不正确！">
+										<option value="">方位</option>
+									</select>
 								</div>
 
 								<span class="tips">方位</span>
 								<div class="selectbox">
-									<select id="Passageway" name="Passageway" validate="isnull" error="输入格式不正确！" >
-                                 <option value="">通道</option>
-                                </select>
+									<select id="Passageway" name="Passageway" validate="isnull"
+										error="输入格式不正确！">
+										<option value="">通道</option>
+									</select>
 								</div>
 
-								<span class="tips">通道</span>
+								<span class="tips"></span>
 							</div>
 						</div>
 					</li>
 					<li class="box box-horizontal">
 						<p class="name">详细地址：</p>
-						<div class="text box1"><$var userinfo.address /></div>
+
 						<div class="edit-box box1">
 							<div class="textareabox">
-								<textarea name="Detail" id="Detail" rows="1" cols=""><$var userinfo.address></$var></textarea>
+								<textarea name="Detail" id="Detail" rows="1" cols=""></textarea>
 							</div>
 						</div>
 					</li>
 				</ul>
+				<div class="button box box-horizontal" style="display:" id="btnEdit">
+					<a href="javascript:void(0);" class="btn box1 seccess" onclick="device.stepTrigger()">下一步</a>
+					
+				</div>
+			</div>
+			<!--//详细信息-->
+			<!--详细信息-->
+			<div class="user-area edit" id="secondStep" style="display:none" edit-area>
+
+				<ul id="parameterList">
+
+				</ul>
+				<div class="button box box-horizontal"  >
+					<a href="javascript:void(0);" class="btn box1 seccess" onclick="">保存</a>
+					<a href="javascript:void(0);" class="btn box1 cancel"
+						onclick="device.stepTrigger()">上一步</a>
+				</div>
 			</div>
 			<!--//详细信息-->
 
-			<div class="button box box-horizontal" style="display: none"
-				id="btnEdit">
-				<a href="javascript:void(0);" class="btn box1 seccess"
-					onclick="">确定修改</a> <a
-					href="javascript:void(0);" class="btn box1 cancel"
-					onclick="cancel()">取消</a>
-			</div>
+
 		</div>
 		<!--//个人信息-->
 	</div>
@@ -198,52 +212,13 @@
 
 <script type="text/javascript">
     $(function () {
-        var json = $.parseJSON('<$var UserInfoJson/>');
-        user.showProfile(json[0]);
+    	device.initControll();
     });
 </script>
 <body>
 	<script type="text/javascript" language="javascript" charset="utf-8">
-    //编辑
-    var editUserInfo = function (obj) {
-        if (!obj.hasAttribute('edit')) { return; }
-
-        var edit_panel = $('*[edit-area]');
-
-        if (edit_panel.length <= 0) { return; }
-
-        var i = 0;
-
-        if (obj.getAttribute('edit') === 'off') {
-            obj.setAttribute('edit', 'on');
-            $("#btnEdit").show();
-        } else {
-            obj.setAttribute('edit', 'off');
-            $("#btnEdit").hide();
-        }
-
-        if (obj.getAttribute('edit') === 'off') {
-            for (; i < edit_panel.length; i++) {
-                $(edit_panel[i]).removeClass('edit');
-            }
-        } else {
-            for (; i < edit_panel.length; i++) {
-                $(edit_panel[i]).addClass('edit');
-            }
-        }
-
-        //iScroll刷新
-        if ($.iscroll) {
-            $.iscroll.refresh();
-        }
-
-        //自定义单选复选
-        if (typeof $().customCheck === 'function') {
-            $(document).customCheck();
-        }
-    };
-    var cancel = function () {
-        console.log($("a[edit='on']"));
-        editUserInfo($("a[edit='on']")[0]);
+	 //iScroll刷新
+    if ($.iscroll) {
+        $.iscroll.refresh();
     }
-</script>
+  </script>

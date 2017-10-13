@@ -159,28 +159,19 @@ var device={
 		},
 		/*选择设备类型是触发的事件*/
 		deviceTypeChange:function(obj){
-			$(".tr_parameter").remove();
 			if(obj.value!=""){
 				if(device.deviceTypeList!=null){
 					$.each(device.deviceTypeList,function(i,item){
 						if(item.id==obj.value){
-							var str="";
-							var template=$("#DeviceTypeParameterFormTemplate").html();
-							for(var i=0;i<item.list.length;i+=2){
+							
+							for(var i=0;i<item.list.length;i++){
 
-								str+="<tr class='tr_parameter'>";
+								
+								var child=item.list[i];
+							
+								$("#DeviceTypeParameterFormTemplate").tmpl(child).appendTo("#parameterList");
 
-								for(var j=0;j<2&&i+j<item.list.length;j++){
-									var child=item.list[i+j];
-									if(i+j==item.list.length-1&&item.list.length%2!=0){
-										child.colspan=3;
-									}
-									str+=$("#DeviceTypeParameterFormTemplate").tmpl(child).html();
-
-								}
-								str+="</tr>";
 							}
-							$("#tbDevice").append(str);
 						}
 					});
 
@@ -261,7 +252,10 @@ var device={
 				}
 			});
 		},
-
+		stepTrigger:function(){
+			$("#firstStep").toggle();
+			$("#secondStep").toggle();
+		}
 
 }
 
