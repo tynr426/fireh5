@@ -27,6 +27,10 @@ public class DeviceController {
 	public String GetView(){
 		return "Company/device";
 	}
+	@RequestMapping("/toDeviceList.do")
+	public String GetListView(){
+		return "Company/deviceList";
+	}
 	@RequestMapping("/add.do")
 	@ResponseBody	
 	public Object addDevice(DeviceResult device){

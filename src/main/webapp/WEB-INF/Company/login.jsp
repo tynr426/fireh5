@@ -3,7 +3,7 @@ contentType="text/html; charset=utf-8" %>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 <head>
-<jsp:include page="Meta.html" ></jsp:include>
+<jsp:include page="block/Meta.html" ></jsp:include>
 </head>
 <body>
         <!-- 框架 -->

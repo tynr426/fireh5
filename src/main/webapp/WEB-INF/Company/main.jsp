@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<jsp:include page="Meta.html" ></jsp:include>
+<jsp:include page="block/Meta.html" ></jsp:include>
 <%
 CompanyResult company=Company.getCompany();
 %> 
@@ -127,15 +127,7 @@ CompanyResult company=Company.getCompany();
                                                     </a>
                                                 </li>
                                                
-                                                <li>
-                                                    <a href="Passport/List.aspx" class="box box-horizontal">
-                                                        <span>
-                                                            <i class="icon user"></i>
-                                                            <em>零售会员</em>
-                                                        </span>
-                                                    </a>
-                                                </li>
-
+                                             
                                                 <li>
                                                     <a href="Shop/Setting.aspx" class="box box-horizontal">
                                                         <span>
@@ -164,6 +156,15 @@ CompanyResult company=Company.getCompany();
                                         <!--菜单导航-->
                                         <div class="store-menu">
                                             <ul>
+                                               <li>
+                                                    <a href="<%=request.getContextPath() %>/company/device/toDeviceList.do" class="box box-horizontal">
+                                                        <span>
+                                                            <i class="icon user"></i>
+                                                            <em>设备列表</em>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            
                                                 <li>
                                                     <!--<a href="/default.aspx?fkway=2">-->
                                                     <a href="<%=request.getContextPath() %>/company/device/toDevice.do" class="box box-horizontal">
@@ -205,7 +206,7 @@ CompanyResult company=Company.getCompany();
         </article>
         <!-- //体部 -->
         <!-- 底部 -->
-        <jsp:include page="template/foot.html" ></jsp:include>
+        <jsp:include page="block/foot.html" ></jsp:include>
     
         <!-- //底部 -->
     </section>

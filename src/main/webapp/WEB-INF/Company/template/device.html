@@ -1,4 +1,76 @@
-<script type="text/template" id="bodyListTemplate">
+
+<script type="text/template" id="BodyListTmpelate">
+  
+    <li>
+        <!-- 名称 -->
+        <div class="storename box box-horizontal">
+            <a href="javascript:void(0);" class="name box1">设备类型：${r.buyer}</a>
+            <div class="pay-way">${r.RetreatType}</div>
+        </div>
+        <!-- //店铺名称 -->
+        <!--标题-->
+        <div class="title">
+            <a href="/WebStore/Order/RetreatDetails.aspx?oddNumber=${r.EncryptOddNumber}" class="box box-horizontal">
+                <div class="box1">
+                    <span class="num">
+                        ${r.RetreatType}单号：<em>${name}</em>
+                    </span>
+                </div>
+            </a>
+        </div>
+        <!--//标题-->
+        <!--订单商品缩略图-->
+        <div class="view">
+            <!--这里不管商品链接,直接跳转到详情页-->
+            {@each f.ReturnItems as i,index}
+            {@if i.RetreatId==r.Id}
+            <div class="line">
+                <a href="/WebStore/Order/RetreatDetails.aspx?oddNumber=${r.EncryptOddNumber}" class="box box-horizontal">
+                    <span class="pic load">
+                        <img lazy_src="<$var sources.ImageDomain />${i.DefaultPic|thumbImage,80,80}" alt="" />
+                    </span>
+
+                    <span class="info box1">
+                        <span class="name box box-horizontal">
+                            <em class="name-txt box1">${i.ProductName}</em>
+                            <!--<em class="price-txt">¥10.00+10积分</em>-->
+                        </span>
+
+                        <span class="value box box-horizontal">
+                            <em class="name-txt box3">${i.GoodsName}</em>
+                            <em class="num-txt box1">x${i.Quantity}</em>
+                        </span>
+                    </span>
+                </a>
+            </div>
+            {@/if}
+            {@/each}
+            <!--//这里不管商品链接,直接跳转到详情页-->
+        </div>
+        <!--//订单商品缩略图-->
+        <!--订单概括-->
+        <div class="order-tool">
+            <div class="order-time">申请时间：${r.AddTime}</div>
+            <div class="info">
+                状态：${r.RetreatStatus}
+            </div>
+
+            <!--<div class="money">
+                ¥6060.00
+            </div>-->
+        </div>
+        <!--//订单概括-->
+        <!--按钮-->
+        <!--<div class="button">
+            <a href="javascript:void(0);" class="btn black">备注</a>
+            <a href="javascript:void(0);" class="btn">打印</a>
+            <a href="javascript:void(0);" class="btn">查看物流</a>
+        </div>-->
+        <!--//按钮-->
+    </li>
+</script>
+
+<script type="text/template" id="bodyListTemplate1">
         
         <tr>
             <td><div class="string center">${name}</div></td>
