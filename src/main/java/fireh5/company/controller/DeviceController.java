@@ -16,6 +16,7 @@ import fire.common.entity.DeviceResult;
 import fire.proxy.service.ProxyBase;
 import fire.sdk.utils.DTOBeanUtils;
 import fire.sdk.utils.JsonResult;
+import fire.sdk.utils.SyncHttp;
 import fireh5.web.utils.Company;
 
 
@@ -33,8 +34,9 @@ public class DeviceController {
 		device.setCompanyId(Company.getCompanyId());
 		Map<String, Object> map;
 		try {
+			
 			map = DTOBeanUtils.convertBeanToMap(device);
-			return new ProxyBase().GetResponse("company.device", "addDevice", map);
+			return new ProxyBase().httpPostSerialObject("company.device", "addDevice",device);
 			
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block

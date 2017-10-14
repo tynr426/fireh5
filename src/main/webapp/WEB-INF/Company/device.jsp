@@ -192,7 +192,7 @@
 
 				</ul>
 				<div class="button box box-horizontal"  >
-					<a href="javascript:void(0);" class="btn box1 seccess" onclick="">保存</a>
+					<a href="javascript:void(0);" class="btn box1 seccess" onclick="device.addDevice()">保存</a>
 					<a href="javascript:void(0);" class="btn box1 cancel"
 						onclick="device.stepTrigger()">上一步</a>
 				</div>
