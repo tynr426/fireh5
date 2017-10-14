@@ -39,61 +39,33 @@ ${dict.passageway[(passageway)]}
     </script>
 
 <script type="text/x-jquery-tmpl" id="DeviceTypeParameterFormTemplate">
-{{if (required=="1")}} 
-<li class="box box-horizontal">
-						<p class="name"> 
- <em class="red">*</em>${description}：</p>
 
-<div class="edit-box box1">
- {{if (editorType=="text")}}
-<div class="inputbox">
-<input type="text" id="parameter_${id}" error="输入格式不正确！" validate="isnull|username" maxlength="20" value="" />
-</div>
-  {{else (editorType=="texts")}}
-	{{each(j,child) candidate}}
-<div class="inputbox">
-	<input type="text" style='width:40px' placeholder="${child.Field}" id="parameter_${id}_${j}"  error="输入格式不正确！" validate="isnull|username" maxlength="20" value="" />
-</div>
-{{/each}}
- {{else (editorType=="select")}}
-<div class="selectarea">
-	<div class="selectbox">
-		<select id="parameter_${id}" error="请选择！" validate="isnull">
-          {{each(j,child) candidate}}
-				<option value="${child.Value}">${child.Field}</option>
-		  {{/each}}								
-	</select>
-	</div>
-</div>
- {{/if}}
-	</li>
-{{else}}
 <li class="box box-horizontal">
-	<p class="name"> ${description}：</p>
+	<p class="name">
+		{{if (required=="1")}} <em class="red">*</em>{{/if}}${description}：
+     </p>
 
 	<div class="edit-box box1">
- 	{{if (editorType=="text")}}
-	<div class="inputbox">
-	<input type="text" id="parameter_${id}" error="输入格式不正确！" validate="true" maxlength="20" value="" />
+		{{if (editorType=="text")}}
+		<div class="inputbox">
+			<input type="text" id="parameter_${id}" error="输入格式不正确！" validate="{{if (required=="1")}} isnull{{/if}}" maxlength="20" value="" />
+		</div>
+		{{else (editorType=="texts")}} {{each(j,child) candidate}}
+		<div class="inputbox" style="width: 55px;padding-right:10px">
+			<input type="text"  placeholder="${child.Field}" id="parameter_${id}_${j}" error="输入格式不正确！" validate="{{if (required=="1")}} isnull{{/if}}" maxlength="20" value="" />
+		</div>
+		{{/each}}
+       {{else (editorType=="select")}}
+		<div class="selectarea">
+			<div class="selectbox">
+				<select id="parameter_${id}" error="请选择！" validate="{{if (required=="1")}} isnull{{/if}}">
+					{{each(j,child) candidate}}
+					<option value="${child.Value}">${child.Field}</option> {{/each}}
+				</select>
+			</div>
+		</div>
+		{{/if}}
 	</div>
-  {{else (editorType=="texts")}}
-	{{each(j,child) candidate}}
-<div class="inputbox">
-	<input type="text" style='width:40px' placeholder="${child.Field}" id="parameter_${id}_${j}"  error="输入格式不正确！" validate="true" maxlength="20" value="" />
-</div>
-{{/each}}
- {{else (editorType=="select")}}
-<div class="selectarea">
-	<div class="selectbox">
-		<select id="parameter_${id}" error="请选择！" >
-          {{each(j,child) candidate}}
-				<option value="${child.Value}">${child.Field}</option>
-		  {{/each}}								
-	</select>
-	</div>
-</div>
- {{/if}}
-	</li>
- 
-{{/if}}
+</li>
+
     </script>

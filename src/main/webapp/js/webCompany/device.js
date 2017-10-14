@@ -163,14 +163,10 @@ var device={
 				if(device.deviceTypeList!=null){
 					$.each(device.deviceTypeList,function(i,item){
 						if(item.id==obj.value){
-							
+							var str = "";
 							for(var i=0;i<item.list.length;i++){
-
-								
 								var child=item.list[i];
-							
 								$("#DeviceTypeParameterFormTemplate").tmpl(child).appendTo("#parameterList");
-
 							}
 						}
 					});

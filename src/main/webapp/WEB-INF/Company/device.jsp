@@ -33,7 +33,7 @@
 				<!--用户信息-->
 				<div class="info box1">
 					<p class="name">
-						公司名称：<em> </em>
+						设备基本信息：<em> </em>
 					</p>
 				</div>
 				<!--//用户信息-->
@@ -49,7 +49,7 @@
 			<div class="user-area edit" id="firstStep" edit-area>
 				<ul>
 					<li class="box box-horizontal">
-						<p class="name">设备类型：</p>
+						<p class="name"><em class="red">*</em>设备类型：</p>
 
 						<div class="edit-box box1">
 							<div class="selectarea">
@@ -62,7 +62,7 @@
 							</div>
 					</li>
 					<li class="box box-horizontal">
-						<p class="name">生产厂家：</p>
+						<p class="name"><em class="red">*</em>生产厂家：</p>
 
 						<div class="edit-box box1">
 							<div class="inputbox">
@@ -73,7 +73,7 @@
 						</div>
 					</li>
 					<li class="box box-horizontal">
-						<p class="name">型号：</p>
+						<p class="name"><em class="red">*</em>设备型号：</p>
 
 						<div class="edit-box box1">
 							<div class="inputbox">
@@ -83,7 +83,7 @@
 						</div>
 					</li>
 					<li class="box box-horizontal">
-						<p class="name">规格：</p>
+						<p class="name"><em class="red">*</em>设备规格：</p>
 
 						<div class="edit-box box1">
 							<div class="inputbox">
@@ -93,7 +93,7 @@
 						</div>
 					</li>
 					<li class="box box-horizontal">
-						<p class="name">录入时间：</p>
+						<p class="name"><em class="red">*</em>录入时间：</p>
 
 						<div class="edit-box box1">
 							<div class="inputbox">
@@ -119,9 +119,7 @@
 				</ul>
 				<ul>
 					<li class="box box-horizontal">
-						<p class="name">安装位置：</p>
-						<div class="text box1"><$var userinfo.Province/> <$var
-							userinfo.City /> <$var userinfo.Area /></div>
+						<p class="name"><em class="red">*</em>安装位置：</p>
 						<div class="edit-box box1">
 							<div class="selectarea">
 								<div class="selectbox">
@@ -159,7 +157,7 @@
 									</select>
 								</div>
 
-								<span class="tips">方位</span>
+								
 								<div class="selectbox">
 									<select id="Passageway" name="Passageway" validate="isnull"
 										error="输入格式不正确！">
@@ -172,7 +170,7 @@
 						</div>
 					</li>
 					<li class="box box-horizontal">
-						<p class="name">详细地址：</p>
+						<p class="name"><em class="red">*</em>详细地址：</p>
 
 						<div class="edit-box box1">
 							<div class="textareabox">
@@ -207,6 +205,7 @@
 	</div>
 	<!--//内盒--> </article> <!--//体部--> </section>
 	<!--//框架-->
+	<jsp:include page="template/device.html"></jsp:include>
 </body>
 </html>
 
@@ -215,7 +214,7 @@
     	device.initControll();
     });
 </script>
-<body>
+
 	<script type="text/javascript" language="javascript" charset="utf-8">
 	 //iScroll刷新
     if ($.iscroll) {
