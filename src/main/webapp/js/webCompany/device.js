@@ -75,13 +75,13 @@ var device={
 		},
 		getDevice:function(Id){
 			$.ajax({
-				url:path+"/company/manager/getManager.do",
+				url:path+"/company/device/getDevice.do",
 				type:"post",
 				data:{Id:Id},
 				dataType:"json",
 				success:function(result){					
-					if(data.state==0){
-						user.openDialog(result.data);
+					if(result.state==0){
+						alert("获取成功");
 					}
 				},
 				error:function(){

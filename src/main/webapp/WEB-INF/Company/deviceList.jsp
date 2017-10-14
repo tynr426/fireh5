@@ -64,16 +64,21 @@
 	<!--//框架-->
 </body>
 </html>
+<jsp:include page="template/device.html"></jsp:include>
 
 <script type="text/javascript">
-    retreat.getRetreatCount();
-    var tab = $.params.get("tab");
-    if (tab.length > 0) {
-        var obj = $("a[tab=" + tab + "]")[0];
-        if (obj) {
-            retreat.changeTab(obj);
-        }
-    }
-    //retreat.initConditionByTab(tab);
-   // retreat.getRetreats(null, null, null);
+	$(function(){
+		load();
+	});
+	 function load(){
+		  var config={
+					url:path+"/company/device/show.do",
+		  			pageSize:6,
+		  			pageIndex:1,
+		  			barSize:3,
+		  			templateId:"BodyListTmpelate",
+		  			container:"deviceList"
+		  			};
+		  var pageInfo=new ecPage.fn._init(config);
+	 }
 </script>

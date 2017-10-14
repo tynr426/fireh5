@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,5 +60,20 @@ public class DeviceController {
 		}
 
 	}
-	
+	@RequestMapping("/getDevice.do")
+	@ResponseBody
+	public Object getDevice(String id,HttpSession session,HttpServletResponse response){
+		Map<String, Object> map = new HashMap<String, Object>();   
+		map.put("Id",id);
+		return new ProxyBase().GetResponse("company.device", "getDevice", map);	
+	}
+	@RequestMapping("/show.do")
+	@ResponseBody
+	public Object showDevice(String index,String size,HttpSession session,HttpServletResponse response){
+		Map<String, Object> map = new HashMap<String, Object>();   
+		map.put("CompanyId",String.valueOf(Company.getCompanyId()));
+		map.put("Index",index);
+		map.put("Size",size);
+		return new ProxyBase().GetResponse("company.device", "showDevice", map);	
+	}
 }
