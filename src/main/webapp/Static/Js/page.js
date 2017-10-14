@@ -11,16 +11,144 @@ ecPage.fn = ecPage.prototype = {
 		// 配置信息
 		_config: {},
 
-		// page初始化
-		_init: function (c) {
-			var my = this;
-			my._config = c;
-			my.pages = c.pages;
-			my.render();
+        // page初始化
+        _init: function (c) {
+
+            var onIScroll = function (pager) {
+
+               
+
+                if ($.iscroll) {
+
+                    $.iscroll.on("scrollEnd", function () {
+                        var c = pager._config;
+
+                        if (c.pages > c.pageIndex && this.y < (this.maxScrollY + 5) && c.touchPage) {
+
+                            pager.goNextPage(true);
+
+                            if (c.touchTip) {
+                                c.touchTip.html("数据加载中...");
+                            }
+                        }
+
+                        var showObj = ECF('.ui-more');
+                        showObj.css({ 'display': 'none' });
+                    });
+
+                    $.iscroll.on("scrollStart", function () {
+                        var c = pager._config;
+                        if (c.pages > c.pageIndex && this.y < (this.maxScrollY + 10)) {
+                            c.touchPage = true;
+                            if (c.touchTip) {
+                                c.touchTip.show();
+                            }
+                            else {
+                                var div = document.createElement("Div");
+                                div.className = "ui-more";
+                                div.innerHTML = "获取更多数据...";
+
+                                var showPanel = ECF('.iscroll-wrapper').parent();
+                                //if (c.container.parent().find(".ui-more").length === 0) {
+                                //    c.container.parent().append(div);
+                                //    c.touchTip = $e(div);
+                                //}
+
+                                if (showPanel.find(".ui-more").length === 0) {
+                                    showPanel.append(div);
+                                    c.touchTip = $e(div);
+                                }
+                            }
+                        } else if (c.pages == c.pageIndex && Number(this.y) < (this.maxScrollY + 10)) {
+                            var showObj = ECF('.ui-more');
+                            if (showObj.length <= 0) {
+                                var div = document.createElement("Div");
+                                div.className = "ui-more";
+
+                                var showPanel = ECF('.iscroll-wrapper').parent();
+                                if (showPanel.find(".ui-more").length === 0) {
+                                    showPanel.append(div);
+                                }
+
+                                showObj = ECF('.ui-more');
+                            }
+                            showObj[0].innerHTML = "获取更多数据...";
+                            showObj.css({ 'display': 'block' });
+                        }
+                    });
+                }
+            };
+
+            var my = this;
+            my._config = c;
+            my.pages = c.pages;
+            my.render(onIScroll);
+
+            // 是否启用滚动条自动加载分页
+            if (c.isScroll) {
+
+                var win = window.top ? window.top : window;
+
+                // 是否指定滚动对象
+                if (c.scrollTarget) {
+                    win = c.scrollTarget;
+                }
+                else {
+                    // 判断是否使用顶层页面的滚动条控制
+                    if (!c.topScroll) {
+                        win = window;
+                    }
+                }
+
+                //alert(win);
+
+                // 当页面滚动到某位置时加载分页数据
+                $(win).bind("scroll", function () {
+                    var _c = my._config, pindex = _c.pageIndex;
+
+                    //alert("1");
+                    //console.log("distBottom:" + _c.distBottom);
+
+                    var target = win;
+
+                    if (win.document) {
+                        target = win.document;
+                    }
+
+                    if (win.document.documentElement.scrollHeight == $(target).height()) {
+
+                        // 总页数大于当前页时才进行加载
+                        if (_c.pages > pindex) {
+                            //console.log($e.isMobile);
+                            // 移动端进行不断的加载
+                            if ($.isMobile) {
+                                my.goNextPage(true);
+                            }
+                            else {
+
+                                // 每页只是累计加载5页数据
+                                if (_c.isPageBar) {
+                                    if (pindex % 5 != 0) {
+                                        // 进行追加
+                                        my.goNextPage(true);
+                                    }
+                                }
+                                else {
+                                    // 进行追加
+                                    my.goNextPage(true);
+                                }
+                            }
+
+                        }
 
 
-			return my;
-		},
+                    }
+                });
+
+            }
+
+            return my;
+        },
 
 		// 设置分页大小
 		setPageSize: function (size) {
