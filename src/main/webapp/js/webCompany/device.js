@@ -1,6 +1,14 @@
 var device={
 		deviceTypeList:null,
+		save:function(Id){
+			if(Id>0){
+				device.updateDevice(Id);
+			}else{
+				device.addDevice();
+			}
+		},
 		addDevice:function(obj){
+			if(!$("#DeviceForm").formValidate())return;
 			var DeviceTypeId = $("#DeviceTypeId").val().trim();
 			var Manufacturer = $("#Manufacturer").val().trim();
 			var Model = $("#Model").val().trim();
@@ -60,9 +68,8 @@ var device={
 				dataType:"json",
 				success:function(result){
 					if(result.state==0){
-						alert("添加成功");
-						$(obj).dialog('close');
-						load();
+						
+						window.location.href=path+"/company/device/toDeviceList.do";
 					}else{	
 						alert(result.message);		
 					}								
@@ -77,11 +84,12 @@ var device={
 			$.ajax({
 				url:path+"/company/device/getDevice.do",
 				type:"post",
-				data:{Id:Id},
+				data:{id:Id},
 				dataType:"json",
 				success:function(result){					
 					if(result.state==0){
-						alert("获取成功");
+					device.deviceFinish(result.data);
+						
 					}
 				},
 				error:function(){
@@ -115,7 +123,7 @@ var device={
 			}
 		},
 		deviceFinish:function(){
-			device.initControll();
+			
 			var json=arguments[0];
 			if(json.id==undefined) return ;
 
@@ -159,6 +167,7 @@ var device={
 		},
 		/*选择设备类型是触发的事件*/
 		deviceTypeChange:function(obj){
+			$("#parameterList").html("");
 			if(obj.value!=""){
 				if(device.deviceTypeList!=null){
 					$.each(device.deviceTypeList,function(i,item){
@@ -174,9 +183,8 @@ var device={
 				}
 			}
 		},
-		updateDevice:function(obj){
+		updateDevice:function(Id){
 			if(!$("#DeviceForm").formValidate())return;
-			var Id = $("#Id").val().trim();
 			var DeviceTypeId = $("#DeviceTypeId").val().trim();
 			var Manufacturer = $("#Manufacturer").val().trim();
 			var Model = $("#Model").val().trim();
@@ -229,15 +237,14 @@ var device={
 				devicejson['list[' + index +'].Value']=arrValue[index].Value;
 			}
 			$.ajax({
-				url:companypath+"/device/update.do",
+				url:path+"/company/device/update.do",
 				type:"post",
 				data:devicejson,
 				dataType:"json",
 				success:function(result){
 					if(result.state==0){
-						alert("您已修改成功");
-						load();
-						$(obj).dialog('close');
+						
+						window.location.href=path+"/company/device/toDeviceList.do";
 					}else{	
 						alert(result.message);			
 					}								

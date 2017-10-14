@@ -2011,7 +2011,7 @@
 })(window, document, Math);
 
 //初始化
-!function ($e, win) {
+!function ($, win) {
 
     //全局事件类型
     var isTouchPad = (/hp-tablet/gi).test(navigator.appVersion);/*平板电脑*/
@@ -2028,7 +2028,7 @@
     /*手势改变*/
     var CANCEL_EV = hasTouch ? 'touchcancel' : 'mouseup';
 
-    $e.fn.iscroll = function (opts) {
+    $.fn.iscroll = function (opts) {
         opts = opts || {
             scrollbars: true,
             mouseWheel: true,
@@ -2038,24 +2038,24 @@
             click: true
         }
 
-        $e.iscroll = new IScroll(this[0], opts);
+        $.iscroll = new IScroll(this[0], opts);
 
-        $e.iscroll.on("scrollEnd", function () {
+        $.iscroll.on("scrollEnd", function () {
             //延迟加载扩展
-            if (typeof $e.lazy === 'function') {
-                $e.iScrollLazyLoading();
+            if (typeof $.lazy === 'function') {
+                $.iScrollLazyLoading();
             }
 
             this.refresh();
         });
 
-        return $e.iscroll;
+        return $.iscroll;
     };
 
-    $e(function () {
+    $(function () {
         //判断有无不滚属性
-        if ($e('.no-scroll').length > 0) return;
-        var obj = $e('*[iscroll=box]').length >= 1 ? $e('*[iscroll=box]') : $e(".ui-page");
+        if ($('.no-scroll').length > 0) return;
+        var obj = $('*[iscroll=box]').length >= 1 ? $('*[iscroll=box]') : $(".ui-page");
         if (obj.length <= 0) { return; }
         //判断当前对象是不是指定了不进行滚动显示
         if (obj[0].hasAttribute('no-iscroll')) { return; }
@@ -2067,4 +2067,4 @@
     //禁用默认的视图反弹
     //document.addEventListener(MOVE_EV, function (e) { e.preventDefault(); }, false);
 
-}(ECF, window);
+}($, window);

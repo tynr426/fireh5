@@ -76,4 +76,9 @@ public class DeviceController {
 		map.put("Size",size);
 		return new ProxyBase().GetResponse("company.device", "showDevice", map);	
 	}
+	@RequestMapping("/update.do")
+	@ResponseBody	
+	public Object updateDevice(DeviceResult device){
+		return new ProxyBase().httpPostSerialObject("company.device", "updateDevice",device);
+	}
 }

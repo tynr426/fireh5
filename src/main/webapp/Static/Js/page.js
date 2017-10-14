@@ -32,7 +32,7 @@ ecPage.fn = ecPage.prototype = {
                             }
                         }
 
-                        var showObj = ECF('.ui-more');
+                        var showObj = $('.ui-more');
                         showObj.css({ 'display': 'none' });
                     });
 
@@ -48,29 +48,29 @@ ecPage.fn = ecPage.prototype = {
                                 div.className = "ui-more";
                                 div.innerHTML = "获取更多数据...";
 
-                                var showPanel = ECF('.iscroll-wrapper').parent();
+                                var showPanel = $('.iscroll-wrapper').parent();
                                 //if (c.container.parent().find(".ui-more").length === 0) {
                                 //    c.container.parent().append(div);
-                                //    c.touchTip = $e(div);
+                                //    c.touchTip = $(div);
                                 //}
 
                                 if (showPanel.find(".ui-more").length === 0) {
                                     showPanel.append(div);
-                                    c.touchTip = $e(div);
+                                    c.touchTip = $(div);
                                 }
                             }
                         } else if (c.pages == c.pageIndex && Number(this.y) < (this.maxScrollY + 10)) {
-                            var showObj = ECF('.ui-more');
+                            var showObj = $('.ui-more');
                             if (showObj.length <= 0) {
                                 var div = document.createElement("Div");
                                 div.className = "ui-more";
 
-                                var showPanel = ECF('.iscroll-wrapper').parent();
+                                var showPanel = $('.iscroll-wrapper').parent();
                                 if (showPanel.find(".ui-more").length === 0) {
                                     showPanel.append(div);
                                 }
 
-                                showObj = ECF('.ui-more');
+                                showObj = $('.ui-more');
                             }
                             showObj[0].innerHTML = "获取更多数据...";
                             showObj.css({ 'display': 'block' });
@@ -119,7 +119,7 @@ ecPage.fn = ecPage.prototype = {
 
                         // 总页数大于当前页时才进行加载
                         if (_c.pages > pindex) {
-                            //console.log($e.isMobile);
+                            //console.log($.isMobile);
                             // 移动端进行不断的加载
                             if ($.isMobile) {
                                 my.goNextPage(true);
@@ -225,9 +225,10 @@ ecPage.fn = ecPage.prototype = {
 		},
 
 		// 生成相应的html代码
-		render: function () {
-			loadData(this);
-		}
+		// 生成相应的html代码
+        render: function (func) {
+            loadData(this, null, func);
+        }
 };
 
 //功能转换  核心必不可少
@@ -348,7 +349,7 @@ function pageString(pager) {
 
 
 //显示回调回来的数据到容器中
-function showData(pager, data, append) {
+function showData(pager, data, append,func) {
 	var c = pager._config;
 	var html = $("#" + c.templateId).html();
 	if (typeof (c.container) == "string") {
@@ -359,34 +360,6 @@ function showData(pager, data, append) {
 	} else {
 		c.container.html($.tmpl(html,data));
 	}
-	if ($.isArray(data) && data.length > 0) {
-		
-
-		// 开启鼠标移入如果是Table进行行的交替处理
-		if (c.isHover && c.container[0].nodeName == 'TBODY') {
-			$(">tr", c.container[0]).each(function(){
-				$(this).bind("mouseover", function () {
-					$(">th,>td", this).css("background-color", c.hoverColor);
-				});
-				$(this).bind("mouseout", function () {
-					$(">th,>td", this).css("background-color", "");
-				});
-			});
-		}
-	}
-	else {
-		console.log(c.container[0].nodeName);
-		if (c.container[0].nodeName == 'TBODY') {
-			//找col
-			var cols = $('colgroup > col', c.container[0].parentNode);
-
-			var newErrorNull = "<tr><td colspan=\"" + cols.length + "\">无此数据</td></tr>";
-
-			c.container.html(newErrorNull);
-		} else {
-			c.container.html("无此数据");
-		}
-	};
 
 	// 判断动态刷新框架高度
 	if (window.top) {
@@ -401,7 +374,9 @@ function showData(pager, data, append) {
 	if (typeof (c.callback) == 'function') {
 		c.callback.apply(pager, arguments);
 	};
-
+	  if (func) {
+          func(pager,data);
+      }
 	if (typeof $.lazy === 'function') {
 		//延迟加载
 		$(document).nonePic();
@@ -410,7 +385,7 @@ function showData(pager, data, append) {
 
 //内部方法开始
 //加载数据
-function loadData(pager, append) {
+function loadData(pager, append,func) {
 	var c = pager._config,
 	data = '';
 
@@ -444,10 +419,10 @@ function loadData(pager, append) {
 
 			// 给定了回调方法后的执行处理
 			if (typeof (c.showData) == 'function') {
-				c.showData.apply(pager, [doc.list, arguments]);
+				c.showData.apply(pager, [doc.list, arguments,func]);
 			}
 			else {
-				showData(pager, doc.list, append);
+				showData(pager, doc.list, append,func);
 			}
 
 			if (c.pageBarId) {    //添加专用的pageBar容器 by xp 20121205

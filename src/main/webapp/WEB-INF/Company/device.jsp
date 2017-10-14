@@ -15,11 +15,16 @@
 </head>
 <body>
 	<!--框架-->
-	<section class="ui-wrap"> <!--体部--> <article class="ui-page">
+	<section class="ui-wrap"> 
+	<!-- 引入页面顶部 --> 
+	<jsp:include page="block/head.html"></jsp:include> 
+	<!-- //引入页面顶部 --> 
+	<!--体部--> 
+	<article class="ui-page">
 	<!--内盒-->
 	<div class="ui-content iscroll-wrapper">
 		<!--个人信息-->
-		<div class="usercenter-info" id="Profile">
+		<div class="usercenter-info" id="DeviceForm">
 			<!--用户基本信息-->
 			<div class="user-info box box-horizontal">
 				<!--用户头像-->
@@ -33,16 +38,11 @@
 				<!--用户信息-->
 				<div class="info box1">
 					<p class="name">
-						设备基本信息：<em> </em>
+						设备基本信息<em> </em>
 					</p>
 				</div>
 				<!--//用户信息-->
-				<!--信息编辑-->
-				<div class="edit">
-					<a href="javascript:void(0);" class="btn" edit='on'
-						onclick="editUserInfo(this);"></a>
-				</div>
-				<!--//信息编辑-->
+				
 			</div>
 			<!--//用户基本信息-->
 			<!--详细信息-->
@@ -192,7 +192,7 @@
 
 				</ul>
 				<div class="button box box-horizontal"  >
-					<a href="javascript:void(0);" class="btn box1 seccess" onclick="device.addDevice()">保存</a>
+					<a href="javascript:void(0);" class="btn box1 seccess" onclick="device.save('<%=request.getParameter("Id")%>')">保存</a>
 					<a href="javascript:void(0);" class="btn box1 cancel"
 						onclick="device.stepTrigger()">上一步</a>
 				</div>
@@ -212,6 +212,7 @@
 <script type="text/javascript">
     $(function () {
     	device.initControll();
+    	device.getDevice('<%=request.getParameter("Id")%>');
     });
 </script>
 

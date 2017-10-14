@@ -73,9 +73,9 @@
 	 function load(){
 		  var config={
 					url:path+"/company/device/show.do",
-		  			pageSize:6,
+		  			pageSize:3,
 		  			pageIndex:1,
-		  			barSize:3,
+		  			isScroll:true,
 		  			templateId:"BodyListTmpelate",
 		  			container:"deviceList"
 		  			};
