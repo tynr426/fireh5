@@ -176,7 +176,7 @@ CompanyResult company=Company.getCompany();
                                                 </li>
 
                                                 <li>
-                                                    <a href="Supplier/OrderList.aspx" class="box box-horizontal">
+                                                    <a href="<%=request.getContextPath() %>/company/check/toCheck.do" class="box box-horizontal">
                                                         <span>
                                                             <i class="icon retreat"></i>
                                                             <em>检修录入</em>

@@ -54,5 +54,35 @@ var loginCM = {
 
 				});
 			}
-		}
+		},
+		  /*密码显示切换*/
+	    pwdSwitch: function () {
+	        var _isShow = $('#isShow'),
+	            _obj = _isShow.parent(),
+	            _showPwd = $('#Password'),
+	            _showTxt = $('#showTxt');
+
+	        //密码值同步
+	        _showPwd.blur(function () {
+	            var n = $(this).val();
+	            $(this).parent().find('#showTxt').val(n);
+	        });
+	        _showTxt.blur(function () {
+	            var n = $(this).val();
+	            $(this).parent().find('#Password').val(n);
+	        });
+
+	        //密码显示
+	        _isShow.bind('click', function () {
+	            if (_obj.hasClass('show')) {
+	                _obj.removeClass('show');
+	                _showPwd.show();
+	                _showTxt.hide();
+	            } else {
+	                _obj.addClass('show');
+	                _showPwd.hide();
+	                _showTxt.show();
+	            }
+	        });
+	    }
 }

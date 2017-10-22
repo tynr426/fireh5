@@ -13,7 +13,7 @@ contentType="text/html; charset=utf-8" %>
                 <!-- 登录 -->
                 <div class="login" id="LoginForm">
                     <div class="logo">
-                        <img src="/fireh5/images/logo.png" alt="" />
+                        <img src="/fireh5/images/company_logo.png" alt="" />
                     </div>
 
                     <!--输入框-->
@@ -31,10 +31,13 @@ contentType="text/html; charset=utf-8" %>
                             </li>
                             <li class="password">
                                 <div class="inputbox">
-                                    <input type="password" name="Password" id="Password" value="111111" placeholder="请输入密码" validate="isnull" tabindex="3" />
+                                <input type="password" name="Password" id="Password1" style="display:none">
+                                    <input type="password" name="Password" id="Password" value="" placeholder="请输入密码" validate="isnull" tabindex="3" />
+                                    
+                                    <input id="showTxt" type="text" class="input_text" style="display:none;" error="请输入密码！" validate="isnull" value=""  placeholder="请输入密码">
                                 </div>
 
-                                <i class="icon show-target" onclick="tools.passwordChange(this);"></i>
+                                <i class="icon show-target" id="isShow"></i>
                             </li>
                         </ul>
                     </div>
@@ -102,4 +105,5 @@ contentType="text/html; charset=utf-8" %>
             }
         };
     });
+    loginCM.pwdSwitch();
 </script>
