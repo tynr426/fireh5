@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="fire.sdk.utils.JsSignUtil"%>
+<%@ page import="java.util.Map"%>
+<%@ page import="java.util.HashMap"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -7,6 +10,11 @@
 <title>Insert title here</title>
 <jsp:include page="block/Meta.html"></jsp:include>
  <script type="text/javascript" src="/Static/Js/Wechat.js?v=1.2.10"></script>
+ <script type="text/javascript" src="/Static/Js/jweixin-1.2.0.js"></script>
+<%
+Map<String, String> ret = new HashMap<String, String>();  
+ret = JsSignUtil.sign(url);  
+%> 
 </head>
 <body>
  <!--框架-->
@@ -30,7 +38,7 @@
                                     <input type="text" name="UserName" id="UserName" value="" error="请输入设备编号" validate="isnull" placeholder="请扫码或输入会员名"
                                            onchange="receiveCash.searchUser();" />
                                 </div>
-                                <a href="javascript:void(0);" class="search-btn" id="btnUserScanCode">扫码</a>
+                                <a href="javascript:void(0);" class="search-btn" id="scanQRCode">扫码</a>
                             </li>
                             <li class="box box-horizontal">
                                 <p class="name">设备类型：</p>
@@ -49,7 +57,7 @@
                                 <div class="inputbox box1">
                                     <input type="text" name="TicketNumber" id="TicketNumber" value="" error="请输入票号！" placeholder="请输入票号" />
                                 </div>
-                                <a href="javascript:void(0);" class="search-btn" id="btnScanCode">扫码</a>
+                                <a href="javascript:void(0);" class="search-btn" id="scanQRCode">扫码</a>
                             </li>
                             <li class="box box-horizontal aptitude-info">
                                 <p class="name">检查凭证：</p>
@@ -173,3 +181,39 @@
         }
     }
 </script>
+<script  type="text/javascript">  
+    wx.config({  
+        debug: false,  
+        appId: '<%=ret.get("appId")%>',  
+        timestamp:'<%=ret.get("timestamp")%>',  
+        nonceStr:'<%=ret.get("nonceStr")%>',  
+        signature:'<%=ret.get("signature")%>',  
+        jsApiList : [ 'checkJsApi', 'scanQRCode' ]  
+    });//end_config  
+  
+    wx.error(function(res) {  
+        alert("出错了：" + res.errMsg);  
+    });  
+  
+    wx.ready(function() {  
+        wx.checkJsApi({  
+            jsApiList : ['scanQRCode'],  
+            success : function(res) {  
+            }  
+        });  
+  
+        //扫描二维码  
+        document.querySelector('#scanQRCode').onclick = function() {  
+            wx.scanQRCode({  
+                needResult : 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，  
+                scanType : [ "qrCode", "barCode" ], // 可以指定扫二维码还是一维码，默认二者都有  
+                success : function(res) {  
+                    var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果  
+                    document.getElementById("wm_id").value = result;//将扫描的结果赋予到jsp对应值上  
+                    alert("扫描成功::扫描码=" + result);  
+                }  
+            });  
+        };//end_document_scanQRCode  
+          
+    });//end_ready  
+</script>  
