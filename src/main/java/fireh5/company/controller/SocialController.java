@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import fire.common.entity.CompanyResult;
 import fire.common.entity.WeChatAccount;
 import fire.proxy.service.ProxyBase;
-import fire.sdk.utils.JsSignUtil;
+import fire.sdk.utils.WechatUtils;
 import fire.sdk.utils.JsonResult;
 import fire.sdk.utils.JsonUtils;
 @Controller
@@ -21,8 +21,7 @@ public class SocialController {
 	@ResponseBody	
 	public Object getWeChatAccount(HttpServletRequest request){
 			String url=request.getContextPath();
-			JsonResult result= new ProxyBase().httpPostSerialObject("company.social", "getWeChatAccount",null);
-			WeChatAccount wca=JsonUtils.JSONToObj(JsonUtils.objectToJson(result.getData()),WeChatAccount.class)	;
-			return JsSignUtil.sign(url, wca);
+			
+			return WechatUtils.sign(url, WechatUtils.GetWechatAccount());
 	}
 }
