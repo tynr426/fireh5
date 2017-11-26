@@ -1,3 +1,4 @@
+<%@page import="fire.sdk.utils.WechatUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -6,8 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <jsp:include page="block/Meta.html"></jsp:include>
-<script type="text/javascript" src="/Static/Js/Wechat.js?v=1.2.10"></script>
-<script type="text/javascript" src="/Static/Js/jweixin-1.2.0.js"></script>
+<script type="text/javascript" src="/fireh5/Static/Js/Wechat.js?v=1.2.10"></script>
+<script type="text/javascript" src="/fireh5/Static/Js/jweixin-1.2.0.js"></script>
 
 </head>
 <body>
@@ -90,12 +91,12 @@
 
 
 <script type="text/javascript">
-	wechat.init();
+	//wechat.init();
 	var initConfig = {
 		wechat : function() {
-			var iswx = '<$var sources.IsWxBrowser/>';
+			var iswx = '<%=WechatUtils.IsWxBrowser()%>';
 			ecwx.init({
-				isWx : (iswx == 'True'),
+				isWx : (iswx == 'true'),
 				actions : [ {
 					action : 'image',
 					btn : '#btnWxImage',

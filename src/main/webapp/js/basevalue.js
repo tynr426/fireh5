@@ -1,1 +1,1 @@
-var path="http://localhost:8080/fireh5";
+var path="http://m.b2b.366ec.net/fireh5";

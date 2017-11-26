@@ -11,10 +11,14 @@ var wechat = {
                 localStorage.setItem(url, true);
                 if (typeof (callback) == 'function') callback();
             });
+            
             $.ajax({
-            	url:'/company/social/getWeChatAccount.do', 
+            	url:path+'/company/social/getWeChatAccount.do', 
+            	type:"post",
+            	data:{url:encodeURIComponent(url)},
+            	dataType:"json",
                 success: function (result) {
-                    var r = result.data;
+                    var r =$.parseJSON(result.data);
                     wx.config({
                         debug: false,
                         appId: r.appId,
@@ -25,7 +29,7 @@ var wechat = {
                     });
                 },
                 error: function () {
-                    alert("Êı¾İ´¦Àí´íÎó,´íÎó´úÂë: " + arguments[0] + ";´íÎóĞÅÏ¢: " + arguments[1]);
+                    alert("æ•°æ®å¤„ç†é”™è¯¯,é”™è¯¯ä»£ç : " + arguments[0] + ";é”™è¯¯ä¿¡æ¯: " + arguments[1]);
                 }
             });
         }
@@ -83,7 +87,7 @@ var ecwx = {
                 }
             }
         } else {
-            pub.error("Î¢ĞÅÀ©Õ¹¹¦ÄÜ³õÊ¼¼ÓÔØÒì³££¡ÇëÉÔºóÖØÊÔ.");
+            pub.error("å¾®ä¿¡æ‰©å±•åŠŸèƒ½åˆå§‹åŠ è½½å¼‚å¸¸ï¼è¯·ç¨åé‡è¯•.");
         }
     },
     initImage: function (ipara) {
@@ -112,14 +116,14 @@ var ecwx = {
                        // ecwx.ps.delete($(c[0]));
                     } else if (clen == ipara.maxCount) {
                         $(btn).hide();
-                        pub.alert("×î¶àÉÏ´«{0}ÕÅÍ¼Æ¬".format(ipara.maxCount));
+                        pub.alert("æœ€å¤šä¸Šä¼ {0}å¼ å›¾ç‰‡".format(ipara.maxCount));
                     }
                 }
             };
             if (ipara.clip)
                 config.clip = ipara.clip;// { width: 0, height: 0 };          
             wechat.init(function () {
-                ecwx.ps = $(selector).picSelector(config);
+                //ecwx.ps = $(selector).picSelector(config);
             });
         }
     },
@@ -131,27 +135,27 @@ var ecwx = {
             //if (typeof (JsTakePhotoFunction) == 'function') {
             //    JsTakePhotoFunction(imgDomain);
             //} else {
-            //    pub.error("App request was aborted£¡ JsTakePhotoFunction Is Not Find!", 2);
+            //    pub.error("App request was abortedï¼ JsTakePhotoFunction Is Not Find!", 2);
             //}
             if (typeof (appMultiPickPhoto) == 'function') {
                 appMultiPickPhoto('{\"callBack\":\"ecwx.onAppImageCompleted\",\"maxCount\":3}');
             } else {
-                pub.error("App request was aborted£¡ appMultiPickPhoto Is Not Find!", 2);
+                pub.error("App request was abortedï¼ appMultiPickPhoto Is Not Find!", 2);
             }
 
         }
         else {
-            pub.error("ÇëÔÚÎ¢ĞÅ»òAppÖĞÊ¹ÓÃ´Ë¹¦ÄÜ...");
+            pub.error("è¯·åœ¨å¾®ä¿¡æˆ–Appä¸­ä½¿ç”¨æ­¤åŠŸèƒ½...");
         }
     },
     onAppImageComplete: function (imgUrl) {
         if (imgUrl == undefined || imgUrl == '') {
-            pub.error("ºÜ±§Ç¸£¬»ñÈ¡Í¼Æ¬ĞÅÏ¢Ê§°Ü£¬ÇëÉÔºóÖØÊÔ...");
+            pub.error("å¾ˆæŠ±æ­‰ï¼Œè·å–å›¾ç‰‡ä¿¡æ¯å¤±è´¥ï¼Œè¯·ç¨åé‡è¯•...");
         } else {
             var html = jte(ecwx.imgTemplate, { url: imgUrl });
             var c = $("#logo-pic");
             if (c.length > 3) {
-                pub.alert("×î¶àÉÏ´«{0}ÕÅÍ¼Æ¬".format(3));
+                pub.alert("æœ€å¤šä¸Šä¼ {0}å¼ å›¾ç‰‡".format(3));
             } else {
                 c.append(html);
             }
@@ -159,13 +163,13 @@ var ecwx = {
     },
     onAppImageCompleted: function (imgUrls) {
         if (imgUrls == undefined || imgUrls == '') {
-            pub.error("ºÜ±§Ç¸£¬»ñÈ¡Í¼Æ¬ĞÅÏ¢Ê§°Ü£¬ÇëÉÔºóÖØÊÔ...");
+            pub.error("å¾ˆæŠ±æ­‰ï¼Œè·å–å›¾ç‰‡ä¿¡æ¯å¤±è´¥ï¼Œè¯·ç¨åé‡è¯•...");
         } else {
             var json = $.parseJSON(imgUrls);// { imgs: imgUrls } 
             var html = jte(ecwx.imgsTemplate, json);
             var c = $("#logo-pic");
             if (c.length > 3) {
-                pub.alert("×î¶àÉÏ´«{0}ÕÅÍ¼Æ¬".format(3));
+                pub.alert("æœ€å¤šä¸Šä¼ {0}å¼ å›¾ç‰‡".format(3));
             } else {
                 c.append(html);
             }
@@ -199,20 +203,20 @@ var ecwx = {
                 wechat.init();
             }
             wx.scanQRCode({
-                needResult: 1, // Ä¬ÈÏÎª0£¬É¨Ãè½á¹ûÓÉÎ¢ĞÅ´¦Àí£¬1ÔòÖ±½Ó·µ»ØÉ¨Ãè½á¹û£¬
-                scanType: ["qrCode", 'barCode'], // ¿ÉÒÔÖ¸¶¨É¨¶şÎ¬Âë»¹ÊÇÒ»Î¬Âë£¬Ä¬ÈÏ¶şÕß¶¼ÓĞ
+                needResult: 1, // é»˜è®¤ä¸º0ï¼Œæ‰«æç»“æœç”±å¾®ä¿¡å¤„ç†ï¼Œ1åˆ™ç›´æ¥è¿”å›æ‰«æç»“æœï¼Œ
+                scanType: ["qrCode", 'barCode'], // å¯ä»¥æŒ‡å®šæ‰«äºŒç»´ç è¿˜æ˜¯ä¸€ç»´ç ï¼Œé»˜è®¤äºŒè€…éƒ½æœ‰
                 success: function (res) {
                     if (res.errMsg == "scanQRCode:ok") {
-                        var result = res.resultStr; // µ±needResult Îª 1 Ê±£¬É¨Âë·µ»ØµÄ½á¹û
-                        if (spara && spara.fn)//Èç¹û´æÔÚ»Øµ÷¾ÍÖ´ĞĞ»Øµ÷
+                        var result = res.resultStr; // å½“needResult ä¸º 1 æ—¶ï¼Œæ‰«ç è¿”å›çš„ç»“æœ
+                        if (spara && spara.fn)//å¦‚æœå­˜åœ¨å›è°ƒå°±æ‰§è¡Œå›è°ƒ
                         { spara.fn(result); }
                     } else {
-                        pub.error("É¨ÂëĞÅÏ¢Ê¶±ğ´íÎó,ÇëÉÔºóÖØÊÔ...");
+                        pub.error("æ‰«ç ä¿¡æ¯è¯†åˆ«é”™è¯¯,è¯·ç¨åé‡è¯•...");
                     }
                 }
             });
         } else {
-            pub.error("ÇëÔÚÎ¢ĞÅ»òAppÖĞÊ¹ÓÃ´Ë¹¦ÄÜ...");
+            pub.error("è¯·åœ¨å¾®ä¿¡æˆ–Appä¸­ä½¿ç”¨æ­¤åŠŸèƒ½...");
         }
     },
     getImages: function () {
@@ -253,7 +257,7 @@ var ecwx = {
             if (typeof (callback) == 'function')
                 callback({ Success: true }, '');
             else {
-                pub.tips("Ã»ÓĞĞèÒªÉÏ´«µÄÍ¼Æ¬£¡", 2);
+                pub.tips("æ²¡æœ‰éœ€è¦ä¸Šä¼ çš„å›¾ç‰‡ï¼", 2);
             }
             return;
         }
@@ -268,10 +272,10 @@ var ecwx = {
                 else {
                     images += "<Image><![CDATA[{0}]]></Image>".format(pic.baseData);
                     //wx.getLocalImgData({
-                    //    localId: pic.url, // Í¼Æ¬µÄlocalID
+                    //    localId: pic.url, // å›¾ç‰‡çš„localID
                     //    async: false,
                     //    success: function (res) {
-                    //        var baseData = res.localData; // localDataÊÇÍ¼Æ¬µÄbase64Êı¾İ£¬¿ÉÒÔÓÃimg±êÇ©ÏÔÊ¾      
+                    //        var baseData = res.localData; // localDataæ˜¯å›¾ç‰‡çš„base64æ•°æ®ï¼Œå¯ä»¥ç”¨imgæ ‡ç­¾æ˜¾ç¤º      
                     //        images += "<Image>{0}<Image>".format(baseData);
                     //        if (i == len - 1)
                     //            sync();
@@ -299,14 +303,14 @@ var ecwx = {
                             if (typeof (callback) == 'function')
                                 callback(r, r.Content);
                             else {
-                                pub.tips("Í¼Æ¬ÉÏ´«³É¹¦£¡", 2);
+                                pub.tips("å›¾ç‰‡ä¸Šä¼ æˆåŠŸï¼", 2);
                             }
                         } else {
                             pub.error(r.Message, 2);
                         }
                     },
                     error: function () {
-                        alert("Êı¾İ´¦Àí´íÎó,´íÎó´úÂë: " + arguments[0] + ";´íÎóĞÅÏ¢: " + arguments[1]);
+                        alert("æ•°æ®å¤„ç†é”™è¯¯,é”™è¯¯ä»£ç : " + arguments[0] + ";é”™è¯¯ä¿¡æ¯: " + arguments[1]);
                     }
                 });
             }
@@ -332,12 +336,12 @@ var ecwx = {
 
 function onAppImageCompleted(imgUrl) {
     if (imgUrl == undefined || imgUrl == '') {
-        pub.error("ºÜ±§Ç¸£¬»ñÈ¡Í¼Æ¬ĞÅÏ¢Ê§°Ü£¬ÇëÉÔºóÖØÊÔ...");
+        pub.error("å¾ˆæŠ±æ­‰ï¼Œè·å–å›¾ç‰‡ä¿¡æ¯å¤±è´¥ï¼Œè¯·ç¨åé‡è¯•...");
     } else {
         var html = jte(ecwx.imgTemplate, { url: imgUrl });
         var c = $("#logo-pic");
         if (c.length > 3) {
-            pub.alert("×î¶àÉÏ´«{0}ÕÅÍ¼Æ¬".format(3));
+            pub.alert("æœ€å¤šä¸Šä¼ {0}å¼ å›¾ç‰‡".format(3));
         } else {
             c.append(html);
         }

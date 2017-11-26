@@ -31,11 +31,11 @@ public class LoginController {
 	public String GetView(HttpServletRequest request,RedirectAttributes ras){
 		
 		WeChatAccount wa=WechatUtils.GetWechatAccount(); 
-		//||!WechatUtils.IsWxBrowser()
-		if(wa==null){
+		
+		if(wa==null||!WechatUtils.IsWxBrowser()){
 			return "Company/login";
 			}
-		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/company/toRealLogin.do";
+		String basePath = request.getScheme()+"://"+request.getServerName()+"/company/toRealLogin.do";
 		return "redirect:"+WebPageOAuth.getCodeUrl(wa.getAppId(), "", basePath)+"";
 	}	
 	@RequestMapping("/toRealLogin.do")

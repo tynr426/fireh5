@@ -353,4 +353,5 @@ CompanyResult company=Company.getCompany();
         //清空所有的key-value数据。
         //localStorage.clear();
     };
+  
 </script>

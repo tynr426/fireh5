@@ -1,6 +1,9 @@
 package fireh5.company.controller;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.protocol.HttpRequestHandler;
@@ -19,9 +22,14 @@ import fire.sdk.utils.JsonUtils;
 public class SocialController {
 	@RequestMapping("/getWeChatAccount.do")
 	@ResponseBody	
-	public Object getWeChatAccount(HttpServletRequest request){
-			String url=request.getContextPath();
-			
-			return WechatUtils.sign(url, WechatUtils.GetWechatAccount());
+	public Object getWeChatAccount(String url){
+		     try {
+				url=URLDecoder.decode(url,"UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//return "";
+			return new  JsonResult(WechatUtils.sign(url, WechatUtils.GetWechatAccount()));
 	}
 }
