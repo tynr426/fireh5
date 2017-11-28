@@ -26,38 +26,38 @@
 						<div class="inputbox box1">
 							<input type="hidden" value="0" name="PayFKId" id="PayFKId" /> <input
 								type="hidden" value="0" name="PayFKFlag" id="PayFKFlag" /> <input
-								type="text" name="UserName" id="UserName" value=""
-								error="请输入设备编号" validate="isnull" placeholder="请扫码或输入会员名"
+								type="text" name="Model" id="Model" value=""
+								error="请输入设备型号" validate="isnull" placeholder="请扫码或输入型号"
 								onchange="receiveCash.searchUser();" />
 						</div> <a href="javascript:void(0);" class="search-btn" id="btnScanCode">扫码</a>
 					</li>
 					<li class="box box-horizontal">
 						<p class="name">设备类型：</p>
 						<div class="inputbox box1">
-							<input type="text" name="Amount" maxlenth="9" id="Amount"
+							<input type="text" name="DeviceTypeId" maxlenth="9" id="DeviceTypeId"
 								value="" onchange="receiveCash.inputAmount(this);"
 								validate="isnull|decimal6" error="请输入收款金额(大于0)！"
-								placeholder="请输入收款金额" receipt-money />
+								placeholder="请输入设备类型" receipt-money />
 						</div>
 					</li>
 					<li class="box box-horizontal">
 						<p class="name">设备位置：</p>
 						<div class="inputbox box1">
-							<input type="text" name="Integral" id="Integral" value="0"
+							<input type="text" name="Detail" id="Detail" value="0"
 								validate="decimal7" error="请输入赠送积分(>=0)！" placeholder="请输入赠送积分" />
 						</div>
 					</li>
 					<li class="box box-horizontal scan">
 						<p class="name">检查描述：</p>
 						<div class="inputbox box1">
-							<input type="text" name="TicketNumber" id="TicketNumber" value=""
-								error="请输入票号！" placeholder="请输入票号" />
+							<input type="text" name="Description" id="Description" value=""
+								error="请输入票号！" placeholder="请输入问题" />
 						</div> 
 					</li>
 					<li class="box box-horizontal aptitude-info">
 						<p class="name">检查凭证：</p>
 						<div class="aptitude box1">
-							<input type="hidden" id="Ticket" name="Ticket" value="" />
+							<input type="hidden" id="Certificate" name="Certificate" value="" />
 							<ol id="logo-pic">
 								<li class="update" id="btnWxImage"><a class="update-btn"
 									href="javascript:void(0);"></a></li>
