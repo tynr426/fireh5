@@ -22,10 +22,9 @@
 			<div class="login-input-box">
 				<ul id="ReceiveCash">
 					<li class="box box-horizontal scan">
-						<p class="name">设备编号：</p>
+						<p class="name">设备型号：</p>
 						<div class="inputbox box1">
-							<input type="hidden" value="0" name="PayFKId" id="PayFKId" /> <input
-								type="hidden" value="0" name="PayFKFlag" id="PayFKFlag" /> <input
+							<input
 								type="text" name="Model" id="Model" value=""
 								error="请输入设备型号" validate="isnull" placeholder="请扫码或输入型号"
 								onchange="receiveCash.searchUser();" />
@@ -47,13 +46,6 @@
 								validate="decimal7" error="请输入赠送积分(>=0)！" placeholder="请输入赠送积分" />
 						</div>
 					</li>
-					<li class="box box-horizontal scan">
-						<p class="name">检查描述：</p>
-						<div class="inputbox box1">
-							<input type="text" name="Description" id="Description" value=""
-								error="请输入票号！" placeholder="请输入问题" />
-						</div> 
-					</li>
 					<li class="box box-horizontal aptitude-info">
 						<p class="name">检查凭证：</p>
 						<div class="aptitude box1">
@@ -65,9 +57,21 @@
 						</div>
 					</li>
 					<li class="box box-horizontal">
-						<p class="name">备注：</p>
+						<p class="name">问题描述：</p>
 						<div class="textareabox box1">
-							<textarea cols="" rows="" id="Remark"></textarea>
+							<textarea cols="" rows="" id="Description"></textarea>
+						</div>
+					</li>
+					<li class="box box-horizontal">
+						<p class="name">问题级别：</p>
+						<div class="selectbox" error="请选择问题级别" validate="isnull">
+							<select id="SeverityLevel" >
+							<option value="">请选择</option>
+							<option value="0">无异常</option>
+							<option value="1">一般问题</option>
+							<option value="2">比较严重</option>
+							<option value="3">特别严重</option>
+							</select>
 						</div>
 					</li>
 				</ul>

@@ -1966,4 +1966,11 @@ $.extend($, {
 });
 String.prototype.firstUpperCase=function(){
     return this.replace(/^\S/,function(s){return s.toUpperCase();});
-}
+};
+(function ($) {
+    $.getUrlParam = function (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+})(jQuery);

@@ -81,4 +81,11 @@ public class DeviceController {
 	public Object updateDevice(DeviceResult device){
 		return new ProxyBase().httpPostSerialObject("company.device", "updateDevice",device);
 	}
+	@RequestMapping("/getQR.do")
+	@ResponseBody	
+	public Object getQR(String code){
+		Map<String, Object> map = new HashMap<String, Object>();  
+		map.put("Code", code);
+		return new ProxyBase().httpPostSerialObject("company.getQR", "getDeviceQRByCode",map);
+	}
 }

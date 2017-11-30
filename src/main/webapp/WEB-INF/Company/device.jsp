@@ -212,7 +212,6 @@
 <script type="text/javascript">
     $(function () {
     	device.initControll();
-    	device.getDevice('<%=request.getParameter("Id")%>');
     });
 </script>
 

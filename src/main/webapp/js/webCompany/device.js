@@ -84,18 +84,17 @@ var device={
 			$.ajax({
 				url:path+"/company/device/getDevice.do",
 				type:"post",
+				async:false,
 				data:{id:Id},
 				dataType:"json",
 				success:function(result){					
-					if(result.state==0){
-					device.deviceFinish(result.data);
-						
-					}
+					return result;
 				},
 				error:function(){
 					alert("获取失败");
 				}
 			});
+			return null;
 		},
 		initControll:function(){
 			var arrFloor=[],arrPo=[],arrPassage=[];
@@ -121,6 +120,14 @@ var device={
 
 				$("#DeviceTypeId").append(deviceType.join());
 			}
+			 var deviceTypeId = $.getUrlParam('deviceTypeId');
+			 if(deviceTypeId!=null&&deviceTypeId!=""){
+				
+				 $("#DeviceTypeId").val(deviceTypeId);
+				 $("#DeviceTypeId").change();
+				 $("#DeviceTypeId").attr("disabled", true);
+				 
+			 }
 		},
 		deviceFinish:function(){
 			
@@ -143,6 +150,7 @@ var device={
 		},
 		//获得所有的设备类型
 		getDeviceType:function(){
+
 			$.ajax({
 				url:path+"/company/deviceType/findAll.do",
 				async:false,
@@ -258,8 +266,55 @@ var device={
 		stepTrigger:function(){
 			$("#firstStep").toggle();
 			$("#secondStep").toggle();
+		},
+		getQR:function(code){
+			$.ajax({
+				url:path+"/company/device/getQR.do",
+				type:"post",
+				data:{code:code},
+				dataType:"json",
+				success:function(result){
+					if(result.state==0 && result.data.deviceId==null){
+						window.location.href=path+"/company/device/toDevice.do?deviceTypeId="+result.data.deviceTypeId+"&code="+code;
+					}else if(result.state==0 && result.data.deviceId!=null){
+						window.location.href=path+"/company/check/toCheck.do?deviceId="+result.data.deviceId;
+					}else{
+						alert("该二维码不存在");
+					}
+				}
+			});
 		}
+			
 
+}
+var checkDevice={
+		init:function(){
+			var id =$.getUrlParam("deviceId");
+			var result = device.getDevice(id);
+			if(result!=null && result.state==0){				
+				$.each($.parseJSON(result.data),function(key,value){
+					$("#"+key).val(value);
+				}) ;
+			}
+		},
+		save:function(){
+			var DeviceId=$("#DeviceId").val();
+			var Certificate=$("#Certificate").val();
+			var Description=$("#Description").val();
+			var SeverityLevel=$("#SeverityLevel").val();
+			$.ajax({
+				url:path+"/company/check/add.do",
+				type:"post",
+				data:{DeviceId:DeviceId,Certificate:Certificate,
+					Description:Description,SeverityLevel:SeverityLevel},
+				dataType:"json",
+				success:function(result){
+					if(result.state==0){
+						window.location.href=path+"/company/device/toDevice.do";
+					}
+				}
+			});
+		}
 }
 
 

@@ -48,13 +48,6 @@ public class CheckController {
 			return new JsonResult(e);
 		}
 	}
-	@RequestMapping("/getCD.do")
-	@ResponseBody
-	public Object getCD(String id,HttpSession session,HttpServletResponse response){
-		Map<String, Object> map = new HashMap<String, Object>();   
-		map.put("Id",id);
-		return new ProxyBase().GetResponse("company.checkDevice", "getCD", map);	
-	}
 	@RequestMapping("/showCDList.do")
 	@ResponseBody
 	public Object showCDList(String index,String size,String managerName,String model,String deviceTypeId,HttpSession session,HttpServletResponse response){
