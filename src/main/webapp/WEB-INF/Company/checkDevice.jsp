@@ -26,8 +26,7 @@
 						<div class="inputbox box1">
 							<input
 								type="text" name="Model" id="Model" value=""
-								error="请输入设备型号" validate="isnull" placeholder="请扫码或输入型号"
-								onchange="receiveCash.searchUser();" />
+								error="请输入设备型号" validate="isnull" placeholder="请扫码或输入型号" />
 						</div> <a href="javascript:void(0);" class="search-btn" id="btnScanCode">扫码</a>
 					</li>
 					<li class="box box-horizontal">

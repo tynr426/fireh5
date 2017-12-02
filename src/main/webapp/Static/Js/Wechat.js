@@ -1,4 +1,300 @@
+//--------------------------------------------------------------------------------------------------
+//1. wechat.init(callback, api=null) 初始化，在callback里绑定事件、创建控件
+//2. var ps = $e('input[type=hidden]').picSelector(opt),以隐藏域为存储控件创建图片选择、上传器
+//      opt = {
+//           count: 数量上限，默认0，不限制
+//           btn: 添加按钮模板，如果按钮在选择器外部，这里设置为null
+//           template: 缩略图模板，%URL%为图片url占位标记
+//           container: 缩略图列容器，默认为隐藏域父控件
+//           isprdimg: 是否是产品图片, 0,1, 默认为0
+//           no_thumb: 不生成缩略图，0,1，默认0
+//           defaultPic: 没有图片时显示的默认图片
+//           clip: {width:xxx, height:xxx} 裁剪
+//           onAdd: 图片添加回调，function(pic, url){}
+//                  pic: 添加到容器的缩略图控件，可以绑定删除操作ps.delete(pic);
+//                  url: 添加的图片url
+//      }
+//3. ps.add() 添加图片，返回false说明数量达到上限，如果提供了添加按钮模板不需要主动调用
+//4. ps.delete(pic) 删除图片项，pic可以是序号和图片项
+//5. ps.replace(pic) 替换图片项，pic可以是序号和图片项
+//6. ps.sync(callback) 同步上传未本地图片, callback = function(result, urls){}
+//       result: true 上传完成, false不支持上传，
+//       urls: 不论上传是否支持，返回所有远程图片url，逗号分隔，隐藏域中也会保存
+//--------------------------------------------------------------------------------------------------
 
+// 扩展对象的图片选择方法
+$e.fn.picSelector = function (opt) {
+    var _this = $e(this);
+    var config = {
+        count: 0,
+        btn: '<a class="add-btn" href="javascript:void(0);"></a>',
+        template: '<span><img src="%URL%" itemid=\"%ITEMID%\" /></span>',
+        defaultPic: '',
+        clip: { width: 0, height: 0 },
+        container: null,
+        onAdd: null,
+        onDel: null,
+        islocal: false,//是否启用本地模式
+        isApp: false,
+        isbind: true,
+    };
+    for (var k in opt) {
+        config[k] = opt[k];
+    }
+    if (!config.container) {
+        config.container = _this.parent();
+        config.selfParent = true;
+    }
+
+    var btn = null;
+    var def = null;
+    var pictures = [];
+    function _clip(c) {
+        var img = $e(this);
+        var src = img.attr('src');
+        var parent = img.parent();
+        if (parent.attr('data-role') == 'clip-cover') {
+            img = parent;
+            parent = parent.parent();
+        }
+        var pw = parent.width(), ph = parent.height();
+        if (pw == 0 || ph == 0) pw = ph = Math.max(pw, ph);
+        var x = c.x * c.orginalWidth, y = c.y * c.orginalHeight
+        var width = c.orginalWidth * c.width, height = c.orginalHeight * c.height;
+        var z = Math.min(pw / width, ph / height);
+        var vw = width * z, vh = height * z;
+        img.remove();
+        parent.append('<span style="display:inline-block;position:relative;overflow: hidden;width:' + Math.round(vw) + 'px;height:' + Math.round(vh) + 'px;" data-role="clip-cover">' +
+            '<img src="' + src + '" style="position:absolute;max-width:none;max-height:none;min-width:none;min-width:none;width:' + Math.round(z * c.orginalWidth) + 'px;height:' + Math.round(z * c.orginalHeight) + 'px;left:' + Math.round(-x * z) + 'px;top:' + Math.round(-y * z) + 'px;right:auto;bottom:auto" />' +
+            '</span>');
+
+    }
+    function add(pic) {
+
+        wx.getLocalImgData({
+            localId: pic.url, // 图片的localID
+            async: false,
+            success: function (res) {
+                var baseData = res.localData; // localData是图片的base64数据，可以用img标签显示      
+                pic.baseData = baseData;
+            }
+        });
+
+        pictures.push(pic);
+        if (btn != null) {
+            btn.remove();
+            btn = null;
+        }
+        if (def) {
+            def.remove();
+            def = null;
+        }
+        var p = $e(config.template.replace("%URL%", pic.url).replace("%ITEMID%", pictures.length)).appendTo(config.container);
+        if (pic.clip) {
+            _clip.call(p[0].tagName.toLowerCase() == 'img' ? p[0] : p.find('img')[0], pic.clip);
+        }
+        if (typeof (config.onAdd) == 'function') config.onAdd(p, pic.url);
+        if (config.btn && (config.count == 0 || config.count > pictures.length)) {
+            btn = $e(config.btn).appendTo(config.container).click(_this.add);
+        }
+    };
+    _this.getPictures = function () {
+        return pictures == null ? [] : pictures;
+    };
+    _this.add = function (i) {
+        //alert("i:" + i + ",count:" + config.count + ",length:" + pictures.length + ",imglen:" + $e("img", config.container[0]).length);
+        if ((i == undefined || i >= config.count) && config.count > 0 && config.count <= $e("img", config.container[0]).length) {
+            pub.alert("最多上传{0}张图片".format(config.count));
+            return false;
+        }
+        wx.checkJsApi({
+            jsApiList: ['chooseImage'],
+            success: function (res) {
+                
+                if (res.checkResult.chooseImage) {
+                    wx.chooseImage({
+                        count: (config.count == 0 ? 1 : config.count - $e("img", config.container[0]).length),
+                        success: function (res) {
+                            //进行裁剪
+                            if (config.clip && config.clip.width > 0 && config.clip.height > 0) {
+                                var j = 0;
+                                function clip() {
+                                    if (j < res.localIds.length) {
+                                        clipImage(res.localIds[j], config.clip.width, config.clip.height, function (clipData) {
+                                            if (i >= 0 && i < pictures.length) {
+                                                var img = config.container.children()[i + (config.selfParent ? 1 : 0)].find('img').attr('src', res.localIds[j]);
+                                                _clip.call(img[0], clipData);
+                                                pictures[i] = { url: res.localIds[j], local: true, clip: clipData };
+                                            } else {
+                                                add({ url: res.localIds[j], local: true, clip: clipData });
+                                            }
+                                            j++;
+                                            clip();
+                                            return true;
+                                        });
+                                    }
+                                }
+                                clip();
+                            } else {
+                                if (i >= 0 && i < pictures.length && res.localIds.length > 0) {
+                                    config.container.children()[i + (config.selfParent ? 1 : 0)].find('img').attr('src', res.localIds[0]);
+                                    pictures[i] = { url: res.localIds[j], local: true };
+                                } else {
+                                    for (var j = 0; j < res.localIds.length; j++) {
+                                        add({ url: res.localIds[j], local: true });
+
+                                    }
+                                }
+                            }
+                        }, error: function () {
+                            alert("add 错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
+                        }
+                    });
+                } else {
+                    alert('不支持chooseImage接口');
+                }
+            }
+        });
+        return true;
+    };
+    function index(p) {
+        var i = -1;
+        var cs = config.container.children();
+        for (var j = 0; j < cs.length; j++) {
+            if (p[0] == cs[j][0]) {
+                i = j;
+                break;
+            }
+        };
+        if (config.selfParent) i--;
+        return i;
+    }
+    _this.replace = function (i) {
+        if (typeof (i) == 'object') {
+            i = index(i);
+        }
+        i = i >= 0 ? i : 0;
+        if (i >= 0 && i < pictures.length) {
+            _this.add(i);
+        } else {
+            _this.add();
+        }
+    };
+
+    _this.delete = function (p) {
+        var i = typeof (p) == 'object' ? (p.attr("itemid") != undefined ? p.attr("itemid") - 1 : index(p)) : p;
+        if (i >= 0) {
+            var b = p.attr('data-default') == '1';
+            p.remove();
+            //alert("i:" + i + ",del1:" + pictures.length + ",itemid:" + p.attr("itemid"));
+            pictures.splice(i, 1);
+            //alert("i:" + i + ",del2:" + pictures.length + ",itemid:" + p.attr("itemid"));
+            if (!b) {
+                if (pictures.length == 0 && config.defaultPic) {
+                    def = $e(config.template.replace('%URL%', config.defaultPic).replace("%ITEMID%", pictures.length)).appendTo(config.container).attr('data-default', '1');
+                }
+                if (btn == null && config.btn) {
+                    btn = $e(config.btn).appendTo(config.container).click(_this.add);
+                }
+            }
+        }
+        if (typeof (config.onDel) == 'function') config.onDel();
+        $e("*[itemid]", config.container[0]).each(function (n, i) {
+            $e(n).attr("itemid", i + 1);
+        });
+    };
+
+
+    _this.sync = function (callback) {
+        wx.checkJsApi({
+            jsApiList: ['uploadImage'],
+            success: function (res) {
+                if (res.checkResult.uploadImage) {
+                    var i = 0;
+                    function upload() {
+                        while (i < pictures.length && !pictures[i].local) {
+                            i++;
+                        }
+                        if (i == pictures.length) {
+                            var a = [];
+                            i = 0;
+                            while (i < pictures.length) {
+                                if (!pictures[i].local) { a.push(pictures[i].url) };
+                                i++;
+                            }
+                            _this.value(a.join(','));
+                            if (typeof (callback) == 'function') {
+                                callback(true, a.join(','));
+                            }
+                        } else {
+                            var opt = {
+                                localId: pictures[i].url,
+                                isShowProgressTips: 1,
+                                success: function (res) {
+                                    $e.post({
+                                        url: '/wechat.axd',
+                                        data: '<action>pullWeixinImage</action>' +
+                                            '<serverId>' + res.serverId + '</serverId>' +
+                                            (pictures[i].clip ? '<cut_image>' + pictures[i].clip.x + '|' + pictures[i].clip.y + '|' + pictures[i].clip.width + '|' + pictures[i].clip.height + '|' + pictures[i].clip.targetWidth + '|' + pictures[i].clip.targetHeight + '</cut_image>' : '') +
+                                            (config.isprdimg ? '<isprdimg>1</isprdimg>' : '') +
+                                            (config.no_thumb ? '<no_thumb>1</no_thumb>' : ''),
+                                        dataType: 'xml',
+                                        success: function () {
+                                            var r = eval('(' + arguments[1].text + ')');
+                                            //alert(arguments[1].text);
+                                            if (r.code == 0) {
+                                                pictures[i].url = r.data.url;
+                                                pictures[i].local = false;
+                                                i++;
+                                                upload();
+                                            } else {
+                                                alert('第' + (i + 1) + '张' + r.msg);
+                                            }
+                                        },
+                                        error: function () {
+                                            alert("错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
+                                        }
+                                    });
+                                },
+                                fail: function (res) {
+                                    i++;
+                                    upload();
+                                }
+                            };
+                            wx.uploadImage(opt);
+                        }
+                    }
+                    upload();
+                } else if (typeof (callback) == 'function') {
+                    callback(false, '不支持uploadImage接口');
+                }
+            }
+        });
+    };
+
+    setTimeout(function () {
+        var v = _this.value();
+        var imgDomain = $e(_this).attr('domain') == undefined ? "" : $e(_this).attr('domain');//图片域名
+        if (typeof (v) == "string") {
+            if (config.isbind != true)
+                return;
+            var a = v.split(',');
+            for (var i = 0; i < a.length; i++) {
+                if (a[i] != "") {
+                    add({ url: imgDomain + "" + a[i], local: false });
+                }
+            }
+        } else {
+            if (config.defaultPic) {
+                def = $e(config.template.replace('%URL%', config.defaultPic)).appendTo(config.container).attr('data-default', '1');
+            }
+            if (config.btn && (config.count == 0 || config.count > pictures.length)) {
+                btn = $e(config.btn).appendTo(config.container).click(_this.add);
+            }
+        }
+    }, 10);
+    return _this;
+};
 var wechat = {
     init: function (callback, api) {
         var url = location.href.replace(/#.*$/, '');
