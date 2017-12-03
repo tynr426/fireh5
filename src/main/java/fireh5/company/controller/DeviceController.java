@@ -20,6 +20,7 @@ import fire.sdk.utils.DTOBeanUtils;
 import fire.sdk.utils.JsonResult;
 import fire.sdk.utils.SyncHttp;
 import fireh5.web.utils.Company;
+import fireh5.web.utils.Constants;
 
 
 @Controller
@@ -30,7 +31,8 @@ public class DeviceController {
 		return "Company/device";
 	}
 	@RequestMapping("/toDeviceList.do")
-	public String GetListView(){
+	public String GetListView(HttpServletRequest request){
+		request.setAttribute("title", "消防设备列表");
 		return "Company/deviceList";
 	}
 	@RequestMapping("/add.do")

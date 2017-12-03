@@ -73,7 +73,7 @@
 	<!--//框架-->
 </body>
 </html>
-<jsp:include page="template/device.html"></jsp:include>
+<jsp:include page="template/checkDeviceList.html"></jsp:include>
 
 <script type="text/javascript">
 	$(function(){
@@ -81,7 +81,7 @@
 	});
 	 function load(){
 		  var config={
-					url:path+"/company/device/show.do",
+					url:path+"/company/check/showCDList.do",
 		  			pageSize:3,
 		  			pageIndex:1,
 		  			isScroll:true,

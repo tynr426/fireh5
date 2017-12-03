@@ -25,6 +25,10 @@ public class CheckController {
 	public String GetView(){
 		return "Company/checkDevice";
 	}
+	@RequestMapping("/toCheckList.do")
+	public String GetCheckList(){
+		return "Company/checkDeviceList";
+	}
 	@RequestMapping("/add.do")
 	@ResponseBody
 	public Object addCD(CheckDevice cd){
@@ -50,12 +54,12 @@ public class CheckController {
 	}
 	@RequestMapping("/showCDList.do")
 	@ResponseBody
-	public Object showCDList(String index,String size,String managerName,String model,String deviceTypeId,HttpSession session,HttpServletResponse response){
+	public Object showCDList(String index,String size,String model,String deviceTypeId,HttpSession session,HttpServletResponse response){
 		Map<String, Object> map = new HashMap<String, Object>();   
 		map.put("CompanyId",String.valueOf(Company.getCompanyId()));
 		map.put("Index",index);
 		map.put("Size",size);
-		map.put("ManagerName",managerName);
+		map.put("ManagerName",Company.getCompany().getManagerName());
 		map.put("Model",model);
 		map.put("DeviceTypeId",deviceTypeId);
 		return new ProxyBase().GetResponse("company.checkDevice", "showCDList", map);	

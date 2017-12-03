@@ -110,7 +110,7 @@ CompanyResult company=Company.getCompany();
                                         <div class="store-menu">
                                             <ul>
                                                 <li>
-                                                    <a href="Order/List.aspx" class="box box-horizontal">
+                                                    <a href="<%=request.getContextPath()%>/company/assigment/toAssigment.do" class="box box-horizontal">
                                                         <span>
                                                             <i class="icon text"></i>
                                                             <em>我的任务<em id="OrderCountBox"></em></em>
@@ -119,34 +119,13 @@ CompanyResult company=Company.getCompany();
                                                 </li>
 
                                                 <li>
-                                                    <a href="Finance/InCome.aspx" class="box box-horizontal">
+                                                    <a href="<%=request.getContextPath()%>/company/check/toCheckList.do" class="box box-horizontal">
                                                         <span>
                                                             <i class="icon money"></i>
-                                                            <em>我的检修</em>
+                                                            <em>巡查记录</em>
                                                         </span>
                                                     </a>
-                                                </li>
-                                               
-                                             
-                                                <li>
-                                                    <a href="Shop/Setting.aspx" class="box box-horizontal">
-                                                        <span>
-                                                            <i class="icon setting"></i>
-                                                            <em>店铺设置</em>
-                                                        </span>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="/Store/Default.aspx?sid=<$var sources.FKId/>" class="box box-horizontal">
-                                                        <span>
-                                                            <i class="icon storeview"></i>
-                                                            <em>预览店铺</em>
-                                                        </span>
-                                                    </a>
-                                                </li>
-
-                                            
+                                                </li>     
                                             </ul>
                                         </div>
                                         <!--//菜单导航-->
@@ -170,7 +149,7 @@ CompanyResult company=Company.getCompany();
                                                     <a href="<%=request.getContextPath() %>/company/device/toDevice.do" class="box box-horizontal">
                                                         <span>
                                                             <i class="icon retreat"></i>
-                                                            <em>设备录入</em>
+                                                            <em>录入设备</em>
                                                         </span>
                                                     </a>
                                                 </li>
@@ -179,7 +158,7 @@ CompanyResult company=Company.getCompany();
                                                     <a href="<%=request.getContextPath() %>/company/check/toCheck.do" class="box box-horizontal">
                                                         <span>
                                                             <i class="icon retreat"></i>
-                                                            <em>检修录入</em>
+                                                            <em>检查录入</em>
                                                         </span>
                                                     </a>
                                                 </li>
