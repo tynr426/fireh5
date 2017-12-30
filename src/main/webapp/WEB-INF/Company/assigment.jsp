@@ -12,20 +12,9 @@
 	<!--框架-->
 	<section class="ui-wrap"> 
 	
-	<!-- 引入页面顶部 --> 
 	
-	    <header class="custom-head">
-        <!-- 返回按钮 -->
-        <a href="javascript:void(0);" onclick="history.go(-1);" class="btn ui-back-btn" title="返回"></a>
-        <!-- //返回按钮 -->
-
-        <!-- 标题党 -->
-        <h1 class="ui-title">${title}</h1>
-        <!-- //标题党 -->
-    </header>
-	<!-- //引入页面顶部 --> 
 	<!--体部--> 
-	<article class="ui-page" style="top: 40px;bottom: 0;height: 606px;">
+	<article class="ui-page" >
 	 <!--订单列表-->
 	<div class="order-list">
 		<!--搜索区域-->
@@ -33,13 +22,17 @@
 			<!--模拟下拉-->
 			<div class="search-push close">
 				<div class="title"
-					onclick="var obj = $e(this.parentNode);if(obj.hasClass('open')){obj.removeClass('open').addClass('close');}else{obj.removeClass('close').addClass('open');}">
+					onclick="var obj = $(this.parentNode);if(obj.hasClass('open')){obj.removeClass('open').addClass('close');}else{obj.removeClass('close').addClass('open');}">
 					<p id="select-title">全部数据</p>
 					<i class="icon"></i>
 				</div>
 
 				<!-- 下拉列表 -->
-				<div class="push-list" id="RetreatCountBox"></div>
+				<div class="push-list">
+				<ul id="RetreatCountBox">
+					<li class="select" data-status="0"><a href="javascript:void(0);" onclick="assigment.search(this)"><em>全部</em></a></li>
+					</ul>
+				</div>
 				<!-- //下拉列表 -->
 			</div>
 			<!--//模拟下拉-->
@@ -77,16 +70,19 @@
 
 <script type="text/javascript">
 	$(function(){
+		assigment.loadDeviceType();
 		load();
 	});
 	 function load(){
+		 var deviceTypeId=$("#RetreatCountBox .select").attr("data-status")||0;
 		  var config={
 					url:path+"/company/assigment/show.do",
 		  			pageSize:3,
 		  			pageIndex:1,
 		  			isScroll:true,
 		  			templateId:"BodyListTmpelate",
-		  			container:"deviceList"
+		  			container:"deviceList",
+		  			data:{deviceTypeId:deviceTypeId}
 		  			};
 		  var pageInfo=new ecPage.fn._init(config);
 	 }

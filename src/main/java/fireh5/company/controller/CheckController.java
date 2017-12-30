@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -22,7 +23,8 @@ import fireh5.web.utils.Company;
 @RequestMapping("/company/check")
 public class CheckController {
 	@RequestMapping("/toCheck.do")
-	public String GetView(){
+	public String GetView(HttpServletRequest request){
+		request.setAttribute("title", "检查录入");
 		return "Company/checkDevice";
 	}
 	@RequestMapping("/toCheckList.do")
@@ -33,35 +35,25 @@ public class CheckController {
 	@ResponseBody
 	public Object addCD(CheckDevice cd){
 		cd.setCompanyId(Company.getCompanyId());
-		Map<String,Object> map;
-		
-		try {
-			map = DTOBeanUtils.convertBeanToMap(cd);
-			return new ProxyBase().httpPostSerialObject("company.checkDevice", "addCD",cd);
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return new JsonResult(e);
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return new JsonResult(e);
-		} catch (IntrospectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return new JsonResult(e);
-		}
+		cd.setManagerId(Company.getCompany().getManagerId());
+		cd.setManagerName(Company.getCompany().getManagerName());
+		return new ProxyBase().httpPostSerialObject("company.checkDevice", "addCD",cd);
 	}
 	@RequestMapping("/showCDList.do")
 	@ResponseBody
-	public Object showCDList(String index,String size,String model,String deviceTypeId,HttpSession session,HttpServletResponse response){
+	public Object showCDList(String index,String size,Integer managerId,HttpSession session,HttpServletResponse response){
 		Map<String, Object> map = new HashMap<String, Object>();   
 		map.put("CompanyId",String.valueOf(Company.getCompanyId()));
 		map.put("Index",index);
 		map.put("Size",size);
-		map.put("ManagerName",Company.getCompany().getManagerName());
-		map.put("Model",model);
-		map.put("DeviceTypeId",deviceTypeId);
+		map.put("ManagerId",managerId);
 		return new ProxyBase().GetResponse("company.checkDevice", "showCDList", map);	
+	}
+	@RequestMapping("/getCD.do")
+	@ResponseBody
+	public Object getDevice(String id,HttpSession session,HttpServletResponse response){
+		Map<String, Object> map = new HashMap<String, Object>();   
+		map.put("Id",id);
+		return new ProxyBase().GetResponse("company.checkDevice", "getCD", map);
 	}
 }

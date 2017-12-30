@@ -72,5 +72,16 @@
 			<artifactId>fire.sdk</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+    <dependency>
+		  <groupId>commons-fileupload</groupId>
+		  <artifactId>commons-fileupload</artifactId>
+		  <version>1.3.2</version>
+		</dependency>
+
+    <dependency>
+    	<groupId>jstl</groupId>
+    	<artifactId>jstl</artifactId>
+    	<version>1.2</version>
+    </dependency>
   </dependencies>
 </project>

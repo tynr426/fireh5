@@ -19,16 +19,19 @@ import fireh5.web.utils.Company;
 @RequestMapping("/company/assigment")
 public class AssigmentController {
 	@RequestMapping("/toAssigment.do")
-	public String toAssigment(){
+	public String toAssigment(HttpServletRequest request){
+		request.setAttribute("title", "任务列表");
 		return "Company/assigment";
 	}
 	@RequestMapping("/show.do")
 	@ResponseBody
-	public Object showAssigment(String index,String size,HttpSession session,HttpServletResponse response){
+	public Object showAssigment(String index,String size,Integer deviceTypeId,HttpSession session,HttpServletResponse response){
 		Map<String, Object> map = new HashMap<String, Object>();   
 		map.put("ManagerId",String.valueOf(Company.getCompany().getManagerId()));
 		map.put("Index",index);
 		map.put("Size",size);
+		map.put("DeviceTypeId",deviceTypeId);
+		map.put("Keyword",null);
 		return new ProxyBase().GetResponse("company.assigment", "showAssigment", map);	
 	}
 }

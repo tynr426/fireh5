@@ -28,7 +28,7 @@ var loginCM = {
 					dataType:"json",
 					success:function(result){
 						if(result.state==0){
-							window.location.href=path+"/company/toMain.do";
+							window.location.href=path+result.data;
 						}else{	
 							alert(result.message);		
 						}								

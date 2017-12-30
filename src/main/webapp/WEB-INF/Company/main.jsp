@@ -1,3 +1,4 @@
+<%@page import="fire.sdk.utils.WechatUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="fireh5.web.utils.*"%> 
@@ -6,22 +7,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>消防管理系统</title>
 <jsp:include page="block/Meta.html" ></jsp:include>
+<script type="text/javascript" src="/fireh5/Static/Js/Wechat.js?v=1.2.10"></script>
+<script type="text/javascript" src="/fireh5/Static/Js/jweixin-1.2.0.js"></script>
 <%
 CompanyResult company=Company.getCompany();
 %> 
 </head>
 
 <body>
-    <!--页面加载等待-->
-<!--     <div class="loading">
-        <div class="text">
-            <i class="icon"></i>
-            <p>页面正在疯狂加载中...</p>
-        </div>
-    </div> -->
-    <!--//页面加载等待-->
+
     <!-- 框架 -->
     <section class="ui-wrap">
         <!-- 体部 -->
@@ -56,7 +52,7 @@ CompanyResult company=Company.getCompany();
                                 <p class="name">操作账户：</p>
                                 <div class="string box1">
                                     <%=company.getUserName() %>
-                                    <a href="/WebStore/Social/Account.aspx">微信帐号</a>
+                                    <a href="#">微信帐号</a>
                                 </div>
                             </div>
                         </div>
@@ -145,8 +141,7 @@ CompanyResult company=Company.getCompany();
                                                 </li>
                                             
                                                 <li>
-                                                    <!--<a href="/default.aspx?fkway=2">-->
-                                                    <a href="<%=request.getContextPath() %>/company/device/toDevice.do" class="box box-horizontal">
+                                                    <a data-state="insert" data-link="<%=request.getContextPath() %>/company/device/toDevice.do" class="box box-horizontal">
                                                         <span>
                                                             <i class="icon retreat"></i>
                                                             <em>录入设备</em>
@@ -155,7 +150,7 @@ CompanyResult company=Company.getCompany();
                                                 </li>
 
                                                 <li>
-                                                    <a href="<%=request.getContextPath() %>/company/check/toCheck.do" class="box box-horizontal">
+                                                    <a  data-state="check" data-link="<%=request.getContextPath() %>/company/check/toCheck.do" class="box box-horizontal">
                                                         <span>
                                                             <i class="icon retreat"></i>
                                                             <em>检查录入</em>
@@ -163,7 +158,7 @@ CompanyResult company=Company.getCompany();
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="Supplier/Retreat.aspx" class="box box-horizontal">
+                                                    <a data-state="repair"  class="box box-horizontal">
                                                         <span>
                                                             <i class="icon retreat"></i>
                                                             <em>维修录入</em>
@@ -198,24 +193,26 @@ CompanyResult company=Company.getCompany();
         <!--列表-->
         <div class="list">
             <ul>
-                    <li class="change">
-                        <a href="Passport/ChangePassword.aspx">
+             <li class="change">
+                        <a href="<%=request.getContextPath() %>/company/manager/toPwd.do">
                             <i class="icon"></i>
                             <em class="text">修改密码</em>
                         </a>
                     </li>
-                        <li class="merchant">
-                            <a href="Shop/Setting.aspx">
+                       <li class="merchant">
+                            <a href="">
                                 <i class="icon"></i>
-                                <em class="text">店铺设置</em>
+                                <em class="text">平台设置</em>
                             </a>
                         </li>
                         <li class="exit thirdexit">
-                            <a href="javascript:void(0);" onclick="store.logout('<$var IsClerk />')">
+                            <a href="javascript:void(0);" onclick="loginCM.loginOut()">
                                 <i class="icon"></i>
                                 <em>退出登录</em>
                             </a>
                         </li>
+                        
+                   
                 <li class="main">
                     <a href="javascript:void(0);" onclick="var obj = $('#ui-fast-menu');if(obj.hasClass('open')){obj.addClass('close').removeClass('open');}else{obj.addClass('open').removeClass('close')}">
                         <i class="icon"></i>
@@ -332,5 +329,21 @@ CompanyResult company=Company.getCompany();
         //清空所有的key-value数据。
         //localStorage.clear();
     };
-  
+	var iswx = '<%=WechatUtils.IsWxBrowser()%>';
+	var arr=[];
+	$("a[data-state]").each(function(){
+		arr.push(this);
+	});
+
+		ecwx.init({
+			isWx : (iswx == 'true'),
+			actions : [{
+				action : 'scan',
+				btn : arr,
+				fn : function(r,obj) {
+					device.getQR(r,obj);
+				}
+			} ]
+		});
+device.getQR('f4f6946162ec4d1a8dd15dcefe583932');
 </script>

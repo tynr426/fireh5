@@ -12,22 +12,24 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import fire.common.entity.DeviceResult;
 import fire.proxy.service.ProxyBase;
 import fire.sdk.utils.DTOBeanUtils;
 import fire.sdk.utils.JsonResult;
-import fire.sdk.utils.SyncHttp;
 import fireh5.web.utils.Company;
-import fireh5.web.utils.Constants;
 
 
 @Controller
 @RequestMapping("/company/device")
 public class DeviceController {
 	@RequestMapping("/toDevice.do")
-	public String GetView(){
+	public String GetView(HttpServletRequest request){
+		request.setAttribute("title", "设备录入");
 		return "Company/device";
 	}
 	@RequestMapping("/toDeviceList.do")
@@ -71,11 +73,13 @@ public class DeviceController {
 	}
 	@RequestMapping("/show.do")
 	@ResponseBody
-	public Object showDevice(String index,String size,HttpSession session,HttpServletResponse response){
+	public Object showDevice(String index,String size,int deviceTypeId,String keyword){
 		Map<String, Object> map = new HashMap<String, Object>();   
 		map.put("CompanyId",String.valueOf(Company.getCompanyId()));
 		map.put("Index",index);
 		map.put("Size",size);
+		map.put("DeviceTypeId", deviceTypeId);
+		map.put("KeyWord", keyword);
 		return new ProxyBase().GetResponse("company.device", "showDevice", map);	
 	}
 	@RequestMapping("/update.do")
@@ -86,8 +90,11 @@ public class DeviceController {
 	@RequestMapping("/getQR.do")
 	@ResponseBody	
 	public Object getQR(String code){
+		System.out.println("code"+code);
 		Map<String, Object> map = new HashMap<String, Object>();  
-		map.put("Code", code);
-		return new ProxyBase().httpPostSerialObject("company.getQR", "getDeviceQRByCode",map);
+		map.put("QrCode", code);
+		map.put("ToManagerId", Company.getCompany().getManagerId());
+		return new ProxyBase().GetResponse("company.getQR", "getDeviceQRByCode",map);
 	}
+	
 }

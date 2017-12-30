@@ -4,8 +4,8 @@
     <li>
         <!-- 名称 -->
         <div class="storename box box-horizontal">
-            <a href="javascript:void(0);" class="name box1">负责人：${name}</a>
-            <a href="/fireh5/company/device/toDevice.do?Id=${id}"><div class="pay-way">修改</div></a>
+            <a href="javascript:void(0);" class="name box1">设备类型：${deviceType}</a>
+            <a href="/fireh5/company/repairrecord/toRepairrecord.do?assignmentId=${id}"><div class="pay-way">整改</div></a>
         </div>
         <!-- //店铺名称 -->
         <!--标题-->
@@ -21,11 +21,12 @@
  <!--标题-->
  
  <div class="order-tool">
-            <div class="order-time">问题描述：<em>${description}</em></div>
-			<div class="info">任务创建时间：${addTime}</div>
+			<div class="order-time">负责人：<em>${name}</em></div>
+            <div class="info">问题描述：<em>${description}</em></div>
         </div>
         <div class="order-tool">
-			<div class="info">任务期限：${predictTime}</div>
+			<div class="order-time">任务创建时间：<em>${addTime}</em></div>
+			<div class="info">任务期限：<em>${predictTime}</em></div>
         </div>
     </li>
 </script>

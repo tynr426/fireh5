@@ -37,9 +37,18 @@ public class Company {
 	public static void setCookie(CompanyResult user,HttpServletResponse response){
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 		HttpSession session=request.getSession();
+		company=null;
 		//HttpServletResponse response = ((ServletWebRequest) RequestContextHolder.getRequestAttributes()).getResponse();
 		session.setAttribute(Constants.CompanyPre+Constants.LoginCacheKey, user);
-		CookiesUtil.addCookie(response, Constants.CompanyPre+Constants.LoginCacheKey,user.getToken(), 0);
+		CookiesUtil.addCookie(response, Constants.CompanyPre+Constants.LoginCacheKey,user.getToken(), 60*60*24*3);
+	}
+	public static void clearCookie(HttpServletResponse response){
+		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpSession session=request.getSession();
+		
+		session.removeAttribute(Constants.CompanyPre+Constants.LoginCacheKey);
+		CookiesUtil.addCookie(response, Constants.CompanyPre+Constants.LoginCacheKey,null, 10);
+		company=null;
 	}
 	public static boolean IsLogin(HttpServletResponse response){
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();

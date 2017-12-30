@@ -1,12 +1,14 @@
 package fireh5.web.interceptors;
 
+
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import fire.sdk.utils.Base64;
 import fireh5.web.utils.Company;
 
 public class CompanySessionInterceptor implements HandlerInterceptor {
@@ -24,7 +26,8 @@ public class CompanySessionInterceptor implements HandlerInterceptor {
 		
 		if(!Company.IsLogin(res))
 		{
-			res.sendRedirect(req.getContextPath()+"/company/toLogin.do");
+			String returnUrl= Base64.encodeBase64(req.getServletPath().getBytes("utf-8"));
+			res.sendRedirect(req.getContextPath()+"/company/toLogin.do?ReturnUrl="+returnUrl);
 			return false;
 		}
 		return true;

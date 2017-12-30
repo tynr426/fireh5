@@ -1,4 +1,5 @@
 
+<%@page import="fire.sdk.utils.WechatUtils"%>
 <%@ page import="fire.common.entity.DeviceTypeResult"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -11,47 +12,27 @@
 <script type="text/javascript"
 	src="/fireh5/Static/Js/Calendar/WdatePicker.js">
 </script>
-
+<script type="text/javascript" src="/fireh5/Static/Js/Wechat.js?v=1.2.10"></script>
+<script type="text/javascript" src="/fireh5/Static/Js/jweixin-1.2.0.js"></script>
 </head>
 <body>
 	<!--框架-->
 	<section class="ui-wrap"> 
-	<!-- 引入页面顶部 --> 
-	<jsp:include page="block/head.html"></jsp:include> 
-	<!-- //引入页面顶部 --> 
+
 	<!--体部--> 
-	<article class="ui-page">
+	<article class="ui-page"  style="top:2px">
 	<!--内盒-->
 	<div class="ui-content iscroll-wrapper">
 		<!--个人信息-->
 		<div class="usercenter-info" id="DeviceForm">
-			<!--用户基本信息-->
-			<div class="user-info box box-horizontal">
-				<!--用户头像-->
-				<div class="pic load">
-					<a href="javascript:void(0);"> <img
-						lazy_src="<$var sources.ImageDomain/><$var user.face>isNull:</$var>"
-						alt="" error="~/Images/user-pic.png" />
-					</a>
-				</div>
-				<!--//用户头像-->
-				<!--用户信息-->
-				<div class="info box1">
-					<p class="name">
-						设备基本信息<em> </em>
-					</p>
-				</div>
-				<!--//用户信息-->
-				
-			</div>
-			<!--//用户基本信息-->
+		
 			<!--详细信息-->
 			<div class="user-area edit" id="firstStep" edit-area>
 				<ul>
 					<li class="box box-horizontal">
 						<p class="name"><em class="red">*</em>设备类型：</p>
 
-						<div class="edit-box box1">
+						<div class="edit-box box1 scan">
 							<div class="selectarea">
 								<div class="selectbox">
 									<select id="DeviceTypeId" onchange="device.deviceTypeChange(this)" error="请选择设备"
@@ -60,6 +41,7 @@
 									</select>
 								</div>
 							</div>
+							<a href="javascript:void(0);" class="search-btn" id="btnScanCode">扫码</a>
 					</li>
 					<li class="box box-horizontal">
 						<p class="name"><em class="red">*</em>生产厂家：</p>
@@ -67,7 +49,7 @@
 						<div class="edit-box box1">
 							<div class="inputbox">
 								<input type="text" name="Manufacturer" id="Manufacturer"
-									error="输入格式不正确！" validate="isnull|username" maxlength="20"
+									error="输入格式不正确！" placeholder="请输入生产厂家" validate="isnull|username" maxlength="20"
 									value="" />
 							</div>
 						</div>
@@ -78,7 +60,7 @@
 						<div class="edit-box box1">
 							<div class="inputbox">
 								<input type="text" name="Model" id="Model" error="输入格式不正确！"
-									validate="isnull" maxlength="20" value="" />
+									validate="isnull" placeholder="请输入设备型号" maxlength="20" value="" />
 							</div>
 						</div>
 					</li>
@@ -88,18 +70,18 @@
 						<div class="edit-box box1">
 							<div class="inputbox">
 								<input type="text" name="Spec" id="Spec" error="输入格式不正确！"
-									validate="isnull" maxlength="20" value="" />
+									validate="isnull" placeholder="请输入设备规格" maxlength="20" value="" />
 							</div>
 						</div>
 					</li>
 					<li class="box box-horizontal">
-						<p class="name"><em class="red">*</em>录入时间：</p>
+						<p class="name"><em class="red">*</em>年检时间：</p>
 
 						<div class="edit-box box1">
 							<div class="inputbox">
-								<input type="text" name="AddTime" id="AddTime" readonly=readonly
+								<input type="text" name="RenewalDate" id="RenewalDate" readonly=readonly
 									onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd'});"
-									error="输入格式不正确！" validate="isnull" />
+									error="输入格式不正确！" validate="isnull" placeholder="请选择录入年检时间"/>
 							</div>
 						</div>
 					</li>
@@ -195,6 +177,7 @@
 					<a href="javascript:void(0);" class="btn box1 seccess" onclick="device.save('<%=request.getParameter("Id")%>')">保存</a>
 					<a href="javascript:void(0);" class="btn box1 cancel"
 						onclick="device.stepTrigger()">上一步</a>
+						<a href="#" style="display:none" id="btnScanCode">aa</a>
 				</div>
 			</div>
 			<!--//详细信息-->
@@ -212,6 +195,29 @@
 <script type="text/javascript">
     $(function () {
     	device.initControll();
+    	var iswx = '<%=WechatUtils.IsWxBrowser()%>';
+    	var arr=[];
+    	$("#parameterList #btnWxImage").each(function(){
+    		arr.push(this);
+    	});
+    	if(iswx == 'true'){
+    		ecwx.init({
+    			isWx : (iswx == 'true'),
+    			actions : [{
+    				action : 'scan',
+    				btn : '#btnScanCode',
+    				fn : function(r) {
+    					device.getQR(r);
+    				}
+    			},
+    			{
+    				action : 'image',
+    				btn : arr,
+    				fn :null
+    			} ]
+    		});
+    		//document.getElementById("btnScanCode").click();
+    	}
     });
 </script>
 
@@ -220,4 +226,6 @@
     if ($.iscroll) {
         $.iscroll.refresh();
     }
+	 
+
   </script>

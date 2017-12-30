@@ -1,9 +1,11 @@
 <%@page pageEncoding="utf-8" 
 contentType="text/html; charset=utf-8" %>
+<%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
 <head>
 <jsp:include page="block/Meta.html" ></jsp:include>
+
 </head>
 <body>
         <!-- 框架 -->
@@ -21,12 +23,12 @@ contentType="text/html; charset=utf-8" %>
                         <ul>
                             <li class="could">
                                 <div class="inputbox">
-                                    <input type="text" name="Code" id="Code" value="adf" placeholder="请输入公司代码" validate="isnull" tabindex="1" />
+                                    <input type="text" name="Code" id="Code" value="" placeholder="请输入公司代码" validate="isnull" tabindex="1" />
                                 </div>
                             </li>
                             <li class="user">
                                 <div class="inputbox">
-                                    <input type="text" tabindex="2" name="UserName" id="UserName" value="tyn" placeholder="请输入账号" validate="isnull" />
+                                    <input type="text" tabindex="2" name="UserName" id="UserName" value="" placeholder="请输入账号" validate="isnull" />
                                 </div>
                             </li>
                             <li class="password">
@@ -53,23 +55,24 @@ contentType="text/html; charset=utf-8" %>
                             <a href="javascript:void(0);" tabindex="5" onclick='pub.dialog("管理系统登录", $e("#CodeForm").html(), null, null, null, null)'>什么是代码?</a>
                         </div>
                     </div>
-                    <!--快捷登录-->
+                     <!--快捷登录-->
+                     
+                     <c:if test="${isWxAuth}">
+   
+					
                     <div class="quick-login">
                         <div class="name">
                             <em>快捷登录</em>
                         </div>
                         <div class="link">
-                            <$loop id="OAuthors" datasourceid="OAuthors">
-                                <a href="<$var OAuthors.ActionLink/>" class="<$var OAuthors.keyword />-login" title="<$var OAuthors.name />"></a>
-                            </$loop>
+                            
+                          <a href="<%=request.getContextPath() %>/company/wxLogin.do" class="weixin-login" title=""></a>
+                          
                         </div>
                     </div>
+                    </c:if>
                     <!--//快捷登录-->
-                    <!--//服务器地址-->
-
-                    <!--技术支持-->
-                    <!--<div class="support">任我行电商技术支持</div>-->
-                    <!--//技术支持-->
+                    
                 </div>
                 <!-- //登录 -->
             </article>

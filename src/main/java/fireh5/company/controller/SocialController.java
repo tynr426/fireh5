@@ -3,8 +3,12 @@ package fireh5.company.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.http.protocol.HttpRequestHandler;
 import org.springframework.stereotype.Controller;
@@ -15,6 +19,7 @@ import fire.common.entity.CompanyResult;
 import fire.common.entity.WeChatAccount;
 import fire.proxy.service.ProxyBase;
 import fire.sdk.utils.WechatUtils;
+import fireh5.web.utils.Company;
 import fire.sdk.utils.JsonResult;
 import fire.sdk.utils.JsonUtils;
 @Controller
@@ -31,5 +36,14 @@ public class SocialController {
 			}
 			//return "";
 			return new  JsonResult(WechatUtils.sign(url, WechatUtils.GetWechatAccount()));
+	}
+	@RequestMapping("/getMedia.do")
+	@ResponseBody
+	public Object getMedia(String serverId,HttpSession session,HttpServletResponse response){
+		System.out.println("mediaId="+serverId);
+		Map<String, Object> map = new HashMap<String, Object>();   
+		map.put("CompanyId",Company.getCompanyId());
+		map.put("MediaId",serverId);
+		return new ProxyBase().GetResponse("company.social", "getMedia", map);	
 	}
 }

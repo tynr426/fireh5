@@ -5,7 +5,7 @@
         <!-- 名称 -->
         <div class="storename box box-horizontal">
             <a href="javascript:void(0);" class="name box1">设备类型：${name}</a>
-            <a href="/fireh5/company/device/toDevice.do?Id=${id}"><div class="pay-way">修改</div></a>
+            <a href="/fireh5/company/device/toDevice.do?Id=${id}"><div class="pay-way" style="display:none">修改</div></a>
         </div>
         <!-- //店铺名称 -->
         <!--标题-->
@@ -92,7 +92,7 @@ ${dict.passageway[(passageway)]}
 
 <script type="text/x-jquery-tmpl" id="DeviceTypeParameterFormTemplate">
 
-<li class="box box-horizontal">
+<li class="box box-horizontal aptitude-info">
 	<p class="name">
 		{{if (required=="1")}} <em class="red">*</em>{{/if}}${description}：
      </p>
@@ -116,6 +116,15 @@ ${dict.passageway[(passageway)]}
 				</select>
 			</div>
 		</div>
+		{{else (editorType=="upload")}}
+		<div class="aptitude box1">
+							<ol id="logo-pic">
+								<li class="update" id="btnWxImage"><a class="update-btn"
+									href="javascript:void(0);"></a></li>
+<li><a href="javascript:void(0);" id="wxpic" ><img src="%URL%"  alt=""/></a></li>
+							</ol>
+		</div>
+
 		{{/if}}
 	</div>
 </li>
