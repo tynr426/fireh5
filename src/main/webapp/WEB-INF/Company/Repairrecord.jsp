@@ -12,40 +12,28 @@
 
 </head>
 <body>
- <!--框架-->
-    <section class="ui-wrap">
+ <section class="ui-wrap">
         <!-- 引入页面顶部 -->
         <$include templatename="Block/Head.html" />
         <!-- //引入页面顶部 -->
         <!--体部-->
         <article class="ui-page">
             <!-- 内盒 -->
-            <div class="ui-content iscroll-wrapper">
-                <!-- 返修退换货详情 -->
-                <div class="retreat-details" id="DetailBox">
+            <div class="ui-content iscroll-wrapper" id="DetailBox">
 
-                </div>
-                <!-- 返修退换货详情 -->
             </div>
             <!-- //内盒 -->
         </article>
         <!--//体部-->
         <!-- 底部 -->
         <div class="custom-foot" id="OptBox" style="display:none">
-            <!-- 订单详情底部 -->
-            <!--<div class="orderinfo-foot">-->
-                <!--<a href="javascript:void(0);" class="btn gray">取消申请</a>-->
-                <!--<a href="javascript:void(0);" class="btn">填写物流信息发货</a>
-                <a href="javascript:void(0);" class="btn">确认收货</a>-->
-            <!--</div>-->
-            <!-- //订单详情底部 -->
         </div>
         <!-- //底部 -->
     </section>
     <!--//框架-->
     <!-- 弹出层 -->
     <!-- 返修退换货批次号选择弹出层 -->
-    <div class="alert-box" style="display:none;">
+    <div class="alert-box" id="chooseBatch" style="display:none;">
         <p class="title">选择批次号</p>
         <div class="pop-batch">
             <div class="batch-name box box-horizontal">
@@ -80,6 +68,10 @@
                 </ul>
             </div>
         </div>
+        <div class="batch-btn box box-horizontal">
+            <a class="box1 cancel" href="javascript:void(0);">取消</a>
+            <a class="box1 sure" href="javascript:void(0);">确定</a>
+        </div>
     </div>
     <!-- //返修退换货批次号选择弹出层 -->
     <!-- //弹出层 -->
@@ -88,6 +80,7 @@
 <script type="text/template" id="DetailTemplate">
     <!-- 返修退换货详情 -->
     <div class="retreat-details">
+        <input type="hidden" id="gisbatch" value="${_.OpenBatchNumber}" />
         <!-- 订单状态 -->
         <div class="status-model">
             <!-- 待付款 -->
@@ -105,7 +98,7 @@
                     <div class="line">
                         <ul class="fold-list">
                             <li>
-                                <p class="name">
+                                <p class="name" status="${Retreat.Status}">
                                     ${Retreat.Type}单号：
                                 </p>
                                 <div class="string">
@@ -206,23 +199,26 @@
         <!--//列表切换组件-->
         <!--产品信息-->
         <div class="order-model">
-            <div class="mt-title">
-                <input type="hidden" id="gjson" value="${_.batchsTxt}" />
-                <input type="hidden" id="gdepotid" value="${_.depotId}" />
-                <input type="hidden" id="gisbatch" value="${_.OpenBatchNumber}" />
-                <p>商家：<em>${Retreat.to_name}</em></p>
-            </div>
+            <$switch id="IsAutoSplit">
+                [# <$var IsAutoSplit />]
+                {@if Retreat.to_name.length > 0}
+                <div class="mt extend-mt">
+                    <p>供应商：<em>${Retreat.to_name}</em></p>
+                </div>
+                {@/if}
+                [#/]
+            </$switch>
             {@each RetreatItem as f, index}
             <div class="mt extend-mt">
                 <p>订单号：<em>${f.OddNumber}</em></p>
             </div>
-            <div class="mc" name="gstr" isbatch="0" oid="${f.OrderId}" otid="${f.OrderItemId}" poid="${f.OrderId}" rid="${Retreat.Id}" rtid="${f.Id}" pid="${f.ProductId}" gid="${f.GoodsId}" gname="${f.GoodsName}" gprice="${f.Price|formatFloat}" quantity="${f.Quantity|formatFloat}" orderId="${f.OddNumber}">
+            <div class="mc">
                 <div class="product-info">
                     <!--循环产品-->
                     <div class="product-line">
                         <!--商品-->
                         <div class="product">
-                            <a href="/Store/Product/Product.aspx?pid=${f.ProductId}&sid=${f.FKId}" class="box box-horizontal">
+                            <a href="/Supplier/Product/Product.aspx?pid=${f.ProductId}&sid=${f.FKId}" class="box box-horizontal">
                                 <span class="pic load">
                                     <img lazy_src="<$var sources.ImageDomain />${f.DefaultPic|thumbImage,80,80}" alt="" />
                                 </span>
@@ -249,17 +245,8 @@
                                     </span>
                                 </span>
                             </a>
-                            <!--{@if Retreat.Type == '换货' && Retreat.Status == 30}
-                            <div class="batch box box-horizontal">
-                                <div class="detail box1">
-                                    <div class="batch-btn">
-                                        <a href="javascript:void(0);" onclick="pub.tips('请到PC端更换产品信息！');" class="btn">更换产品</a>
-                                    </div>
-                                </div>
-                            </div>
-                            {@/if}-->
                             {@if f.BarterGoodsId > 0}
-                            <a href="/Store/Product/Product.aspx?pid=${f.BarterProductId}&sid=${f.FKId}" class="box box-horizontal">
+                            <a href="/Supplier/Product/Product.aspx?pid=${f.BarterProductId}&sid=${f.FKId}" class="box box-horizontal">
                                 <span class="pic load">
                                     <img lazy_src="<$var sources.ImageDomain />${f.BarterDefaultPic|thumbImage,80,80}" alt="" />
                                 </span>
@@ -276,35 +263,26 @@
                                 </span>
                             </a>
                             {@/if}
-                            <!--{@if !_.OpenBatchNumber}-->
-                            <!--<input type="hidden" style="width:100%;" gid="${f.GoodsId}" rtid="${f.Id}" stock="${f.Stock}" id="sendgoods_${f.Id}_${f.GoodsId}" name="sendgoods_${f.Id}_${f.GoodsId}" value="${f.Quantity}" validate="isnull">-->
-                            <!--{@/if}-->
-                            <!-- 商品批次 -->
-                            <!--{@if _.OpenBatchNumber&&(Retreat.Status > 10)}
-                            <div class="batch box box-horizontal">
-                                <div class="title">退货批次：</div>
-                                <div class="detail box1">
-                                    <ul>
-                                        <li class="box box-horizontal">
-                                            <div class="batch-num box1">20161015</div>
-                                            <div class="num">x1</div>
-                                        </li>
-                                        <li class="box box-horizontal">
-                                            <div class="batch-num box1">20161016</div>
-                                            <div class="num">x2</div>
-                                        </li>
-                                    </ul>
-                                    <div class="batch-btn">
-                                        <a href="javascript:void(0);" class="btn">选择批次号</a>
-                                    </div>
-                                </div>
-                            </div>
-                            {@/if}-->
-                            <!-- 商品批次 -->
                             {@if _.OpenBatchNumber}
                             <!-- 商品批次 -->
                             <div class="batch box box-horizontal">
-                                <div class="title" status="${ Retreat.Status}">${Retreat.Type}批次：</div>
+                                <div class="title" status="${ Retreat.Status}">发货批次：</div>
+                                <div class="detail box1">
+                                    <ul>
+                                        {@each _.Batchs as bt,bindx}
+                                        {@if f.Id==bt.ItemId&&f.GoodsId==bt.GoodsId}
+                                        <li class="box box-horizontal">
+                                            <div class="batch-num box1">${bt.BatchNumber}</div>
+                                            <div class="num">x${bt.InventoryCount|formatFloat,0}</div>
+                                        </li>
+                                        {@/if}
+                                        {@/each}                                       
+                                    </ul>
+                                </div>
+                            </div>
+                            {@if _.InventoryBatch.length>0}
+                            <div class="batch box box-horizontal">
+                                <div class="title" status="${ Retreat.Status}">退换批次：</div>
                                 <div class="detail box1">
                                     <ul>
                                         <!-- InventoryBatch -->
@@ -314,14 +292,20 @@
                                         <li class="box box-horizontal">
                                             <div class="batch-num box1">[原]${bt.BatchNumber}</div>
                                             <div class="num">x${bt.Quantity|formatFloat,0}</div>
+                                            {@if Retreat.ReType==1}
+                                            <input type="hidden" rid="${Retreat.Id}" rtid="${f.Id}" oid="${f.OrderId}" otid="${f.OrderItemId}" gid="${f.GoodsId}" bid="${bt.Id}" stock="${bt.Quantity}" bnumber="${bt.BatchNumber}" id="goodsbatch_${f.Id}_{@if f.BarterGoodsId > 0}${f.BarterGoodsId}{@else}${f.GoodsId}{@/if}_${bt.Id}" name="goodsbatch_${f.Id}_{@if f.BarterGoodsId > 0}${f.BarterGoodsId}{@else}${f.GoodsId}{@/if}" value="${bt.Quantity}">
+                                            {@/if}
                                         </li>
                                         {@/if}
                                         {@/each}
-                                        {@each _.InventoryBatch as bt,bindx}
-                                        {@if bt.Flag==1&&f.Id==bt.ItemId&&f.GoodsId==bt.GoodsId}
+                                        {@each _.InventoryBatch as nbt,bindx}
+                                        {@if nbt.Flag==1&&f.Id==nbt.ItemId}
                                         <li class="box box-horizontal">
-                                            <div class="batch-num box1">[新]${bt.BatchNumber}</div>
-                                            <div class="num">x${bt.Quantity|formatFloat,0}</div>
+                                            <div class="batch-num box1">[新]${nbt.BatchNumber}</div>
+                                            <div class="num">x${nbt.Quantity|formatFloat,0}</div>
+                                            {@if Retreat.ReType==2}
+                                            <input type="hidden" rid="${Retreat.Id}" rtid="${f.Id}" oid="${f.OrderId}" otid="${f.OrderItemId}" gid="${f.GoodsId}" bid="${nbt.Id}" stock="${nbt.Quantity}" bnumber="${nbt.BatchNumber}" id="goodsbatch_${f.Id}_{@if f.BarterGoodsId > 0}${f.BarterGoodsId}{@else}${f.GoodsId}{@/if}_${nbt.Id}" name="goodsbatch_${f.Id}_{@if f.BarterGoodsId > 0}${f.BarterGoodsId}{@else}${f.GoodsId}{@/if}" value="${nbt.Quantity}">
+                                            {@/if}
                                         </li>
                                         {@/if}
                                         {@/each}
@@ -336,19 +320,23 @@
                                         {@/each}
                                         {@/if}
                                     </ul>
-                                    <!--{@if Retreat.Status == 20 || Retreat.Status == 30}-->
-                                    {@if Retreat.Status == 20}
+                                </div>
+                            </div>
+                            {@/if}
+                            <div class="batch box box-horizontal">
+                                <div class="detail box1">        
+                                    {@if Retreat.Status == 10}
                                     <div class="batch-btn">
                                         <input hidden="hidden" tag="gstr" id="itemBatch_${f.Id}_${f.GoodsId}" rid="${Retreat.Id}" rtid="${f.Id}" oid="${f.OrderId}" pid="${f.ProductId}" gid="${f.GoodsId}" gname="${f.GoodsName}" gprice="${f.Price}" quantity="${f.Quantity}" sipping="0" value="" />
                                         <a href="javascript:void(0);" json="${_.Batchs|formatJson}" rtid="${f.Id}" gid="${f.GoodsId}" onclick="retreat.filterBatch(this,'${f.Id}','${f.GoodsId}','${f.Quantity}')" class="btn">选择批次号</a>
                                     </div>
                                     {@else if Retreat.Status == 40}
-                                    <input hidden="hidden" tag="gstr" id="itemBatch_${f.Id}_${f.GoodsId}" rid="${Retreat.Id}" rtid="${f.Id}" oid="${f.OrderId}" pid="${f.ProductId}" gid="${f.GoodsId}" gname="${f.GoodsName}" gprice="${f.Price}" quantity="${f.Quantity}" sipping="0" value="${_.InventoryBatch|ParseBatchByStatus,f.Id,f.GoodsId,Retreat.Status}" />
+                                    <input hidden="hidden" tag="gstr" id="itemBatch_${f.Id}_{@if f.BarterGoodsId}${f.BarterGoodsId}{@else}${f.GoodsId}{@/if}" rid="${Retreat.Id}" rtid="${f.Id}" oid="${f.OrderId}" pid="${f.ProductId}" gid="{@if f.BarterGoodsId>0}${f.BarterGoodsId}{@else}${f.GoodsId}{@/if}" gname="${f.GoodsName}" gprice="${f.Price}" quantity="${f.Quantity}" sipping="0" value="${_.InventoryBatch|ParseBatchByStatus,f.Id,f.GoodsId,Retreat.Status}" />
                                     {@/if}
 
                                 </div>
                             </div>
-                            <div class="batch box box-horizontal" id="selectBatchBox">
+                            <div class="batch box box-horizontal" id="selectBatchBox_${f.Id}_${f.GoodsId}">
                                 <!--<div class="title">选中批次：</div>
                                 <div class="detail box1">
                                     <ul>
@@ -368,7 +356,7 @@
                             </div>
                             <!-- 商品批次 -->
                             {@else}
-                            <input hidden="hidden" tag="gstr" id="itemBatch_${f.Id}_${f.GoodsId}" rid="${Retreat.Id}" rtid="${f.Id}" oid="${f.OrderId}" otid="${f.OrderItemId}" pid="${f.ProductId}" gid="${f.GoodsId}" gname="${f.GoodsName}" gprice="${f.Price}" quantity="${f.Quantity}" sipping="0" value="" />
+                            <input hidden="hidden" tag="gstr" id="sendgoods_${f.Id}_${f.GoodsId}" rid="${Retreat.Id}" rtid="${f.Id}" oid="${f.OrderId}" otid="${f.OrderItemId}" pid="${f.ProductId}" gid="${f.GoodsId}" gname="${f.GoodsName}" gprice="${f.Price}" quantity="${f.Quantity}" sipping="0" value="" />
 
                             <input type="hidden" gid="${f.GoodsId}" oid="${f.OrderId}" otid="${f.OrderItemId}" rtid="${f.Id}" stock="${f.StoreGoodsStock}" id="sendgoods_${f.Id}_${f.GoodsId}" name="sendgoods_${f.Id}_${f.GoodsId}" value="${f.Quantity}" validate="isnull" />
                             {@/if}
@@ -423,8 +411,9 @@
         <!--收件人信息-->
         <div class="extend-model">
             {@if Retreat.Status == 10}
+
             {@each RetreatLogistics as l, index}
-            <div class="mt">{@if l.IsTaken}商家收货{@else}买家收货{@/if}信息</div>
+            <div class="mt">{@if l.IsTaken}买家收货{@else}商家收货{@/if}信息</div>
             <div class="mc">
                 <div class="address-info">
                     ${l.TakeAddress}
@@ -446,20 +435,21 @@
             {@/if}
             {@if Retreat.Status >= 20 }
             {@each RetreatLogistics as l, index}
-            <div class="mt"> {@if l.IsTaken}商家收货{@else}买家收货{@/if}信息：</div>
+            <div class="mt"> {@if l.IsTaken}卖家收货{@else}商家收货{@/if}信息：</div>
             <div class="mc">
                 <div class="address-info">
                     {@if l.LogisticsName}${l.LogisticsName}　${l.OddNumber}　{@/if}${l.TakeAddress}
                 </div>
             </div>
             {@/each}
+
             {@/if}
         </div>
         <!--//收件人信息-->
         <!--列表切换组件-->
         <div class="order-model order-details-lab">
             <!--列表区域-->
-            <div class="list-mc" label-limitarea>
+            <div class="list-mc" label-limitarea">
                 <div class="for select" label-area>
                     <div class="line">
                         <ul class="fold-list handle-record">
@@ -470,9 +460,6 @@
                                     <div class="string box1">
                                         ${f.ProcTime}
                                     </div>
-                                    <!--<div class="string box1">
-                                        ${f.Operator}
-                                    </div>-->
                                 </div>
                                 <div class="explain">操作人：${f.Operator} </div>
                                 <div class="explain">${f.Descs} </div>
@@ -496,26 +483,68 @@
 <script type="text/template" id="optTemplate">
     <!-- 订单详情底部 -->
     <div class="orderinfo-foot">
-    {@if Retreat.Status == 0}
-    <a href="javascript:void(0);" onclick="retreat.accept(${Retreat.Id});" class="btn gray">审核通过</a>
-    <a href="javascript:void(0);" onclick="retreat.reject(${Retreat.Id});" class="btn gray">拒绝${Retreat.Type}</a>
-    {@/if}
-    {@if Retreat.Status == 20}
-    <a href="javascript:void(0);" onclick="retreat.toReceive(${Retreat.Id})" class="btn gray">确认收货</a>
-    {@/if}        
-    {@if Retreat.Status == 30}
-        {@if Retreat.ReType == 1}    
-            {@if Retreat.ReceiveFKId==Retreat.toFKId}
-            <a href="javascript:retreat.refund(${Retreat.Id})" class="btn">确认退款</a>
-            {@else}
-            <!--<ul><li><p class="text">本退货单由平台退款，请等待平台处理...</p></li></ul>-->
-            {@/if}
-        {@else}
-            <a href="javascript:void(0);" onclick="retreat.toSend(${Retreat.Id})" class="btn gray">确认发货</a>
+        {@if Retreat.Status == 0}
+        <a href="javascript:void(0);" onclick="retreat.cancel(${Retreat.Id});" class="btn gray">取消申请</a>
         {@/if}
-    {@/if}
+        {@if Retreat.Status == 10}
+        <a href="javascript:void(0);" onclick="retreat.UpdLogistics(${Retreat.Id},${Retreat.ReType});" class="btn gray">确认发货</a>
+        <!--<a href="javascript:void(0);" onclick="pub.tips('请到PC端处理...');" class="btn gray">确认发货</a>-->
+        {@/if}
+        {@if Retreat.Status == 40}
+        {@if Retreat.ReType == 1}
+        <a href="javascript:void(0);" onclick="retreat.Finish(${Retreat.ReType},${Retreat.Id})" class="btn gray">确认收款</a>
+        {@/if}
+        {@if Retreat.ReType == 2 || Retreat.ReType == 3}
+        <a href="javascript:void(0);" onclick="retreat.Finish(${Retreat.ReType},${Retreat.Id})" class="btn gray">确认收货</a>
+        {@/if}
+        {@/if}
     </div>
     <!-- //订单详情底部 -->
+</script>
+<script type="text/template" id="LogisticsTemplate">
+    <!-- 返修退换货物流信息弹出层 -->
+    <div class="alert-box">
+        <p class="title">确认发货</p>
+        <div class="pop-logistics" id="LogisticsBox">
+            <div class="line box box-horizontal">
+                <p class="name">快递公司：</p>
+                <div class="selectbox box1">
+                    <select id="LogisticsName" name="LogisticsName" validate="isnull" error="请选择快递公司">
+                        <option value="">请选择</option>
+                        <$loop id="LogisticsList" datasourceid="LogisticsList">
+                            <option value="<$var LogisticsList.Name/>"><$var LogisticsList.Name /></option>
+                        </$loop>
+                    </select>
+                </div>
+            </div>
+            <div class="line box box-horizontal">
+                <p class="name">快递单号：</p>
+                <div class="inputbox box1">
+                    <input type="text" name="OddNumber" id="OddNumber" value="" validate="isnull" error="请输入快递单号" />
+                </div>
+            </div>
+            <div class="line box box-horizontal" id="BuyAddress" style="display:none;">
+                <p class="name">买家地址：</p>
+                <div class="string box1" id="ToAddress">
+                    <$switch id="ToAddress">
+                        [# <$var ToAddress.Province /> !='']
+                        <$Var ToAddress.Province /><$Var ToAddress.City /><$Var ToAddress.Area /> <$Var ToAddress.Address />,<$Var ToAddress.Name />,<$Var ToAddress.Mobile />
+                        [#/]
+                        [#]
+                        未设置收货地址
+                        [#/]
+                    </$switch>                    
+                </div>
+            </div>
+            <div class="line box box-horizontal" id="BuyAddressOpt" style="display:none;">
+                <p class="name"></p>
+                <div class="button box1" id="UToAddress">
+                    <a href="javascript:void(0);" class="btn" onclick="retreat.UpdAddress();">修改地址</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- //返修退换货物流信息弹出层 -->
 </script>
 
 
@@ -541,7 +570,7 @@
                         <div class="buy-num " json="{'itemId':${d.ItemId},'goodsId':${d.GoodsId},'stock':${d.Stock},'count':${d.InventoryCount}}">
                             <a href="javascript:void(0);" onclick="retreat.reduceBacth(this);" class="btn down"></a>
                             <div class="inputbox">
-                                <input type="text" class="itembatchcount" bid="${d.Id}" rtid="${d.ItemId}" gid="${d.GoodsId}" number="${d.BatchNumber}" stock="${d.Stock}" value="{@if d.InventoryCount>=d.Stock} ${d.Stock|formatFloat,0}{@else}${d.InventoryCount|formatFloat,0}{@/if}" readonly="readonly" id="BatchCount" />
+                                <input type="text" class="itembatchcount" bid="${d.Id}" rtid="${d.ItemId}" gid="${d.GoodsId}" number="${d.BatchNumber}" stock="${d.Stock}" value="{@if d.InventoryCount|formatFloat,0>=d.Stock} ${d.Stock|formatFloat,0}{@else}${d.InventoryCount|formatFloat,0}{@/if}" readonly="readonly" id="BatchCount" />
                             </div>
                             <a href="javascript:void(0);" onclick="retreat.addBatch(this);" class="btn up"></a>
                         </div>
@@ -555,7 +584,7 @@
             {@each _.data as xd,xidx}
             {@if xd.ItemId==_.itemId&&xidx==0}
             <div class="batch-name box box-horizontal">
-                <div class="num red">应退总数:${xd.InventoryCount|formatFloat,0}</div>
+                <div class="num red">应退(换)数量:${xd.InventoryCount|formatFloat,0}</div>
             </div>
             {@/if}
             {@/each}
@@ -581,39 +610,7 @@
         </ul>
     </div>
 </script>
-<script type="text/template" id="LogisticsTemplate">
-    <!-- 返修退换货物流信息弹出层 -->
-    <div class="alert-box">
-        <p class="title">确认发货</p>
-        <div class="pop-logistics" id="LogisticsBox">
-            <div class="line box box-horizontal" id="BuyAddress" style="display:none;">
-                <p class="name" onclick="retreat.UpdAddress();">买家地址：</p>
-                <div class="string" id="ToAddress">
-                    <$Var ToAddress.Province /><$Var ToAddress.City /><$Var ToAddress.Area /> <$Var ToAddress.Address />,<$Var ToAddress.Name />,<$Var ToAddress.Mobile />
-                </div>
-            </div>
-            <div class="line box box-horizontal">
-                <p class="name">快递公司：</p>
-                <div class="selectbox box1">
-                    <select id="LogisticsName" name="LogisticsName" validate="isnull" error="请选择快递公司">
-                        <option value="">请选择</option>
-                        <$loop id="LogisticsList" datasourceid="LogisticsList">
-                            <option value="<$var LogisticsList.Name/>"><$var LogisticsList.Name /></option>
-                        </$loop>
-                    </select>
-                </div>
-            </div>
-            <div class="line box box-horizontal">
-                <p class="name">快递单号：</p>
-                <div class="inputbox box1">
-                    <input type="text" name="OddNumber" id="OddNumber" value="" validate="isnull" error="请输入快递单号" />
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- //返修退换货物流信息弹出层 -->
-</script>
-<script type="text/template" id="AddressFromBox">
+<!--<script type="text/template" id="AddressFromBox">
     <div class="dilog-add">
         <div class="radio" radio="box" id="AddressBox">
             <$loop id="AddressList" datasourceid="AddressList">
@@ -626,153 +623,37 @@
             </$loop>
         </div>
     </div>
+</script>-->
+<!--收货人地址列表模板-->
+<script type="text/template" id="AddressFromBox">
+    <div class="alert-box" id="AddressBox">
+        <p class="title">收货地址</p>
+        <div class="pop-address-choose">
+            <ul class="list">
+                <$loop id="AddressList" datasourceid="AddressList">
+                    <li>
+                        <a href="javascript:void(0);" addressid="${addr.Id}" onclick="retreat.SetAddress(this,'<$var addresslist.province /><$var addresslist.city /><$var addresslist.area /> <$var addresslist.address />，<$var addresslist.name />，<$var addresslist.mobile />');">
+                            <span class="userinfo">
+                                <span class="name"><$var addresslist.name /></span>
+                                <span class="phone"><$var addresslist.mobile /></span>
+                            </span>
+                            <span class="address-text">
+                                <span class="info">
+                                    <i class="icon-choose"></i>
+                                    <span class="name">地址：</span>
+                                    <$var addresslist.province /><$var addresslist.city /><$var addresslist.area /> <$var addresslist.address />
+                                </span>
+                            </span>
+                        </a>
+                    </li>
+                </$loop>
+            </ul>
+        </div>
+    </div>
 </script>
 <script>
     retreat.getRetreatDeatil();
 </script>
-<!--收货人地址列表模板-->
-<script type="text/template" id="accept_template">
-    <div class="alert-box" id="AddressBox">
-        <p class="title">收货地址</p>
-
-        <div class="pop-address-choose">
-            <ul class="list">
-                <li>
-                    <a href="javascript:void(0);" class="btn" style="font-size:12px;" onclick="retreat.addAddress('${_.id}');"> 添加收货地址</a>
-                </li>
-            </ul>
-            <input type="hidden" id="address" value="" />
-            <ul class="list" id="addressItem">
-                {@each _.data as addr,index1}
-                <li>
-                    <a href="javascript:void(0);" addressid="${addr.Id}" onclick="retreat.selectedAddress(this,'${addr.Province}${addr.City}${addr.Area}${addr.Address}，${addr.Name}，${addr.Mobile}');" class="{@if addr.IsDefault}select{@/if}">
-                        <span class="userinfo">
-                            <span class="name">${addr.Name}</span>
-                            <span class="phone">${addr.Mobile}</span>
-                        </span>
-                        <span class="address-text">
-                            <span class="info">
-                                <i class="icon-choose"></i>
-                                <span class="name">地址：</span>
-                                ${addr.Province}${addr.City}${addr.Area}${addr.Address}
-                            </span>
-                        </span>
-                    </a>
-                </li>
-                {@/each}
-            </ul>
-        </div>
-    </div>
-</script>
-<script type="text/template" id="address_itemTemplate">
-    {@each _ as addr,index1}
-    <li>
-        <a href="javascript:void(0);" addressid="${addr.Id}" onclick="retreat.selectedAddress(this,'${addr.Province}${addr.City}${addr.Area}${addr.Address}，${addr.Name}，${addr.Mobile}');">
-            <span class="userinfo">
-                <span class="name">${addr.Name}</span>
-                <span class="phone">${addr.Mobile}</span>
-            </span>
-            <span class="address-text">
-                <span class="info">
-                    <i class="icon-choose"></i>
-                    <span class="name">地址：</span>
-                    ${addr.Province}${addr.City}${addr.Area}${addr.Address}
-                </span>
-            </span>
-        </a>
-    </li>
-    {@/each}
-</script>
-<!-- 新增收货地址 -->
-<script type="text/template" id="AppendAddressBox">
-    <div class="alert-box" id="AppendAddress">
-        <p class="title">新增收货信息</p>
-
-        <!-- 添加收货地址 -->
-        <div class="pop-address-add">
-            <ul>
-                <li class="box box-horizontal normal">
-                    <p class="name">收货人姓名：</p>
-                    <div class="inputbox box1">
-                        <input type="text" id="Name" name="Name" value="" validet="isnull" placeholder="请输入收货人姓名" />
-                    </div>
-                </li>
-                <li class="box box-horizontal normal">
-                    <p class="name">收货人电话：</p>
-                    <div class="inputbox box1">
-                        <input type="text" id="Mobile" name="Mobile" value="" validet="mobile" placeholder="请输入收货人电话" />
-                    </div>
-                </li>
-                <li class="box box-horizontal normal">
-                    <p class="name">收货人地址：</p>
-
-                    <div class="address-selectbox box1">
-                        <div class="selectbox">
-                            <select validet="isnull" id="Province" name="Province" onchange="area.loadArea(this,'City',false,null,'province_text');" value=""></select>
-                        </div>
-
-                        <span class="tips">省</span>
-
-                        <div class="selectbox">
-                            <select validet="isnull" id="City" name="City" onchange="area.loadArea(this,'Area',false,null,'city_text');" value=""></select>
-                        </div>
-
-                        <span class="tips">市</span>
-
-                        <div class="selectbox">
-                            <select validet="isnull" id="Area" name="Area" onchange="area.loadArea(this,null,null,null,'area_text');" value=""></select>
-                        </div>
-
-                        <span class="tips">区/县</span>
-                    </div>
-                </li>
-                <li class="box box-horizontal">
-                    <p class="name">详细地址：</p>
-                    <div class="textareabox box1">
-                        <textarea validet="isnull" name="Address" id="Address" rows="5" cols="30" title="" class="textarea" maxlength="100"></textarea>
-                    </div>
-                </li>
-                <li class="box box-horizontal normal">
-                    <p class="name">邮政编码：</p>
-                    <div class="inputbox box1">
-                        <input type="text" id="ZIP" name="ZIP" value="" maxlength="6" validet="ZIP" placeholder="请输入邮政编码" />
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <!-- //添加收货地址 -->
-    </div>
-</script>
-<!--配送方式列表模板-->
-<!--<script type="text/template" id="accept_template">
-    <div class="dilog-selectbox">
-        <select id="address" valite="ifnull">{@each _ as f,index}<option value="${f.Province}${f.City}${f.Area} ${f.Address}，${f.Name} ${f.Mobile} ${f.Tel}">${f.Province}${f.City}${f.Area} ${f.Address}，${f.Name} ${f.Mobile} ${f.Tel}</option>{@/each}</select>
-    </div>
-</script>-->
-
-<script type="text/template" id="reject_template">
-    <div class="alert-box">
-        <p class="title">拒绝申请</p>
-        <div class="pop-change-notice">
-            <div class="textareabox">
-                <textarea id="descs" validate="isnull" maxlength="30" error="请输入拒绝理由"></textarea>
-            </div>
-        </div>
-    </div>
-</script>
-
-<script type="text/template" id="refund_template">
-    <div class="alert-box">
-        <p class="title">确认退款</p>
-        <div class="pop-change-notice">
-            <div class="textareabox">
-                <textarea id="descs" validate="isnull" maxlength="30" error="请输入确认退款备注"></textarea>
-            </div>
-        </div>
-    </div>
-</script>
-
-
 
 <script type="text/javascript">
 	//wechat.init();
