@@ -75,6 +75,7 @@
 						</div>
 					</li>
 				</ul>
+				<ul id="parameterList" style="padding-top:10px"></ul>
 			</div>
 
 			<div class="button">
@@ -88,6 +89,7 @@
 </body>
 </html>
 
+<jsp:include page="template/checkDevice.html"></jsp:include>
 
 
 <script type="text/javascript">
@@ -110,14 +112,16 @@
 					}
 				} ]
 			});
-			$("#btnScanCode").click();
+			//$("#btnScanCode").click();
 
 		}
 	};
 
 	$(function() {
 		initConfig.wechat();
-		
+		if($.getUrlParam("code")!=""){
+			checkDeviceList.onScanComplete($.getUrlParam("code"));
+		}
 	});
-	
+	//checkDevice.getParameter(5);
 </script>

@@ -75,9 +75,6 @@ var device={
 						alert(result.message);		
 					}								
 
-				},
-				error:function(){
-					alert("添加失败");
 				}
 			});
 		},
@@ -90,9 +87,6 @@ var device={
 				dataType:"json",
 				success:function(result){					
 					return result;
-				},
-				error:function(){
-					alert("获取失败");
 				}
 			});
 			return null;
@@ -267,9 +261,6 @@ var device={
 						alert(result.message);			
 					}								
 
-				},
-				error:function(){
-					alert("修改失败");
 				}
 			});
 		},
@@ -289,21 +280,19 @@ var device={
 				dataType:"json",
 				success:function(result){
 					var attr=$(obj).attr("data-state");
-					if(result.state==0 && result.data==null){
-						alert("该二维码不存在");
+					if(result.state==100){
+						alert(result.message);
 					}
 					if(result.state==0 && result.data.deviceId==null){
 						window.location.href=path+"/company/device/toDevice.do?deviceTypeId="+result.data.deviceTypeId+"&code="+code;
 					}else if(result.state==0 && result.data.deviceId!=null){
 						if(attr=="check"){
-						window.location.href=path+"/company/check/toCheck.do?deviceId="+result.data.deviceId;
+						window.location.href=path+"/company/check/toCheck.do?code="+code;
 						}
 						else if(attr=="repair"){
 							//维修
-							window.location.href=path+"/company/repairrecord//toRepairrecord.do?deviceId="+result.data.deviceId;
+							window.location.href=path+"/company/repairrecord/toRepairrecord.do?deviceId="+result.data.deviceId;
 						}
-					}else{
-						alert("该二维码不存在");
 					}
 				}
 			});

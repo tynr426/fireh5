@@ -41,7 +41,7 @@
 									</select>
 								</div>
 							</div>
-							<a href="javascript:void(0);" class="search-btn" id="btnScanCode">扫码</a>
+						
 					</li>
 					<li class="box box-horizontal">
 						<p class="name"><em class="red">*</em>生产厂家：</p>

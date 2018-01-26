@@ -15,11 +15,21 @@ var checkDeviceList={
 		});
 		},
 		search:function(obj){
+			if(obj!=undefined){
 			$("#RetreatCountBox li").removeClass("select");
 			$(obj).parent().addClass("select");
 			 $(".search-push").removeClass("open").addClass("close");
 			 $("#select-title").html($(obj).find("em").html());
+			 }
+			 var status=$("#RetreatCountBox .select").attr("data-status");
+			 var keyword=$("#keyword").val();
+			 if(status==999){
+				 status=null;
+			 }
 			load();
+			if(obj==undefined){
+				checkDeviceList.getStatistics(status,keyword);
+			}
 		},
 		 onScanComplete:function(code) {
 			 if(code.indexOf(" ")>0) return;
@@ -38,26 +48,63 @@ var checkDeviceList={
 							$("#"+key.firstUpperCase()).val(value);
 
 						});
+						checkDevice.getParameter(result.data.deviceTypeId);
 					}else{
 						alert("该二维码不存在");
 					}
 				}
 			});
 			
+		},
+		getStatistics:function(status,keyword){
+			$.ajax({
+				url:path+"/company/check/getStatistics.do",
+				type:"post",
+				dataType:"json",
+				async:false,
+				data:{status:status,keyword:keyword},
+				success:function(result){
+					if(result.state==0){
+						$("#RetreatCountBox [data-status]").each(function(){
+							$(this).find("em").eq(1).html("(0)");
+						});
+						$.each(result.data,function(i,item){
+							$("#RetreatCountBox [data-status="+item.status+"]").find("em").eq(1).html("("+item.count+")");
+							
+						});
+					}
+				}		
+			});
 		}
 
 }
 var checkDevice={
-		init:function(){
-			var id =$.getUrlParam("deviceId");
-			var result = device.getDevice(id);
-			if(result!=null && result.state==0){				
-				$.each($.parseJSON(result.data),function(key,value){
-					$("#"+key).val(value);
-				}) ;
-			}
+		parameterList:[],
+		getParameter:function(deviceTypeId){
+			$.ajax({
+				url:path+"/company/check/getCheckParameter.do",
+				type:"post",
+				data:{deviceTypeId:deviceTypeId},
+				dataType:"json",
+				success:function(result){
+					if(result.state==0){
+						 checkDevice.parameterList=result.data.list;
+						 $("#DeviceTypeParameterFormTemplate").tmpl(result.data.list).appendTo("#parameterList");
+							var arr=[];
+					    	$("#parameterList #btnWxImage").each(function(){
+					    		arr.push(this);
+					    	});
+							ecwx.initImage({
+			    				action : 'image',
+			    				btn : arr,
+			    				fn :null
+			    			} );
+					}
+				}
+			})
 		},
 		save:function(){
+			if(!$("#ReceiveCash").formValidate())return;
 			var DeviceId=$("#DeviceId").val();
 			var DeviceTypeId=$("#DeviceTypeId").val();
 			var Certificate=[];
@@ -66,13 +113,49 @@ var checkDevice={
 			$("#logo-pic #wxpic").each(function(){
 				Certificate.push($(this).find("img").attr("src"));
 			});
+			var deviceTypeJson={DeviceId:DeviceId,DeviceTypeId:DeviceTypeId,
+					Certificate:Certificate.join(";"),
+					Description:Description,
+					SeverityLevel:SeverityLevel};
+			var arrValue=[];
+			if(checkDevice.parameterList!=null){
+				$.each(checkDevice.parameterList,function(i,item){	
+					
+							var child=item;
+							var multipleValue=[];
+							if(child.editorType=="texts"||child.editorType=="checkbox"){
+
+								$.each($.parseJSON(child.candidate),function(j,jitem){
+									p_id="parameter_"+child.id+"_"+j;
+									multipleValue.push("\""+p_id+"\":\""+$("#"+p_id).val()+"\"");
+
+								});	
+							}
+							else{
+								p_id="parameter_"+child.id;
+								multipleValue.push("\""+p_id+"\":\""+$("#"+p_id).val()+"\"");
+
+							}
+							arrValue.push({
+								DeviceTypeId:DeviceTypeId,
+								ParameterId:child.id,
+								Description:child.Description,
+								Value:"{"+multipleValue.join(',')+"}"
+							});	
+						
+					
+
+				});
+
+			}
+			for(var index=0;index<arrValue.length;index++){
+				deviceTypeJson['list[' + index +'].ParameterId']=arrValue[index].ParameterId;
+				deviceTypeJson['list[' + index +'].Value']=arrValue[index].Value;
+			}
 			$.ajax({
 				url:path+"/company/check/add.do",
 				type:"post",
-				data:{DeviceId:DeviceId,DeviceTypeId:DeviceTypeId,
-					Certificate:Certificate.join(";"),
-					Description:Description,
-					SeverityLevel:SeverityLevel},
+				data:deviceTypeJson,
 				dataType:"json",
 				success:function(result){
 					if(result.state==0){
@@ -83,45 +166,22 @@ var checkDevice={
 		},
 		detail:function(id){
 			$.ajax({
-				url:path+"/checkdevice/getCheckDevice.do",
+				url:path+"/company/check/getCD.do",
 				type:"post",
 				dataType:"json",
 				data:{id:id},
 				success:function(result){
 					if(result.state==0){
-						var div = document.createElement("div");
-						div.innerHTML = $("#CheckDeviceFormTemplate").html();
-					
-						$(div).find("var,img").each(function(){
-							var name=$(this).attr("id");
-							if(this.tagName=="IMG"){
-								$(this).src=checkdevice.getJsonValue(result.data,name);
-							}
-							else{
-								$(this).html(checkdevice.getJsonValue(result.data,name));
-							}
-						});
-						var config={ 
-								content: div, 
-								width: 700, 
-								height: 500, 
-								title: "指派任务", 
-								callback: checkdevice.assignment, 
-								arguments: [id] 
-						} ;
-						if(result.data.status==2){
-							config.isView=true;
-						}
-						pub.openDialog(config);
-						var arr=[];
-						manager.getManagerList(function(data){
-							$.each(data,function(i,item){
-								arr.push('<option value="'+item.id+'">'+item.name+'</option>')
-							});
-							$("#ToManagerId").append(arr.join(""));
-						});
-						if(result.data.status==2){
-							checkdevice.getAssigment(id);
+						result.data.assignment=checkDevice.getAssigment(id);
+		
+					 $("#DetailTemplate").tmpl(result.data).appendTo($("#DetailBox"));
+					 if(result.data.assignment.id==0){
+							//$("#OptBox").show();
+							ecwx.initImage({
+			    				action : 'image',
+			    				btn : "#btnWxImage",
+			    				fn :null
+			    			} );
 						}
 					}
 					
@@ -130,6 +190,44 @@ var checkDevice={
 					alert("加载失败!");
 				}
 			});
+		},
+		getAssigment:function(checkId){
+			var data={};
+			$.ajax({
+				url:path+"/company/assigment/getAssignment.do",
+				type:"post",
+				dataType:"json",
+				async:false,
+				data:{checkId:checkId},
+				success:function(result){
+					if(result.state==0)
+					data=result.data;
+				}		
+			});
+			return data;
+		},
+		 getDevice:function(id) {
+			 if(id==0) return;
+			//app那边直接返回的字符串
+			$.ajax({
+				url:path+"/company/device/getDevice.do",
+				type:"post",
+				data:{id:id},
+				dataType:"json",
+				success:function(result){
+					if(result.state==0){
+						$.each(result.data,function(key,value){
+
+							$("#"+key.firstUpperCase()).val(value);
+
+						});
+						checkDevice.getParameter(result.data.deviceTypeId);
+					}else{
+						alert("该二维码不存在");
+					}
+				}
+			});
+			
 		}
 }
 

@@ -31,7 +31,7 @@ CompanyResult company=Company.getCompany();
                         <!--用户头像-->
                             <div class="pic load">
                                 <a href="javascript:void(0);">
-                                    <img lazy_src="<$var sources.ImageDomain /><%=company.getLogo() %>" alt="" error="/Static/Images/webstore-pic.png" />
+                                    <img src="<%=company.getLogo() %>" alt="" error="/Static/Images/webstore-pic.png" />
                                 </a>
                             </div>
                           
@@ -52,7 +52,7 @@ CompanyResult company=Company.getCompany();
                                 <p class="name">操作账户：</p>
                                 <div class="string box1">
                                     <%=company.getUserName() %>
-                                    <a href="#">微信帐号</a>
+                                    <a href="<%=request.getContextPath()%>/company/authBind/toAuthBind.do">微信帐号</a>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +109,7 @@ CompanyResult company=Company.getCompany();
                                                     <a href="<%=request.getContextPath()%>/company/assigment/toAssigment.do" class="box box-horizontal">
                                                         <span>
                                                             <i class="icon text"></i>
-                                                            <em>我的任务<em id="OrderCountBox"></em></em>
+                                                            <em>任务列表<em id="OrderCountBox"></em></em>
                                                         </span>
                                                     </a>
                                                 </li>
@@ -121,7 +121,15 @@ CompanyResult company=Company.getCompany();
                                                             <em>巡查记录</em>
                                                         </span>
                                                     </a>
-                                                </li>     
+                                                </li> 
+                                              <li>
+                                                    <a href="<%=request.getContextPath() %>/company/device/toDeviceList.do" class="box box-horizontal">
+                                                        <span>
+                                                            <i class="icon user"></i>
+                                                            <em>设备列表</em>
+                                                        </span>
+                                                    </a>
+                                                </li>    
                                             </ul>
                                         </div>
                                         <!--//菜单导航-->
@@ -131,14 +139,7 @@ CompanyResult company=Company.getCompany();
                                         <!--菜单导航-->
                                         <div class="store-menu">
                                             <ul>
-                                               <li>
-                                                    <a href="<%=request.getContextPath() %>/company/device/toDeviceList.do" class="box box-horizontal">
-                                                        <span>
-                                                            <i class="icon user"></i>
-                                                            <em>设备列表</em>
-                                                        </span>
-                                                    </a>
-                                                </li>
+
                                             
                                                 <li>
                                                     <a data-state="insert" data-link="<%=request.getContextPath() %>/company/device/toDevice.do" class="box box-horizontal">
@@ -180,7 +181,7 @@ CompanyResult company=Company.getCompany();
         </article>
         <!-- //体部 -->
         <!-- 底部 -->
-        <jsp:include page="block/foot.html" ></jsp:include>
+       
     
         <!-- //底部 -->
     </section>
@@ -345,5 +346,5 @@ CompanyResult company=Company.getCompany();
 				}
 			} ]
 		});
-device.getQR('f4f6946162ec4d1a8dd15dcefe583932');
+//device.getQR('9260a214534e451b84332f079113eb39');
 </script>

@@ -30,7 +30,9 @@
 				<!-- 下拉列表 -->
 				<div class="push-list">
 				<ul id="RetreatCountBox">
-					<li class="select" data-status="0"><a href="javascript:void(0);" onclick="assigment.search(this)"><em>全部</em></a></li>
+					<li class="select" data-status="999"><a href="javascript:void(0);" onclick="assigment.search(this)"><em>全部</em><em>(0)</em></a></li>
+					<li  data-status="1"><a href="javascript:void(0);" onclick="assigment.search(this)"><em>已整改</em><em>(0)</em></a></li>
+					<li  data-status="0"><a href="javascript:void(0);" onclick="assigment.search(this)"><em>待整改</em><em>(0)</em></a></li>
 					</ul>
 				</div>
 				<!-- //下拉列表 -->
@@ -39,11 +41,11 @@
 			<!--搜索区域-->
 			<div class="search-area box1">
 				<div class="inputbox">
-					<input type="text" name="searchText" id="searchText" value="" />
+					<input type="text" name="keyword" id="keyword" value="" />
 				</div>
 
 				<div class="button">
-					<a href="javascript:void(0);" onclick="retreat.searchRetreat();"
+					<a href="javascript:void(0);" onclick="assigment.search();"
 						class="btn"></a>
 				</div>
 			</div>
@@ -70,11 +72,14 @@
 
 <script type="text/javascript">
 	$(function(){
-		assigment.loadDeviceType();
-		load();
+		assigment.search();
 	});
 	 function load(){
-		 var deviceTypeId=$("#RetreatCountBox .select").attr("data-status")||0;
+		 var status=$("#RetreatCountBox .select").attr("data-status");
+		 var keyword=$("#keyword").val();
+		 if(status==999){
+			 status=null;
+		 }
 		  var config={
 					url:path+"/company/assigment/show.do",
 		  			pageSize:3,
@@ -82,7 +87,7 @@
 		  			isScroll:true,
 		  			templateId:"BodyListTmpelate",
 		  			container:"deviceList",
-		  			data:{deviceTypeId:deviceTypeId}
+		  			data:{status:status,keyword:encodeURI(keyword)}
 		  			};
 		  var pageInfo=new ecPage.fn._init(config);
 	 }

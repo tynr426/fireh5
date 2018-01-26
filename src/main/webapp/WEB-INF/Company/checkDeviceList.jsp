@@ -1,3 +1,4 @@
+<%@page import="fireh5.web.utils.Company"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -29,7 +30,11 @@
 				<!-- 下拉列表 -->
 				<div class="push-list" >
 					<ul id="RetreatCountBox">
-					<li class="select" data-status="0"><a href="javascript:void(0);" onclick="checkDeviceList.search(this)"><em>全部</em></a></li>
+					<li class="select" data-status="999"><a href="javascript:void(0);" onclick="checkDeviceList.search(this)"><em>全部</em><em>(0)</em></a></li>
+					<li data-status="0"><a href="javascript:void(0);" onclick="checkDeviceList.search(this)"><em>正常</em><em>(0)</em></a></li>
+					<li data-status="1"><a href="javascript:void(0);" onclick="checkDeviceList.search(this)"><em>待指派</em><em>(0)</em></a></li>
+					<li data-status="2"><a href="javascript:void(0);" onclick="checkDeviceList.search(this)"><em>待整改</em><em>(0)</em></a></li>
+					<li data-status="3"><a href="javascript:void(0);" onclick="checkDeviceList.search(this)"><em>已整改</em><em>(0)</em></a></li>
 					</ul>
 				</div>
 				<!-- //下拉列表 -->
@@ -38,11 +43,11 @@
 			<!--搜索区域-->
 			<div class="search-area box1">
 				<div class="inputbox">
-					<input type="text" name="searchText" id="searchText" value="" />
+					<input type="text" name="keyword" id="keyword" value="" />
 				</div>
 
 				<div class="button">
-					<a href="javascript:void(0);" onclick="retreat.searchRetreat();"
+					<a href="javascript:void(0);" onclick="checkDeviceList.search();"
 						class="btn"></a>
 				</div>
 			</div>
@@ -68,12 +73,16 @@
 <jsp:include page="template/checkDeviceList.html"></jsp:include>
 
 <script type="text/javascript">
+var userId=<%=Company.getCompany().getUserId()%>;
 	$(function(){
-		checkDeviceList.loadManagerName();
-		load();
+		checkDeviceList.search();
 	});
 	 function load(){
-		 var managerId=$("#RetreatCountBox .select").attr("data-status")||0;
+		 var status=$("#RetreatCountBox .select").attr("data-status");
+		 var keyword=$("#keyword").val();
+		 if(status==999){
+			 status=null;
+		 }
 		  var config={
 					url:path+"/company/check/showCDList.do",
 		  			pageSize:3,
@@ -81,7 +90,7 @@
 		  			isScroll:true,
 		  			templateId:"BodyListTmpelate",
 		  			container:"deviceList",
-		  			data:{managerId:managerId}
+		  			data:{status:status,keyword:encodeURI(keyword)}
 		  			};
 		  var pageInfo=new ecPage.fn._init(config);
 	 }

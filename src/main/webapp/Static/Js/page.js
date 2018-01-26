@@ -358,7 +358,20 @@ function showData(pager, data, append,func) {
 	if (c.isScroll && append) { //进行追加
 		c.container.append($.tmpl(html,data));
 	} else {
-		c.container.html($.tmpl(html,data));
+		
+		if ($.isArray(data) && data.length > 0) {
+			c.container.html($.tmpl(html,data));
+		}
+		else{
+			if (c.container[0].nodeName == 'UL'){
+				var newErrorNull = "<li style='text-align:center;font-size:12px'>无此数据</li>";
+
+				c.container.html(newErrorNull);
+			}
+			else{
+				c.container.html("无此数据");
+			}
+		}
 	}
 
 	// 判断动态刷新框架高度
@@ -444,10 +457,7 @@ function loadData(pager, append,func) {
 				filterClose();
 			}
 		},
-		done: c.done,
-		error: function () {
-			alert("分页数据处理错误,错误代码: " + arguments[0] + ";错误信息: " + arguments[1]);
-		}
+		done: c.done
 	});
 };
 

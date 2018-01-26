@@ -94,6 +94,7 @@ public class DeviceController {
 		Map<String, Object> map = new HashMap<String, Object>();  
 		map.put("QrCode", code);
 		map.put("ToManagerId", Company.getCompany().getManagerId());
+		map.put("CompanyId", Company.getCompanyId());
 		return new ProxyBase().GetResponse("company.getQR", "getDeviceQRByCode",map);
 	}
 	

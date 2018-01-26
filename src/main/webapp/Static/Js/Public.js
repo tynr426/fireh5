@@ -285,6 +285,50 @@ var pub = {
         return pub._dialog;
     },
 
+	openDialog:function(title, content, width, height, buttons, func, args){
+		if($("#dialogForm").length==0){
+			$("body").append("	<div id='dialogForm' style='display: none'></div>");
+		}
+		var opts = null,
+		_top = pub.top;
+
+		if (arguments.length == 1 && $.isPlainObject(arguments[0])) {
+			opts = arguments[0];
+		} else {
+			opts={
+					resizable: true,
+					width: width||450,
+					height: height||200,
+					modal: true,
+					title:title,
+					content:content
+			};
+		}
+		// 添加按钮
+		opts.buttons ={
+				"确定":function(){
+					opts.callback.apply(this, opts.arguments);
+
+				},
+				"取消":function(){
+					$(this).dialog('close');
+				}
+		};
+		if(opts.isView){
+			opts.buttons ={
+					"关闭":function(){
+						$(this).dialog('close');
+					}
+			};
+		}
+		opts.Cancle =function(){
+			$(this).dialog('close');
+		};
+		$("#dialogForm").html(opts.content);
+
+		$("#dialogForm").dialog(opts).dialog("open");
+	
+	},
     /*
     向一个弹出层中写入html数据
     @1  需要显示的html代码或Html元素
@@ -1428,99 +1472,85 @@ $.extend($.fn, {
         @5: 执行方法回调参数
         @6: 请求地址
     */
-    loadList: function(templateId, data, action, func, args, url) {
+    loadList: function(templateId, data, func, args, url) {
+    	if (this.length < 1) {
+			alert("数据错误");
+			return;
+		}
 
-        if (this.length < 1) {
-            alert("数据错误");
-            return;
-        }
+		var opt = {
+				templateId: templateId
+		};
 
-        var opt = {
-            templateId: templateId
-        };
+		if (arguments.length == 1 && $.isObject(arguments[0])) {
+			if (typeof(arguments[0]) == "string") {
+				opt.templateId = arguments[0];
+			} else {
+				opt = arguments[0];
+			}
+		} else {
+			opt.url = url;
+			opt.callback = func;
+			opt.arguments = args;
+			opt.data = data;
+		}
 
-        if (arguments.length == 1 && $.isObject(arguments[0])) {
-            if (typeof(arguments[0]) == "string") {
-                opt.templateId = arguments[0];
-                opt.action = action || "loaddata";
-            } else {
-                opt = arguments[0];
-            }
-        } else {
-            opt.url = url;
-            opt.action = action || "loaddata";
-            opt.callback = func;
-            opt.arguments = args;
-            opt.data = data;
-        }
+		if (opt.templateId == null || opt.templateId == "") {
+			alert("模板参数错误");
+			return;
+		}
 
-        if (opt.templateId == null || opt.templateId == "") {
-            alert("模板参数错误");
-            return;
-        }
-
-        var my = this,
-            sendData = "<action>" + opt.action + "</action>" + opt.data;
+		var my = this;
         $.ajax({
             url: opt.url,
-            dataType: "xml",
-            data: sendData,
+            dataType: "json",
+            data: opt.data,
             loading: function() {
                 my.html("数据获取中...");
             },
-            success: function() {
+            success: function(result) {
+				var json=[];
+				if(result.state==0){
+					json=result.data;
+				}
 
-                var doc = arguments[1].xml ? arguments[1].xml : arguments[1].text,
-                    json = null;
-                if (typeof(doc) == "string") {
-                    json = $.parseJSON(arguments[1].text);
-                } else {
-                    json = $.xml.toJson(doc);
-                }
+				opt.html = $("#" + opt.templateId).html();
 
-                opt.html = $("#" + opt.templateId).html();
+				if (opt.html == null || opt.html == "") {
+					alert("模板数据为空");
+					return;
+				}
 
-                if (opt.html == null || opt.html == "") {
-                    alert("模板数据为空");
-                    return;
-                }
+				if (json && json.length>0) {
+					my.html($.tmpl(opt.html,json));
+					
+				} else {
+					if (my[0].nodeName == "UL") {
+						my.html("<li style='text-align:center;font-size:12px'>无此数据</li>");
+					}else 
+					my.html("没有数据");
+				}
+				if (typeof(func) == "function") {
+					func.apply(this, arguments);
+				}
 
-                if (json) {
-                    my.html(jte(opt.html, json));
-                    if (my[0].nodeName == "TBODY") {
-                        $(">tr", my[0]).each(function () {
-                            $(this).bind("mouseover", function () {
-                                $(">th,>td", this).css("background-color", "#EEF3F7");
-                            });
-                            $(this).bind("mouseout", function () {
-                                $(">th,>td", this).css("background-color", "");
-                            });
-                        });
-                    }
-                } else {
-                    my.html("没有数据");
-                }
-                if (typeof(func) == "function") {
-                    func.apply(this, arguments);
-                }
+				if (window.parent) {
+					if (window.parent.main) {
+						if (typeof(window.parent.main.autoSize) === 'function')
+							window.parent.main.autoSize();
+					}
+				}
 
-                if (window.parent) {
-                    if (window.parent.main) {
-                        if (typeof(window.parent.main.autoSize) === 'function')
-                            window.parent.main.autoSize();
-                    }
-                }
+				//自定义单选复选UI
+				if (typeof $().customCheck === 'function') {
+					$(document).customCheck();
+				}
 
-                //自定义单选复选UI
-                if (typeof $().customCheck === 'function') {
-                    $(document).customCheck();
-                }
-
-                //延迟加载
-                if (typeof $.lazy === 'function') {
-                    $(document).nonePic();
-                }
-            },
+				//延迟加载
+				if (typeof $.lazy === 'function') {
+					$(document).nonePic();
+				}
+			},
             error: function() {
                 my.html("数据获取失败...");
             }

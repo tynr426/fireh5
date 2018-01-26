@@ -26,7 +26,9 @@ public class CompanySessionInterceptor implements HandlerInterceptor {
 		
 		if(!Company.IsLogin(res))
 		{
-			String returnUrl= Base64.encodeBase64(req.getServletPath().getBytes("utf-8"));
+			String query=req.getQueryString();
+			query=(query==null||query.equals("")?"":"?"+query);
+			String returnUrl= Base64.encodeBase64((req.getServletPath()+query).getBytes("utf-8"));
 			res.sendRedirect(req.getContextPath()+"/company/toLogin.do?ReturnUrl="+returnUrl);
 			return false;
 		}
