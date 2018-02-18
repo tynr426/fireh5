@@ -42,7 +42,7 @@
 
 <script type="text/javascript">
 	//wechat.init();
-	checkDevice.detail($.getUrlParam("checkId"));
+	repairrecord.detail($.getUrlParam("checkId"));
 	var initConfig = {
 		wechat : function() {
 			var iswx = '<%=WechatUtils.IsWxBrowser()%>';

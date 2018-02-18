@@ -23,7 +23,7 @@ public class CookiesUtil {
       	if(cookies != null){
 			for (Cookie cookie : cookies) {
 				cookieMap.put(cookie.getName(), cookie);
-				System.out.println(cookie.getValue()+","+cookie.getName());
+				//System.out.println(cookie.getValue()+","+cookie.getName());
 			}
 		}
 		return cookieMap;

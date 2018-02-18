@@ -1,0 +1,39 @@
+<script type="text/x-jquery-tmpl" id="DeviceTypeParameterFormTemplate">
+
+<li class="box box-horizontal {{if (editorType=="upload")}}aptitude-info{{/if}}">
+	<p class="name">
+		{{if (required=="1")}} <em class="red">*</em>{{/if}}${description}：
+     </p>
+
+	
+		{{if (editorType=="text")}}
+		<div class="inputbox box1">
+			<input type="text" id="parameter_${id}" error="输入格式不正确！" validate="{{if (required=="1")}} isnull{{/if}}" maxlength="20" value="" />
+		</div>
+		{{else (editorType=="texts")}}
+		 {{each(j,child) $.parseJSON(candidate)}}
+		<div class="inputbox" style="width: 55px;margin-right:10px">
+			<input type="text"  placeholder="${child.Field}" id="parameter_${id}_${j}" error="输入格式不正确！" validate="{{if (required=="1")}} isnull{{/if}}" maxlength="20" value="" />
+		</div>
+		{{/each}}
+       {{else (editorType=="select")}}
+			<div class="selectbox" >
+				<select style="height:40px" id="parameter_${id}" error="请选择！" validate="{{if (required=="1")}} isnull{{/if}}">
+					{{each(j,child) $.parseJSON(candidate)}}
+					<option value="${child.Value}">${child.Field}</option> {{/each}}
+				</select>
+			</div>
+		{{else (editorType=="upload")}}
+		<div class="aptitude box1">
+							<ol id="logo-pic">
+								<li class="update" id="btnWxImage"><a class="update-btn"
+									href="javascript:void(0);"></a></li>
+<li><a href="javascript:void(0);" id="wxpic" ><img src="%URL%"  alt=""/></a></li>
+							</ol>
+		</div>
+
+		{{/if}}
+
+</li>
+
+    </script>

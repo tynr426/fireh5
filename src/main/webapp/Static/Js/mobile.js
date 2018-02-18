@@ -1,10 +1,10 @@
 //框架初始化
 var resetSize = function () {
-    var mainer = $e('.ui-wrap'),
-    	header = $e('.custom-head'),
-        footer = $e('.custom-foot'),
-        exfooter = $e('.extend-foot'),
-        bodyer = $e('.ui-page'),
+    var mainer = $('.ui-wrap'),
+    	header = $('.custom-head'),
+        footer = $('.custom-foot'),
+        exfooter = $('.extend-foot'),
+        bodyer = $('.ui-page'),
         top = 0,
         bootom = 0,
         style = '',
@@ -44,19 +44,19 @@ var resetSize = function () {
 
     // 样式不空
     if (style !== '') {
-        style += (style === '' ? '' : '') + 'height: ' + Number($e(window).height() - height) + 'px;';
+        style += (style === '' ? '' : '') + 'height: ' + Number($(window).height() - height) + 'px;';
 
         bodyer.attr("style", style);
     }
 
     //自定义单选复选
-    if (typeof $e().customCheck === 'function') {
-        $e(document).customCheck();
+    if (typeof $().customCheck === 'function') {
+        $(document).customCheck();
     }
 
     //延迟加载
-    if (typeof $e.lazy === 'function') {
-        $e.lazy({
+    if (typeof $.lazy === 'function') {
+        $.lazy({
             deBug: true,
             throuTop: 200,
             errorImg: '/Static/Images/error.png'
@@ -64,22 +64,22 @@ var resetSize = function () {
     }
 
     //去掉页面加载等待
-    var loading = $e('.loading');
+    var loading = $('.loading');
     if (loading.length > 0) {
         loading.remove();
     }
 
     //iScroll刷新
-    if ($e.iscroll) {
-        $e.iscroll.refresh();
+    if ($.iscroll) {
+        $.iscroll.refresh();
     }
 };
 
-$e(function () {
+$(function () {
     resetSize();
-    $e('body').click(function (e) {
+    $('body').click(function (e) {
         if (e.target.nodeName != "INPUT") {
-            $e('input').blur();
+            $('input').blur();
         };
     });
 });

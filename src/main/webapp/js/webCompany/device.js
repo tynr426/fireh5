@@ -69,7 +69,7 @@ var device={
 				dataType:"json",
 				success:function(result){
 					if(result.state==0){
-						
+
 						window.location.href=path+"/company/device/toDeviceList.do";
 					}else{	
 						alert(result.message);		
@@ -115,17 +115,17 @@ var device={
 
 				$("#DeviceTypeId").append(deviceType.join());
 			}
-			 var deviceTypeId = $.getUrlParam('deviceTypeId');
-			 if(deviceTypeId!=null&&deviceTypeId!=""){
-				
-				 $("#DeviceTypeId").val(deviceTypeId);
-				 $("#DeviceTypeId").change();
-				 $("#DeviceTypeId").attr("disabled", true);
-				 
-			 }
+			var deviceTypeId = $.getUrlParam('deviceTypeId');
+			if(deviceTypeId!=null&&deviceTypeId!=""){
+
+				$("#DeviceTypeId").val(deviceTypeId);
+				$("#DeviceTypeId").change();
+				$("#DeviceTypeId").attr("disabled", true);
+
+			}
 		},
 		deviceFinish:function(){
-			
+
 			var json=arguments[0];
 			if(json.id==undefined) return ;
 
@@ -181,14 +181,14 @@ var device={
 								$("#DeviceTypeParameterFormTemplate").tmpl(child).appendTo("#parameterList");
 							}
 							var arr=[];
-					    	$("#parameterList #btnWxImage").each(function(){
-					    		arr.push(this);
-					    	});
+							$("#parameterList #btnWxImage").each(function(){
+								arr.push(this);
+							});
 							ecwx.initImage({
-			    				action : 'image',
-			    				btn : arr,
-			    				fn :null
-			    			} );
+								action : 'image',
+								btn : arr,
+								fn :null
+							} );
 						}
 					});
 
@@ -255,7 +255,7 @@ var device={
 				dataType:"json",
 				success:function(result){
 					if(result.state==0){
-						
+
 						window.location.href=path+"/company/device/toDeviceList.do";
 					}else{	
 						alert(result.message);			
@@ -270,7 +270,7 @@ var device={
 		},
 		getQR:function(code,obj){
 			if(code=="scan resultStr is here"){
-				
+
 				return;
 			}
 			$.ajax({
@@ -283,43 +283,98 @@ var device={
 					if(result.state==100){
 						alert(result.message);
 					}
-					if(result.state==0 && result.data.deviceId==null){
-						window.location.href=path+"/company/device/toDevice.do?deviceTypeId="+result.data.deviceTypeId+"&code="+code;
-					}else if(result.state==0 && result.data.deviceId!=null){
-						if(attr=="check"){
-						window.location.href=path+"/company/check/toCheck.do?code="+code;
+					else if(result.state==1){
+						alert("异常");
+					}
+					else{
+						if(result.data.deviceId==null || result.data.deviceId==""){
+							window.location.href=path+"/company/device/toDevice.do?deviceTypeId="+result.data.deviceTypeId+"&code="+code;
 						}
-						else if(attr=="repair"){
-							//维修
-							window.location.href=path+"/company/repairrecord/toRepairrecord.do?deviceId="+result.data.deviceId;
+						else if(result.data.checkStatus==null || result.data.checkStatus==""){
+							window.location.href=path+"/company/check/toCheck.do?code="+code;
+
+						}
+						else if(result.data.checkStatus==1){
+							alert("该设备还未指派！")
+						}
+						else if(result.data.checkStatus==3){
+							alert("该设备已整改！")
+						}
+						else{
+							window.location.href=path+"/company/repairrecord/toRepairrecord.do?checkId="+result.data.assignmentId;
 						}
 					}
+
 				}
 			});
 		},
 		loadDeviceType:function(){
 			$.ajax({url:path+"/company/deviceType/findAll.do",
-			type:"post",
-			dataType:"json",
-			success:function(result){
-				var deviceType=[];
-				if(result.state==0){
-					$.each(result.data,function(i,item){
-						deviceType.push('<li data-status="'+item.id+'"><a href="javascript:void(0);" onclick="device.search(this)"><em>'+item.name+'</em></a></li>');
-					});
-					$("#RetreatCountBox").append(deviceType.join());
+				type:"post",
+				dataType:"json",
+				success:function(result){
+					var deviceType=[];
+					if(result.state==0){
+						$.each(result.data,function(i,item){
+							deviceType.push('<li data-status="'+item.id+'"><a href="javascript:void(0);" onclick="device.search(this)"><em>'+item.name+'</em></a></li>');
+						});
+						$("#RetreatCountBox").append(deviceType.join());
+					}
 				}
-			}
-		});
+			});
 		},
 		search:function(obj){
 			$("#RetreatCountBox li").removeClass("select");
 			$(obj).parent().addClass("select");
-			 $(".search-push").removeClass("open").addClass("close");
-			 $("#select-title").html($(obj).find("em").html());
+			$(".search-push").removeClass("open").addClass("close");
+			$("#select-title").html($(obj).find("em").html());
 			load();
-		}	
-
+		},
+		isBindQr:function(code,obj){
+			if(code=="scan resultStr is here"){
+				return;
+			}
+			var id=$(obj).attr("data-state");
+			var deviceTypeId=$(obj).attr("data-typeId");
+			$.ajax({
+				url:path+"/company/device/isBindQr.do",
+				type:"post",
+				dataType:"json",
+				data:{deviceId:id,code:code,deviceTypeId:deviceTypeId},
+				success:function(result){
+					
+					if(result.state==0){
+						if(result.data==2)
+						{
+							if(confirm("该设备已经绑定了二维码是否重新绑定？")){
+								device.bind(code,id);
+							}
+						}else{
+							device.bind(code,id);
+						}
+					}
+					else {
+						alert(result.message);
+					}
+				}
+			});
+		},
+		bind:function(code,deviceId){
+			$.ajax({
+				url:path+"/company/device/bind.do",
+				type:"post",
+				dataType:"json",
+				data:{deviceId:deviceId,code:code},
+				success:function(result){
+					if(result.state==0){
+						alert("绑定成功");
+					}
+					else {
+						alert(result.message);
+					}
+				}
+			});
+		}
 }
 
 

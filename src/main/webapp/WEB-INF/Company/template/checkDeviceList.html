@@ -5,8 +5,17 @@
         <!-- 名称 -->
         <div class="storename box box-horizontal">
             <a href="javascript:void(0);" class="name box1">管理员：${managerName}</a>
-            {{if (userId==0)}}<a href="/fireh5/company/check/toSendAssignment.do?checkId=${id}">
-			<div class="pay-way">指派</div></a>{{/if}}
+         
+<a href="/fireh5/company/check/toSendAssignment.do?checkId=${id}">
+			<div class="pay-way">
+
+{{if (status==1&&userId==0)}}
+指派
+{{else}}
+详情
+{{/if}}
+</div>
+</a>
         </div>
         <!-- //店铺名称 -->
         <!--标题-->

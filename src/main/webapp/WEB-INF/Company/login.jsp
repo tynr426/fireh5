@@ -5,7 +5,7 @@ contentType="text/html; charset=utf-8" %>
 <html lang="zh-cmn-Hans">
 <head>
 <jsp:include page="block/Meta.html" ></jsp:include>
-
+<title><%=fireh5.web.utils.Constants.Title%></title>
 </head>
 <body>
         <!-- 框架 -->

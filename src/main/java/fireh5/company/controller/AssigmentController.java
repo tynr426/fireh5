@@ -28,8 +28,11 @@ public class AssigmentController {
 	@RequestMapping("/show.do")
 	@ResponseBody
 	public Object showAssigment(String index,String size,Integer status,String keyword,HttpSession session,HttpServletResponse response){
-		Map<String, Object> map = new HashMap<String, Object>();   
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(Company.getCompany().getUserId()!=0){
 		map.put("ManagerId",String.valueOf(Company.getCompany().getManagerId()));
+		}
+		map.put("CompanyId", Company.getCompanyId());
 		map.put("Index",index);
 		map.put("Size",size);
 		if(status!=null){

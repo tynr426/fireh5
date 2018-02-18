@@ -78,7 +78,7 @@ var assigment={
 			var PredictTime=$("#PredictTime").val();
 			var Remark=$("#Remark").val();
 			$.ajax({
-				url:path+"/company/assignment/save.do",
+				url:path+"/company/assigment/save.do",
 				type:"post",
 				dataType:"json",
 				data:{CheckId:id,ToManagerId:ToManagerId,
@@ -86,7 +86,10 @@ var assigment={
 				success:function(result){
 					if(result.state==0){
 						alert("操作成功!");
-						
+						location.href=path+"/company/check/toCheckList.do";
+					}
+					else{
+						alert("操作失败!");
 					}
 				}
 			});
@@ -99,7 +102,7 @@ var assigment={
 				var managerName=[];
 				if(result.state==0){
 					$.each(result.data,function(i,item){
-						managerName.push("<option value='"+item.id+"'>"+item.name+"</option>");
+						managerName.push("<option value='"+item.id+"'>"+(item.name==null?item.userName:item.name)+"</option>");
 					});
 					$("#ToManagerId").append(managerName.join());
 				}

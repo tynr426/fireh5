@@ -346,5 +346,5 @@ CompanyResult company=Company.getCompany();
 				}
 			} ]
 		});
-//device.getQR('9260a214534e451b84332f079113eb39');
+//device.getQR('4bff38d855c149dda7ad66312546edb2');
 </script>

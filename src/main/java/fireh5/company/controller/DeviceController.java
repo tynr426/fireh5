@@ -95,7 +95,25 @@ public class DeviceController {
 		map.put("QrCode", code);
 		map.put("ToManagerId", Company.getCompany().getManagerId());
 		map.put("CompanyId", Company.getCompanyId());
-		return new ProxyBase().GetResponse("company.getQR", "getDeviceQRByCode",map);
+		return new ProxyBase().GetResponse("company.deviceqr", "getDeviceQRByCode",map);
 	}
-	
+	@RequestMapping("/isBindQr.do")
+	@ResponseBody	
+	public Object isBindQr(String code,int deviceId,int deviceTypeId){
+		System.out.println("code"+code);
+		Map<String, Object> map = new HashMap<String, Object>();  
+		map.put("QrCode", code);
+		map.put("DeviceId", deviceId);
+		map.put("DeviceTypeId", deviceTypeId);
+		return new ProxyBase().GetResponse("company.deviceqr", "isBindQr",map);
+	}
+	@RequestMapping("/bind.do")
+	@ResponseBody	
+	public Object bind(String code,int deviceId){
+		System.out.println("code"+code);
+		Map<String, Object> map = new HashMap<String, Object>();  
+		map.put("QrCode", code);
+		map.put("DeviceId", deviceId);
+		return new ProxyBase().GetResponse("company.deviceqr", "bind",map);
+	}
 }

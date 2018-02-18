@@ -1,0 +1,169 @@
+<script type="text/template" id="DetailTemplate">
+    <!-- 返修退换货详情 -->
+    <div class="retreat-details">
+    
+        <!-- 订单状态 -->
+        <div class="status-model">
+            <!-- 待付款 -->
+            <div class="status-wrap obligation-wrap">
+                <div class="status">${statusDes}</div>
+            </div>
+            <!-- //待付款 -->
+        </div>
+        <!-- //订单状态 -->
+        <!--列表切换组件-->
+        <div class="order-model order-details-lab">
+            <!--列表区域-->
+            <div class="list-mc" label-limitarea>
+                <div class="for select" label-area>
+                    <div class="line">
+                        <ul class="fold-list">
+ <li>
+                                <p class="name">设备类型：</p>
+                                <div class="string">
+                                    ${name}
+                                </div>
+                            </li>
+                            <li>
+                                <p class="name">型号：</p>
+                                <div class="string">
+                                    ${model}
+                                </div>
+                            </li>
+                            <li>
+                                <p class="name">检查人员：</p>
+                                <div class="string">
+                                    ${managerName}
+                                </div>
+                            </li>
+                          <li>
+                                <p class="name">
+                                    	故障级别：
+                                </p>
+                                <div class="string">
+                                    ${severityLevelDes}
+                                </div>
+                            </li>
+                            <li>
+                            <li>
+                                <p class="name">
+                                    	检查时间：
+                                </p>
+                                <div class="string">
+                                    ${addTime}
+                                </div>
+                            </li>
+                            <li>
+                                <p class="name">检查人员：</p>
+                                <div class="string">
+                                    ${managerName}
+                                </div>
+                            </li>
+                            <li>
+                                <p class="name">故障级别：</p>
+                                <div class="string">
+                                    ${severityLevelDes}
+                                </div>
+                            </li>
+
+                            <li>
+                                <p class="name">检查时间：</p>
+                                <div class="string">
+                                    ${addTime}
+                                </div>
+                            </li>
+                           
+                          
+                         
+                        </ul>
+                        <!-- 展开按钮 -->
+                        <div class="fold-btn">
+                            <a href="javascript:void(0);" class="btn" onclick="var obj = $(this); obj.parent().siblings('.fold-list').toggleClass('open'); obj.toggleClass('close'); if (obj.hasClass('close')) { obj.html('收起'); } else { obj.html('查看全部'); }">查看全部</a>
+                        </div>
+                        <!-- //展开按钮 -->
+                    </div>
+                </div>
+            </div>
+            <!--//列表区域-->
+        </div>
+        <!--//列表切换组件-->
+        <!--产品信息-->
+        <div class="order-model">
+          
+          
+            <div class="mt extend-mt">
+                <p>故障凭证</p>
+            </div>
+            <div class="mc">
+                <div class="product-info">
+                    <!--循环产品-->
+                    <div class="product-line">
+                        <!--商品-->
+                        <div class="product">
+                            <a  class="box box-horizontal">
+ 							{{each(j,f) certificate.split(',')}}
+                                <span class="pic load">
+                                    <img src="${f}" alt="" />
+                                </span>
+   							{{/each}}
+                                <span class="info box1">
+                                    <span class="name box box-horizontal">
+                                        <em class="name-txt box2"> ${description}</em>
+                                    </span>
+
+                                </span>
+                            </a>
+                          
+                          
+                        </div>
+                        <!--//商品-->
+                      
+                    </div>
+                    <!--//循环产品-->
+                </div>
+
+              
+            </div>
+        
+        </div>
+        <!--//产品信息-->
+	
+
+ 	<!--收款收银台-->
+		<div class="receipt-cashier">
+			<div class="login-input-box">
+				<ul id="ReceiveCash">
+				
+					<li class="box box-horizontal aptitude-info">
+						<p class="name">指定维修人员：</p>
+						<div class="selectbox" >
+                            <select  id="ToManagerId" error="请选择人员！" validate="isnull" class="select" style="height:40px">
+								<option value="">选择人员</option>
+							</select>
+                        </div>
+					</li>
+					<li class="box box-horizontal">
+						<p class="name">任务期限：</p>
+						<div class="inputbox">
+                            <input type="text" name="PredictTime" id="PredictTime" readonly=readonly onclick="WdatePicker({ dateFmt: 'yyyy-MM-dd'});" error="输入格式不正确！" validate="isnull"/>
+                        </div>
+					</li>
+					<li class="box box-horizontal">
+						<p class="name">备注：</p>
+						<div class="textareabox">
+                            <textarea name="Remark" id="Remark" error="输入格式不正确！" validate="isnull" maxlength="20" value="" ></textarea>
+                        </div>
+					</li>
+				</ul>
+			</div>
+{{if status==1&&userId==0}}
+			<div class="button">
+				<a href="javascript:void(0);" onclick="assigment.saveAssignment('${id}');" class="btn">确认指派</a>
+			</div>
+{{/if}}
+		</div>
+		<!--//收款收银台-->
+
+    </div>
+    <!-- 返修退换货详情 -->
+</script>
