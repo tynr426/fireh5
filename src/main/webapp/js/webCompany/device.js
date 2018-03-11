@@ -86,7 +86,10 @@ var device={
 				data:{id:Id},
 				dataType:"json",
 				success:function(result){					
-					return result;
+					if(result.state==0){
+						device.deviceFinish(result.data);
+			    		$("#btnSave").hide();
+					}
 				}
 			});
 			return null;
@@ -290,15 +293,9 @@ var device={
 						if(result.data.deviceId==null || result.data.deviceId==""){
 							window.location.href=path+"/company/device/toDevice.do?deviceTypeId="+result.data.deviceTypeId+"&code="+code;
 						}
-						else if(result.data.checkStatus==null || result.data.checkStatus==""){
+						else if(result.data.checkStatus==null || result.data.checkStatus=="" || result.data.checkStatus==3){
 							window.location.href=path+"/company/check/toCheck.do?code="+code;
 
-						}
-						else if(result.data.checkStatus==1){
-							alert("该设备还未指派！")
-						}
-						else if(result.data.checkStatus==3){
-							alert("该设备已整改！")
 						}
 						else{
 							window.location.href=path+"/company/repairrecord/toRepairrecord.do?checkId="+result.data.assignmentId;

@@ -52,7 +52,7 @@ CompanyResult company=Company.getCompany();
                                 <p class="name">操作账户：</p>
                                 <div class="string box1">
                                     <%=company.getUserName() %>
-                                    <a href="<%=request.getContextPath()%>/company/authBind/toAuthBind.do">微信帐号</a>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -201,9 +201,9 @@ CompanyResult company=Company.getCompany();
                         </a>
                     </li>
                        <li class="merchant">
-                            <a href="">
+                            <a href="<%=request.getContextPath()%>/company/authBind/toAuthBind.do">
                                 <i class="icon"></i>
-                                <em class="text">平台设置</em>
+                                <em class="text">微信帐号</em>
                             </a>
                         </li>
                         <li class="exit thirdexit">

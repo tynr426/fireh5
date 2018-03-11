@@ -1,0 +1,22 @@
+/*全屏显示大图*/  
+.opacityBottom{  
+    width: 100%;  
+    height: 100%;  
+    position: fixed;  
+    background:rgba(0,0,0,0.8);  
+    z-index:1000;  
+    top: 0;  
+    left: 0  
+}  
+.none-scroll{  
+    overflow: hidden;  
+    height: 100%;  
+}  
+.bigImg{  
+    width:100%;  
+    left:0%;  
+    top:10%;  
+    position:fixed;  
+    z-index: 10001;  
+  
+}  

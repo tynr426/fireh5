@@ -174,10 +174,10 @@
 
 				</ul>
 				<div class="button box box-horizontal"  >
-					<a href="javascript:void(0);" class="btn box1 seccess" onclick="device.save('<%=request.getParameter("Id")%>')">保存</a>
+					<a href="javascript:void(0);" class="btn box1 seccess" id="btnSave" onclick="device.save('<%=request.getParameter("Id")%>')">保存</a>
 					<a href="javascript:void(0);" class="btn box1 cancel"
 						onclick="device.stepTrigger()">上一步</a>
-						<a href="#" style="display:none" id="btnScanCode">aa</a>
+						
 				</div>
 			</div>
 			<!--//详细信息-->
@@ -195,6 +195,12 @@
 <script type="text/javascript">
     $(function () {
     	device.initControll();
+    	var deviceId=$.getUrlParam("deviceId");
+
+    	if(deviceId!=undefined&&deviceId>0){
+    		device.getDevice(deviceId);
+
+    	}
     	var iswx = '<%=WechatUtils.IsWxBrowser()%>';
     	var arr=[];
     	$("#parameterList #btnWxImage").each(function(){
@@ -216,16 +222,11 @@
     				fn :null
     			} ]
     		});
-    		//document.getElementById("btnScanCode").click();
+    		
     	}
     });
-</script>
-
-	<script type="text/javascript" language="javascript" charset="utf-8">
 	 //iScroll刷新
     if ($.iscroll) {
         $.iscroll.refresh();
     }
-	 
-
-  </script>
+</script>

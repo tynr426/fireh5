@@ -50,7 +50,7 @@ contentType="text/html; charset=utf-8" %>
                     </div>
 
                     <!--服务器地址-->
-                    <div class="server-box">
+                    <div class="server-box" style="display:none">
                         <div class="title">
                             <a href="javascript:void(0);" tabindex="5" onclick='pub.dialog("管理系统登录", $e("#CodeForm").html(), null, null, null, null)'>什么是代码?</a>
                         </div>

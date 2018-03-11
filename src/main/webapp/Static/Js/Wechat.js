@@ -57,7 +57,7 @@ function uploadService(config,res){
           success : function(data) {
 
         	  if(data.state==0){
-        		  $(config.template.replace("%URL%","/fire"+data.data)).insertBefore("#btnWxImage")
+        		  $(config.template.replace("%URL%",data.data)).insertBefore("#btnWxImage")
 
         	  }
           }

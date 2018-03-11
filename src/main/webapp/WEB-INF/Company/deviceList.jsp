@@ -91,7 +91,7 @@
 		  			container:"deviceList",
 		  			data:{deviceTypeId:devicetypeId,keyword:keyword},
 		  			callback:function(){
-		  				 device.isBindQr('520ea986e4084ad69dcebffae89fed72',$("#deviceList a[data-state]").eq(1));
+		  				 //device.isBindQr('520ea986e4084ad69dcebffae89fed72',$("#deviceList a[data-state]").eq(1));
 		  				var arr=[];
 		  				$("#deviceList a[data-state]").each(function(){
 		  					arr.push(this);

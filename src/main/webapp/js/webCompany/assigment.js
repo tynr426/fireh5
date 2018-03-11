@@ -42,6 +42,7 @@ var assigment={
 						if(result.data.status>1){
 							assigment.getAssigment(id);
 						}
+			
 					}
 					
 				}
@@ -85,11 +86,11 @@ var assigment={
 					PredictTime:PredictTime,Remark:Remark},
 				success:function(result){
 					if(result.state==0){
-						alert("操作成功!");
+						alert("鎿嶄綔鎴愬姛!");
 						location.href=path+"/company/check/toCheckList.do";
 					}
 					else{
-						alert("操作失败!");
+						alert("鎿嶄綔澶辫触!");
 					}
 				}
 			});

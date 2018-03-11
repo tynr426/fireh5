@@ -41,14 +41,15 @@ var repairrecord={
 						result.data.assignment=repairrecord.getAssigment(id);
 		
 					 $("#DetailTemplate").tmpl(result.data).appendTo($("#DetailBox"));
-					 if(result.data.assignment.id==0){
+					 
+					
 							//$("#OptBox").show();
 							ecwx.initImage({
 			    				action : 'image',
 			    				btn : "#btnWxImage",
 			    				fn :null
 			    			} );
-						}
+						
 					}
 					
 				}
