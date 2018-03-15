@@ -16,6 +16,16 @@
 			<input type="text"  placeholder="${child.Field}" id="parameter_${id}_${j}" error="输入格式不正确！" validate="{{if (required=="1")}} isnull{{/if}}" maxlength="20" value="" />
 		</div>
 		{{/each}}
+  		{{else (editorType=="checkbox")}}
+			
+				{{each(j,child) $.parseJSON(candidate)}}
+ 	<label class="demo--label">
+	<input class="demo--radio" type="checkbox" value="${child.Value}" id="parameter_${id}_${j}">
+        <span class="demo--checkbox demo--radioInput"></span>${child.Field}
+    </label>
+
+				{{/each}}
+				
        {{else (editorType=="select")}}
 			<div class="selectbox" >
 				<select style="height:40px" id="parameter_${id}" error="请选择！" validate="{{if (required=="1")}} isnull{{/if}}">

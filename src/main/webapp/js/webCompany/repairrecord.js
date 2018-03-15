@@ -1,5 +1,8 @@
 var repairrecord={
-		save:function(){
+		save:function(obj){
+			if($(obj).attr("state")==1)return;
+			$(obj).attr("state",1);
+			$(obj).html("正在提交..");
 			var AssignmentId=$("#AssignmentId").val();
 			var DeviceId=$("#DeviceId").val();
 			var DeviceTypeId=$("#DeviceTypeId").val();
@@ -29,6 +32,8 @@ var repairrecord={
 					}
 				}
 			});
+			$(obj).attr("state",0);
+			$(obj).html("确认");
 		},
 		detail:function(id){
 			$.ajax({
@@ -49,7 +54,10 @@ var repairrecord={
 			    				btn : "#btnWxImage",
 			    				fn :null
 			    			} );
-						
+							  //iScroll刷新
+						    if ($.iscroll) {
+						        $.iscroll.refresh();
+						    }
 					}
 					
 				}

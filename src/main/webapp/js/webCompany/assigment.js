@@ -42,7 +42,10 @@ var assigment={
 						if(result.data.status>1){
 							assigment.getAssigment(id);
 						}
-			
+						  //iScroll刷新
+					    if ($.iscroll) {
+					        $.iscroll.refresh();
+					    }
 					}
 					
 				}
@@ -72,7 +75,10 @@ var assigment={
 			});
 			return v;
 		},
-		saveAssignment:function(id){
+		saveAssignment:function(id,obj){
+			if($(obj).attr("state")==1)return;
+			$(obj).attr("state",1);
+			$(obj).html("正在提交..");
 			if(!$("#CheckDeviceForm").formValidate())return;
 			
 			var ToManagerId=$("#ToManagerId").val();
@@ -82,6 +88,7 @@ var assigment={
 				url:path+"/company/assigment/save.do",
 				type:"post",
 				dataType:"json",
+				async:false,
 				data:{CheckId:id,ToManagerId:ToManagerId,
 					PredictTime:PredictTime,Remark:Remark},
 				success:function(result){
@@ -94,6 +101,8 @@ var assigment={
 					}
 				}
 			});
+			$(obj).attr("state",0);
+			$(obj).html("确认指派");
 		},
 		loadManagerName:function(){
 			$.ajax({url:path+"/company/manager/getManagerList.do",

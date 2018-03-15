@@ -99,11 +99,17 @@ var checkDevice={
 			    				btn : arr,
 			    				fn :null
 			    			} );
+							  //iScroll刷新
+						    if ($.iscroll) {
+						        $.iscroll.refresh();
+						    }
 					}
 				}
 			})
 		},
-		save:function(){
+		save:function(obj){
+			obj.disabled=true;
+			$(obj).html("正在提交..");
 			if(!$("#ReceiveCash").formValidate())return;
 			var DeviceId=$("#DeviceId").val();
 			var DeviceTypeId=$("#DeviceTypeId").val();
@@ -163,6 +169,8 @@ var checkDevice={
 					}
 				}
 			});
+			obj.disabled=false;
+			$(obj).html("确认");
 		},
 		detail:function(id){
 			$.ajax({

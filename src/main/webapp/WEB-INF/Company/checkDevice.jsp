@@ -12,14 +12,14 @@
 
 </head>
 <body>
-	<article class="ui-page">
-	<section class="ui-wrap" > <!-- 头部 -->  <!-- //头部 --> <!--体部--> <article
-		class="ui-page"> <!--内盒-->
+
+	<section class="ui-wrap" > <!-- 头部 -->  <!-- //头部 --> <!--体部-->
+	 <article class="ui-page"> <!--内盒-->
 	<div class="scroll iscroll-wrapper">
 		<!--收款收银台-->
 		<div class="receipt-cashier">
 			<div class="login-input-box">
-				<ul id="ReceiveCash">
+				<ul id="ReceiveCash" >
 					<li class="box box-horizontal scan">
 						<p class="name">设备型号：</p>
 						<div class="inputbox box1">
@@ -29,7 +29,7 @@
 						<input type="hidden" id="ManagerName"/>
 							<input type="text" name="Model" id="Model" value=""
 								error="请输入设备型号" validate="isnull" placeholder="请扫码或输入型号" />
-						</div> <a href="javascript:void(0);" class="search-btn" id="btnScanCode">扫码</a>
+						</div> 
 					</li>
 					<li class="box box-horizontal">
 						<p class="name">设备类型：</p>
@@ -75,16 +75,19 @@
 						</div>
 					</li>
 				</ul>
-				<ul id="parameterList" style="padding-top:10px"></ul>
+				
+				<ul id="parameterList" style="padding-top:10px" ></ul>
 			</div>
 
 			<div class="button">
-				<a href="javascript:void(0);" onclick="checkDevice.save();" class="btn">确认提交</a>
+				<a href="javascript:void(0);" onclick="checkDevice.save(this);" class="btn">确认</a>
 			</div>
 		</div>
 		<!--//收款收银台-->
 	</div>
-	<!--//内盒--> </article> <!--//体部--> </section>
+	<!--//内盒--> 
+	</article> <!--//体部--> 
+	</section>
 	<!--//框架-->
 </body>
 </html>

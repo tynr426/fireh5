@@ -18,11 +18,12 @@ var device={
 			var Position = $("#Position").val();
 			var Passageway = $("#Passageway").val();
 			var AddTime = $("#AddTime").val();
+			var RenewalDate = $("#RenewalDate").val();
 			var Detail = $("#Detail").val().trim();
 			var Code=$.getUrlParam("code");
 			var devicejson={DeviceTypeId:DeviceTypeId,Manufacturer:Manufacturer,
 					Model:Model,Spec:Spec,Buildings:Buildings,Floor:Floor,
-					Position:Position,Passageway:Passageway,AddTime:AddTime,
+					Position:Position,Passageway:Passageway,AddTime:AddTime,RenewalDate:RenewalDate,
 					Detail:Detail,Code:Code};
 
 			var arrValue=[];

@@ -103,7 +103,7 @@
                             <a  class="box box-horizontal">
  							{{each(j,f) certificate.split(',')}}
                                 <span class="pic load">
-                                    <img src="${f}" alt="" />
+                                    <img src="${f}" alt="" onclick="clickToBigImg(this);return false;"/>
                                 </span>
    							{{/each}}
                                 <span class="info box1">
@@ -144,11 +144,11 @@
                     <div class="product-line">
                         <!--商品-->
                         <div class="product">
-                            <a  class="box box-horizontal">
+                            <a  class="box box-horizontal">${repairrecord.id}
 							{{if(repairrecord.certificate!="")}}
  							{{each(j,f) repairrecord.certificate.split(',')}}
                                 <span class="pic load">
-                                    <img src="${f}" alt="" />
+                                    <img src="${f}" alt="" onclick="clickToBigImg(this);return false;" />
                                 </span>
    							{{/each}}
 							{{/if}}
@@ -156,7 +156,7 @@
                                     <span class="name box box-horizontal">
                                         <em class="name-txt box2"> ${repairrecord.description}</em>
                                         <em class="price-txt box1">
-                                           ${repairrecord.remark}
+                                           ${repairrecord.remark}${repairrecord.certificate}
                                         </em>
                                     </span>
 
@@ -215,7 +215,7 @@
 			</div>
 
 			<div class="button">
-				<a href="javascript:void(0);" onclick="repairrecord.save();" class="btn">确认提交</a>
+				<a href="javascript:void(0);" onclick="repairrecord.save(this);" class="btn">确认</a>
 			</div>
 		</div>
 		<!--//收款收银台-->
