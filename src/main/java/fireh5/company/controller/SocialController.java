@@ -22,6 +22,7 @@ import fire.sdk.utils.WechatUtils;
 import fireh5.web.utils.Company;
 import fire.sdk.utils.JsonResult;
 import fire.sdk.utils.JsonUtils;
+import fire.sdk.utils.WechatJsSDK;
 @Controller
 @RequestMapping("/company/social")
 public class SocialController {
@@ -41,9 +42,12 @@ public class SocialController {
 	@ResponseBody
 	public Object getMedia(String serverId,HttpSession session,HttpServletResponse response){
 		System.out.println("mediaId="+serverId);
+		WeChatAccount wa=WechatUtils.GetWechatAccount(); 
+		String access_token= WechatJsSDK.getAccessToken(wa.getAppId(), wa.getSecret(),false);  
 		Map<String, Object> map = new HashMap<String, Object>();   
 		map.put("CompanyId",Company.getCompanyId());
 		map.put("MediaId",serverId);
+		map.put("AccessToken", access_token);
 		return new ProxyBase().GetResponse("company.social", "getMedia", map);	
 	}
 }

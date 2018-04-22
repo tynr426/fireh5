@@ -101,7 +101,7 @@
                         <!--商品-->
                         <div class="product">
                             <a  class="box box-horizontal">
- 							{{each(j,f) certificate.split(',')}}
+ 							{{each(j,f) certificate.split(';')}}
                                 <span class="pic load">
                                     <img src="${f}" alt="" onclick="clickToBigImg(this);return false;"/>
                                 </span>
@@ -144,9 +144,10 @@
                     <div class="product-line">
                         <!--商品-->
                         <div class="product">
-                            <a  class="box box-horizontal">${repairrecord.id}
-							{{if(repairrecord.certificate!="")}}
- 							{{each(j,f) repairrecord.certificate.split(',')}}
+                            <a  class="box box-horizontal">
+							{{if repairrecord.certificate!="" }}
+
+ 							{{each(j,f) repairrecord.certificate.split(';')}}
                                 <span class="pic load">
                                     <img src="${f}" alt="" onclick="clickToBigImg(this);return false;" />
                                 </span>
@@ -156,7 +157,7 @@
                                     <span class="name box box-horizontal">
                                         <em class="name-txt box2"> ${repairrecord.description}</em>
                                         <em class="price-txt box1">
-                                           ${repairrecord.remark}${repairrecord.certificate}
+                                           ${repairrecord.remark}
                                         </em>
                                     </span>
 
